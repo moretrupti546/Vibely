@@ -1,0 +1,14 @@
+{
+  "name": "vibely-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vibely — Modern Full-Stack Music Streaming Platform",
+  "scripts": {
+    "server": "npm --prefix server run dev",
+    "client": "npm --prefix client run dev",
+    "start:server": "npm --prefix server start",
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "db:push": "npm --prefix server run prisma:push",
+    "seed": "npm --prefix server run seed"
+  }
+}

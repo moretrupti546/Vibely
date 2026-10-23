@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String             @id @default(uuid())
+  email            String             @unique
+  password         String
+  name             String
+  avatar           String?            @default("https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80")
+  bio              String?            @default("Music enthusiast & curator")
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  playlists        Playlist[]
+  likedSongs       LikedSong[]
+  savedAlbums      SavedAlbum[]
+  listeningHistory ListeningHistory[]
+  followedArtists  FollowedArtist[]
+}
+
+model Artist {
+  id               String           @id @default(uuid())
+  name             String           @unique
+  bio              String?
+  image            String
+  verified         Boolean          @default(true)
+  monthlyListeners Int              @default(0)
+  createdAt        DateTime         @default(now())
+
+  albums           Album[]
+  songs            Song[]
+  followers        FollowedArtist[]
+}
+
+model Album {
+  id          String       @id @default(uuid())
+  title       String
+  coverArt    String
+  releaseYear Int
+  genre       String
+  createdAt   DateTime     @default(now())
+
+  artistId    String
+  artist      Artist       @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  songs       Song[]
+  savedBy     SavedAlbum[]
+}
+
+model Song {
+  id               String             @id @default(uuid())
+  title            String
+  duration         Int                // Duration in seconds
+  audioUrl         String
+  coverArt         String
+  genre            String
+  plays            Int                @default(0)
+  createdAt        DateTime           @default(now())
+
+  artistId         String
+  artist           Artist             @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  albumId          String?
+  album            Album?             @relation(fields: [albumId], references: [id], onDelete: SetNull)
+
+  playlistTracks   PlaylistTrack[]
+  likedBy          LikedSong[]
+  listeningHistory ListeningHistory[]
+}
+
+model Playlist {
+  id          String          @id @default(uuid())
+  title       String
+  description String?
+  coverArt    String?         @default("https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80")
+  isPublic    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tracks      PlaylistTrack[]
+}
+
+model PlaylistTrack {
+  id         String   @id @default(uuid())
+  order      Int      @default(0)
+  addedAt    DateTime @default(now())
+
+  playlistId String
+  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+
+  songId     String
+  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, songId])
+}
+
+model LikedSong {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  songId    String
+  song      Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, songId])
+}
+
+model SavedAlbum {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  albumId   String
+  album     Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, albumId])
+}
+
+model ListeningHistory {
+  id        String   @id @default(uuid())
+  playedAt  DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  songId    String
+  song      Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+}
+
+model FollowedArtist {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  artistId  String
+  artist    Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, artistId])
+}
