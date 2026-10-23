@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibely — Where Vibes, Moods & Rhythm Connect</title>
+  <meta name="description" content="Vibely is the next-gen social vibe sharing network. Share your moods, aesthetic moments, ambient music, and connect on a deeper frequency.">
+  <meta name="theme-color" content="#0d0e15">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+  <!-- Dynamic Ambient Background Glows -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+  <div class="ambient-glow glow-3" aria-hidden="true"></div>
+
+  <!-- Navigation Bar -->
+  <header class="app-header" id="appHeader">
+    <div class="header-inner">
+      <div class="brand-group">
+        <a href="#" class="brand-logo" id="brandLogo">
+          <span class="logo-icon">✨</span>
+          <span class="logo-text">Vibely<span class="dot">.</span></span>
+        </a>
+        <span class="badge-vibe">Live Frequency</span>
+      </div>
+
+      <div class="search-container">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="vibeSearchInput" placeholder="Search moods, vibes, soundtracks, or tags..." autocomplete="off">
+        <kbd class="search-kbd">⌘K</kbd>
+      </div>
+
+      <div class="header-actions">
+        <!-- Live Current Mood Button -->
+        <button class="status-pill" id="currentMoodStatusBtn" title="Update your mood status">
+          <span class="status-dot"></span>
+          <span class="status-emoji" id="activeStatusEmoji">⚡</span>
+          <span class="status-label" id="activeStatusLabel">In The Flow</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="icon-btn" id="themeToggleBtn" title="Switch Theme Palette" aria-label="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <!-- Notifications -->
+        <button class="icon-btn notif-btn" id="notifBtn" title="Notifications" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge">3</span>
+        </button>
+
+        <!-- User Profile Avatar Pill -->
+        <div class="user-pill" id="userProfilePill">
+          <div class="avatar-wrapper">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Trupti avatar" class="avatar-img">
+            <span class="online-indicator"></span>
+          </div>
+          <span class="username">Trupti M.</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Layout -->
+  <div class="layout-container">
+    <!-- Left Navigation & Mood Station -->
+    <aside class="sidebar-left" id="sidebarLeft">
+      <!-- User Profile Summary Card -->
+      <div class="glass-card profile-card">
+        <div class="profile-header-banner"></div>
+        <div class="profile-content">
+          <div class="profile-avatar-large">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&q=80" alt="Trupti Profile">
+            <span class="vibe-ring"></span>
+          </div>
+          <h2 class="profile-name">Trupti More</h2>
+          <p class="profile-tag">@trupti • <span class="aura-title">Vibe Alchemist</span></p>
+
+          <div class="profile-stats">
+            <div class="stat-item">
+              <span class="stat-num" id="statVibesCount">18</span>
+              <span class="stat-label">Vibes</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num" id="statAuraScore">1,420</span>
+              <span class="stat-label">Aura pts</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">7 🔥</span>
+              <span class="stat-label">Streak</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Mood Check-In Widget -->
+      <div class="glass-card mood-checkin-card">
+        <div class="card-header-compact">
+          <span class="card-icon">🔮</span>
+          <h3 class="card-title">Daily Mood Check-in</h3>
+        </div>
+        <p class="card-desc">How are you vibrating right now?</p>
+        <div class="mood-selector-grid" id="moodCheckinGrid">
+          <button class="mood-option active" data-mood="Flow" data-emoji="⚡" data-color="#8b5cf6">
+            <span class="mood-emoji">⚡</span>
+            <span class="mood-title">Flow</span>
+          </button>
+          <button class="mood-option" data-mood="Chill" data-emoji="🌙" data-color="#3b82f6">
+            <span class="mood-emoji">🌙</span>
+            <span class="mood-title">Chill</span>
+          </button>
+          <button class="mood-option" data-mood="Creative" data-emoji="🎨" data-color="#ec4899">
+            <span class="mood-emoji">🎨</span>
+            <span class="mood-title">Creative</span>
+          </button>
+          <button class="mood-option" data-mood="Melodic" data-emoji="🎧" data-color="#10b981">
+            <span class="mood-emoji">🎧</span>
+            <span class="mood-title">Melodic</span>
+          </button>
+          <button class="mood-option" data-mood="Hyped" data-emoji="🔥" data-color="#f97316">
+            <span class="mood-emoji">🔥</span>
+            <span class="mood-title">Hyped</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Vibe Channel Filters -->
+      <div class="glass-card nav-channels-card">
+        <h3 class="section-label">CHANNELS</h3>
+        <nav class="vibe-channel-nav" id="vibeChannelNav">
+          <button class="channel-link active" data-filter="all">
+            <span class="channel-icon">🌌</span>
+            <span class="channel-name">All Vibrations</span>
+            <span class="channel-count" id="channelCountAll">6</span>
+          </button>
+          <button class="channel-link" data-filter="Chill">
+            <span class="channel-icon">🌙</span>
+            <span class="channel-name">Chill & Lo-Fi</span>
+            <span class="channel-pill">Relax</span>
+          </button>
+          <button class="channel-link" data-filter="Flow">
+            <span class="channel-icon">⚡</span>
+            <span class="channel-name">Deep Flow</span>
+            <span class="channel-pill">Focus</span>
+          </button>
+          <button class="channel-link" data-filter="Creative">
+            <span class="channel-icon">🎨</span>
+            <span class="channel-name">Creative Spark</span>
+            <span class="channel-pill">Inspire</span>
+          </button>
+          <button class="channel-link" data-filter="Hyped">
+            <span class="channel-icon">🔥</span>
+            <span class="channel-name">High Energy</span>
+            <span class="channel-pill">Hype</span>
+          </button>
+          <button class="channel-link" data-filter="saved">
+            <span class="channel-icon">🔖</span>
+            <span class="channel-name">Saved Vibes</span>
+            <span class="channel-count" id="channelCountSaved">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Trending Hashtags -->
+      <div class="glass-card trending-tags-card">
+        <h3 class="section-label">TRENDING AURA TAGS</h3>
+        <div class="tag-cloud" id="tagCloud">
+          <span class="tag-chip" data-tag="#MidnightLoFi">#MidnightLoFi <small>2.4k</small></span>
+          <span class="tag-chip" data-tag="#CyberNeon">#CyberNeon <small>1.8k</small></span>
+          <span class="tag-chip" data-tag="#DeepFocus">#DeepFocus <small>940</small></span>
+          <span class="tag-chip" data-tag="#SunsetGlow">#SunsetGlow <small>780</small></span>
+          <span class="tag-chip" data-tag="#Dreamscape">#Dreamscape <small>620</small></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Center Main Feed -->
+    <main class="feed-main" id="feedMain">
+      <!-- Composer: Share Your Vibe -->
+      <section class="glass-card composer-card" id="composerSection">
+        <div class="composer-top">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="composer-avatar">
+          <div class="composer-input-area">
+            <textarea id="composerText" placeholder="Capture your vibration... What's on your mind or in your headphones?" rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- Composer Interactive Toolbar -->
+        <div class="composer-tools">
+          <div class="tool-section">
+            <label class="tool-label">Choose Mood:</label>
+            <div class="mood-pills-row" id="composerMoodPills">
+              <button type="button" class="mood-pill active" data-mood="Flow" data-emoji="⚡">⚡ Flow</button>
+              <button type="button" class="mood-pill" data-mood="Chill" data-emoji="🌙">🌙 Chill</button>
+              <button type="button" class="mood-pill" data-mood="Creative" data-emoji="🎨">🎨 Creative</button>
+              <button type="button" class="mood-pill" data-mood="Hyped" data-emoji="🔥">🔥 Hyped</button>
+            </div>
+          </div>
+
+          <div class="tool-section">
+            <label class="tool-label">Card Aura Glow:</label>
+            <div class="aura-palette-row" id="composerAuraPalette">
+              <button type="button" class="aura-swatch active" data-gradient="linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(59, 130, 246, 0.2))" title="Violet Nebula" style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);"></button>
+              <button type="button" class="aura-swatch" data-gradient="linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(249, 115, 22, 0.2))" title="Sunset Amber" style="background: linear-gradient(135deg, #ec4899, #f97316);"></button>
+              <button type="button" class="aura-swatch" data-gradient="linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(16, 185, 129, 0.2))" title="Emerald Ocean" style="background: linear-gradient(135deg, #06b6d4, #10b981);"></button>
+              <button type="button" class="aura-swatch" data-gradient="linear-gradient(135deg, rgba(244, 63, 94, 0.25), rgba(168, 85, 247, 0.2))" title="Neon Cyber" style="background: linear-gradient(135deg, #f43f5e, #a855f7);"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soundtrack Attacher & Submit -->
+        <div class="composer-footer">
+          <div class="soundtrack-input-group">
+            <svg class="music-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+            <input type="text" id="composerSoundtrack" placeholder="Attach a track (e.g. M83 — Midnight City)">
+          </div>
+
+          <button class="btn-primary glow-btn" id="publishVibeBtn">
+            <span>Drop Vibe</span>
+            <span class="btn-glow-sparkle">✨</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Feed Controls & Filter Tabs -->
+      <section class="feed-header-bar">
+        <div class="feed-tabs" id="feedTabs">
+          <button class="feed-tab active" data-tab="all">All Stream</button>
+          <button class="feed-tab" data-tab="trending">🔥 Trending</button>
+          <button class="feed-tab" data-tab="audio">🎧 Music Vibes</button>
+          <button class="feed-tab" data-tab="media">📸 Visuals</button>
+        </div>
+        <div class="feed-view-info">
+          <span id="activeFilterBadge" class="filter-badge">Showing All Vibes</span>
+        </div>
+      </section>
+
+      <!-- Dynamic Vibes Stream Container -->
+      <div class="vibes-stream" id="vibesStream">
+        <!-- Rendered by app.js -->
+      </div>
+    </main>
+
+    <!-- Right Sidebar: Vibe Radar, Ambient Player & Creators -->
+    <aside class="sidebar-right" id="sidebarRight">
+      <!-- Ambient Audio Lounge Player -->
+      <div class="glass-card ambient-player-card" id="ambientPlayerCard">
+        <div class="ambient-header">
+          <div class="ambient-indicator">
+            <span class="pulse-ring"></span>
+            <span class="pulse-dot"></span>
+          </div>
+          <div>
+            <h3 class="ambient-title">Vibely Ambient Lounge</h3>
+            <span class="ambient-status" id="ambientStatusText">Synthesized Chords</span>
+          </div>
+        </div>
+
+        <div class="track-artwork-banner">
+          <div class="track-details">
+            <span class="track-title" id="ambientTrackTitle">Neon Horizon Dream</span>
+            <span class="track-artist" id="ambientTrackArtist">Synthwave Lo-Fi • 432 Hz</span>
+          </div>
+        </div>
+
+        <!-- Audio Canvas Visualizer -->
+        <div class="visualizer-container">
+          <canvas id="audioVisualizerCanvas" width="280" height="48"></canvas>
+        </div>
+
+        <!-- Player Controls -->
+        <div class="player-controls">
+          <button class="control-btn" id="prevTrackBtn" title="Previous Vibe">⏮</button>
+          <button class="control-btn play-pause-btn" id="playAmbientBtn" title="Play Ambient Vibe">
+            <span id="playIcon">▶</span>
+          </button>
+          <button class="control-btn" id="nextTrackBtn" title="Next Vibe">⏭</button>
+          <div class="volume-slider-group">
+            <span class="vol-icon">🔉</span>
+            <input type="range" id="ambientVolume" min="0" max="100" value="70" class="slider">
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Vibe Pulse Radar -->
+      <div class="glass-card radar-card">
+        <div class="card-header-compact">
+          <span class="card-icon">📡</span>
+          <h3 class="card-title">Live Global Vibe Radar</h3>
+        </div>
+        <p class="card-desc">Real-time mood frequency distribution</p>
+
+        <div class="radar-bars">
+          <div class="radar-item">
+            <div class="radar-meta">
+              <span>⚡ Deep Flow</span>
+              <span class="radar-pct" id="radarFlowPct">42%</span>
+            </div>
+            <div class="radar-track"><div class="radar-fill flow-fill" style="width: 42%;"></div></div>
+          </div>
+          <div class="radar-item">
+            <div class="radar-meta">
+              <span>🌙 Chill & Lo-Fi</span>
+              <span class="radar-pct" id="radarChillPct">31%</span>
+            </div>
+            <div class="radar-track"><div class="radar-fill chill-fill" style="width: 31%;"></div></div>
+          </div>
+          <div class="radar-item">
+            <div class="radar-meta">
+              <span>🎨 Creative Spark</span>
+              <span class="radar-pct" id="radarCreativePct">16%</span>
+            </div>
+            <div class="radar-track"><div class="radar-fill creative-fill" style="width: 16%;"></div></div>
+          </div>
+          <div class="radar-item">
+            <div class="radar-meta">
+              <span>🔥 Hyped Energy</span>
+              <span class="radar-pct" id="radarHypedPct">11%</span>
+            </div>
+            <div class="radar-track"><div class="radar-fill hyped-fill" style="width: 11%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vibe Curators (Suggested Connections) -->
+      <div class="glass-card creators-card">
+        <div class="card-header-compact">
+          <span class="card-icon">🪐</span>
+          <h3 class="card-title">Vibe Curators</h3>
+        </div>
+        <div class="creators-list" id="creatorsList">
+          <div class="creator-item">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="Aria" class="creator-img">
+            <div class="creator-info">
+              <span class="creator-name">Aria Vance</span>
+              <span class="creator-vibe">🌙 Ambient Soundscapes</span>
+            </div>
+            <button class="btn-connect" onclick="toggleConnect(this)">Connect</button>
+          </div>
+          <div class="creator-item">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=100&q=80" alt="Kai" class="creator-img">
+            <div class="creator-info">
+              <span class="creator-name">Kai Zenith</span>
+              <span class="creator-vibe">⚡ Synthwave & Lo-fi</span>
+            </div>
+            <button class="btn-connect" onclick="toggleConnect(this)">Connect</button>
+          </div>
+          <div class="creator-item">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Leon" class="creator-img">
+            <div class="creator-info">
+              <span class="creator-name">Leon Ray</span>
+              <span class="creator-vibe">🎨 Cyber Visuals</span>
+            </div>
+            <button class="btn-connect" onclick="toggleConnect(this)">Connect</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Fullscreen Media / Comment Modal -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="glass-card modal-content" id="modalContent">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close modal">&times;</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
