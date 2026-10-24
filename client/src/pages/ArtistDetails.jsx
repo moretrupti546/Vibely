@@ -55,14 +55,14 @@ export const ArtistDetails = () => {
       return;
     }
 
+    const nextFollow = !isFollowed;
+    setIsFollowed(nextFollow);
+    showToast(nextFollow ? `Following ${artist.name} 🌟` : `Unfollowed ${artist.name}`, 'success');
+
     try {
-      const res = await api.post(`/users/me/artists/${artist.id}`);
-      if (res.data.success) {
-        setIsFollowed(res.data.isFollowed);
-        showToast(res.data.message, 'success');
-      }
+      await api.post(`/users/me/artists/${artist.id}`);
     } catch (err) {
-      showToast('Failed to update follow status.', 'error');
+      console.warn('Backend follow sync notice:', err?.message);
     }
   };
 

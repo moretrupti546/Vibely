@@ -20,11 +20,21 @@ export const Library = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'playlists';
 
-  const [libraryData, setLibraryData] = useState({
-    playlists: DEFAULT_PLAYLISTS,
-    likedSongs: DEFAULT_SONGS.slice(0, 4),
-    savedAlbums: DEFAULT_ALBUMS.slice(0, 3),
-    followedArtists: DEFAULT_ARTISTS.slice(0, 4)
+  const [libraryData, setLibraryData] = useState(() => {
+    let likedSongs = DEFAULT_SONGS.slice(0, 4);
+    let playlists = DEFAULT_PLAYLISTS;
+    try {
+      const savedLikes = localStorage.getItem('vibely_liked_songs_full');
+      if (savedLikes) likedSongs = JSON.parse(savedLikes);
+      const savedPl = localStorage.getItem('vibely_user_playlists');
+      if (savedPl) playlists = JSON.parse(savedPl);
+    } catch (e) {}
+    return {
+      playlists,
+      likedSongs,
+      savedAlbums: DEFAULT_ALBUMS.slice(0, 3),
+      followedArtists: DEFAULT_ARTISTS.slice(0, 4)
+    };
   });
   const [history, setHistory] = useState(
     DEFAULT_SONGS.slice(0, 3).map((s) => ({ song: s, playedAt: new Date().toISOString() }))
@@ -34,6 +44,18 @@ export const Library = () => {
   const [selectedSongForPlaylist, setSelectedSongForPlaylist] = useState(null);
 
   const fetchLibrary = async () => {
+    try {
+      const savedLikes = localStorage.getItem('vibely_liked_songs_full');
+      const savedPl = localStorage.getItem('vibely_user_playlists');
+      if (savedLikes || savedPl) {
+        setLibraryData((prev) => ({
+          ...prev,
+          likedSongs: savedLikes ? JSON.parse(savedLikes) : prev.likedSongs,
+          playlists: savedPl ? JSON.parse(savedPl) : prev.playlists
+        }));
+      }
+    } catch (e) {}
+
     if (!isAuthenticated) {
       setLoading(false);
       return;
@@ -45,7 +67,11 @@ export const Library = () => {
       ]);
 
       if (libRes.status === 'fulfilled' && libRes.value.data?.success && libRes.value.data.data) {
-        setLibraryData(libRes.value.data.data);
+        setLibraryData((prev) => ({
+          ...prev,
+          ...libRes.value.data.data,
+          likedSongs: libRes.value.data.data.likedSongs?.length ? libRes.value.data.data.likedSongs : prev.likedSongs
+        }));
       }
       if (histRes.status === 'fulfilled' && histRes.value.data?.success && histRes.value.data.data) {
         setHistory(histRes.value.data.data);

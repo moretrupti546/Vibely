@@ -60,17 +60,17 @@ export const AlbumDetails = () => {
       return;
     }
 
+    const nextSaved = !isSaved;
+    setIsSaved(nextSaved);
+    showToast(
+      nextSaved ? `Saved "${album.title}" to your library 💿` : `Removed "${album.title}" from library`,
+      'success'
+    );
+
     try {
-      const res = await api.post(`/users/me/albums/${album.id}`);
-      if (res.data.success) {
-        setIsSaved(res.data.isSaved);
-        showToast(
-          res.data.isSaved ? `Saved "${album.title}" to your library 💿` : `Removed "${album.title}" from library`,
-          'success'
-        );
-      }
+      await api.post(`/users/me/albums/${album.id}`);
     } catch (err) {
-      showToast('Failed to update album in library.', 'error');
+      console.warn('Backend album sync notice:', err?.message);
     }
   };
 

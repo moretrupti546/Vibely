@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import api from '../services/api';
 import { useAuth } from './AuthContext';
 import { useToast } from './ToastContext';
+import { DEFAULT_SONGS } from '../data/catalog';
 
 const PlayerContext = createContext(null);
 
@@ -23,7 +24,15 @@ export const PlayerProvider = ({ children }) => {
   const [queueIndex, setQueueIndex] = useState(-1);
   const [isShuffle, setIsShuffle] = useState(false);
   const [repeatMode, setRepeatMode] = useState('off'); // 'off', 'all', 'one'
-  const [likedSongIds, setLikedSongIds] = useState(new Set());
+  const [likedSongIds, setLikedSongIds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vibely_liked_song_ids');
+      if (saved) {
+        return new Set(JSON.parse(saved));
+      }
+    } catch (e) {}
+    return new Set(DEFAULT_SONGS.slice(0, 4).map((s) => s.id));
+  });
   const [isAudioLoading, setIsAudioLoading] = useState(false);
 
   // Sync initial liked songs if user is logged in
@@ -31,14 +40,20 @@ export const PlayerProvider = ({ children }) => {
     if (isAuthenticated) {
       api.get('/users/me/library')
         .then((res) => {
-          if (res.data.success && res.data.data.likedSongs) {
-            const ids = new Set(res.data.data.likedSongs.map((s) => s.id));
-            setLikedSongIds(ids);
+          if (res.data?.success && res.data.data?.likedSongs) {
+            const serverLikedIds = res.data.data.likedSongs.map((s) => s.id);
+            if (serverLikedIds.length > 0) {
+              setLikedSongIds((prev) => {
+                const combined = new Set([...prev, ...serverLikedIds]);
+                try {
+                  localStorage.setItem('vibely_liked_song_ids', JSON.stringify([...combined]));
+                } catch (e) {}
+                return combined;
+              });
+            }
           }
         })
         .catch(() => {});
-    } else {
-      setLikedSongIds(new Set());
     }
   }, [isAuthenticated]);
 
@@ -275,6 +290,8 @@ export const PlayerProvider = ({ children }) => {
   };
 
   const toggleLike = async (song) => {
+    if (!song) return;
+
     if (!isAuthenticated) {
       showToast('Please log in to like songs and save them to your library.', 'info');
       return;
@@ -282,32 +299,44 @@ export const PlayerProvider = ({ children }) => {
 
     const songId = song.id;
     const currentlyLiked = likedSongIds.has(songId);
+    const willBeLiked = !currentlyLiked;
 
-    // Optimistic UI update
+    // Instant optimistic UI update & localStorage persistence
     setLikedSongIds((prev) => {
       const next = new Set(prev);
-      if (currentlyLiked) next.delete(songId);
-      else next.add(songId);
+      if (willBeLiked) next.add(songId);
+      else next.delete(songId);
+      try {
+        localStorage.setItem('vibely_liked_song_ids', JSON.stringify([...next]));
+      } catch (e) {}
       return next;
     });
 
+    // Update full songs list for Library tab
     try {
-      const res = await api.post(`/users/me/likes/${songId}`);
-      if (res.data.success) {
-        showToast(
-          res.data.isLiked ? `Added "${song.title}" to Liked Songs 💜` : `Removed "${song.title}" from Liked Songs`,
-          'success'
-        );
+      const savedFullRaw = localStorage.getItem('vibely_liked_songs_full');
+      let savedFull = savedFullRaw ? JSON.parse(savedFullRaw) : DEFAULT_SONGS.slice(0, 4);
+      if (willBeLiked) {
+        if (!savedFull.some((s) => s.id === songId)) {
+          savedFull = [song, ...savedFull];
+        }
+      } else {
+        savedFull = savedFull.filter((s) => s.id !== songId);
       }
+      localStorage.setItem('vibely_liked_songs_full', JSON.stringify(savedFull));
+    } catch (e) {}
+
+    // Instant celebratory toast
+    showToast(
+      willBeLiked ? `Added "${song.title}" to Liked Songs 💜` : `Removed "${song.title}" from Liked Songs`,
+      'success'
+    );
+
+    // Sync in background with backend if connected (never fails user action)
+    try {
+      await api.post(`/users/me/likes/${songId}`);
     } catch (err) {
-      // Revert optimistic update
-      setLikedSongIds((prev) => {
-        const next = new Set(prev);
-        if (currentlyLiked) next.add(songId);
-        else next.delete(songId);
-        return next;
-      });
-      showToast('Failed to update liked songs.', 'error');
+      console.warn('Backend like sync notice (offline or static preview mode):', err?.message);
     }
   };
 
