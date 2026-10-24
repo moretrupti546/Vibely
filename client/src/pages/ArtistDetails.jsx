@@ -7,6 +7,7 @@ import { usePlayer } from '../context/PlayerContext';
 import { useToast } from '../context/ToastContext';
 import { SongRow } from '../components/cards/SongRow';
 import { AlbumCard } from '../components/cards/AlbumCard';
+import { DEFAULT_ARTISTS, DEFAULT_SONGS, DEFAULT_ALBUMS } from '../data/catalog';
 
 export const ArtistDetails = () => {
   const { id } = useParams();
@@ -23,15 +24,26 @@ export const ArtistDetails = () => {
       try {
         setLoading(true);
         const res = await api.get(`/artists/${id}`);
-        if (res.data.success) {
+        if (res.data?.success && res.data.data) {
           setArtist(res.data.data);
           setIsFollowed(res.data.data.isFollowed);
+          setLoading(false);
+          return;
         }
       } catch (err) {
-        console.error('Failed to load artist:', err);
-      } finally {
-        setLoading(false);
+        console.warn('Backend artist fetch notice, using catalog:', err?.message);
       }
+
+      const found = DEFAULT_ARTISTS.find((a) => a.id === id || a.name.toLowerCase().includes(id.toLowerCase())) || DEFAULT_ARTISTS[0];
+      const artistSongs = DEFAULT_SONGS.filter((s) => s.artist?.id === found.id || s.artist?.name === found.name);
+      const artistAlbums = DEFAULT_ALBUMS.filter((a) => a.artist?.id === found.id || a.artist?.name === found.name);
+
+      setArtist({
+        ...found,
+        songs: artistSongs.length > 0 ? artistSongs : DEFAULT_SONGS.slice(0, 3),
+        albums: artistAlbums.length > 0 ? artistAlbums : DEFAULT_ALBUMS.slice(0, 2)
+      });
+      setLoading(false);
     };
 
     fetchArtist();

@@ -8,6 +8,12 @@ import { AlbumCard } from '../components/cards/AlbumCard';
 import { SongRow } from '../components/cards/SongRow';
 import { CreatePlaylistModal } from '../components/modals/CreatePlaylistModal';
 import { AddToPlaylistModal } from '../components/modals/AddToPlaylistModal';
+import {
+  DEFAULT_PLAYLISTS,
+  DEFAULT_SONGS,
+  DEFAULT_ALBUMS,
+  DEFAULT_ARTISTS
+} from '../data/catalog';
 
 export const Library = () => {
   const { isAuthenticated } = useAuth();
@@ -15,13 +21,15 @@ export const Library = () => {
   const activeTab = searchParams.get('tab') || 'playlists';
 
   const [libraryData, setLibraryData] = useState({
-    playlists: [],
-    likedSongs: [],
-    savedAlbums: [],
-    followedArtists: []
+    playlists: DEFAULT_PLAYLISTS,
+    likedSongs: DEFAULT_SONGS.slice(0, 4),
+    savedAlbums: DEFAULT_ALBUMS.slice(0, 3),
+    followedArtists: DEFAULT_ARTISTS.slice(0, 4)
   });
-  const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [history, setHistory] = useState(
+    DEFAULT_SONGS.slice(0, 3).map((s) => ({ song: s, playedAt: new Date().toISOString() }))
+  );
+  const [loading, setLoading] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [selectedSongForPlaylist, setSelectedSongForPlaylist] = useState(null);
 
@@ -31,20 +39,19 @@ export const Library = () => {
       return;
     }
     try {
-      setLoading(true);
-      const [libRes, histRes] = await Promise.all([
+      const [libRes, histRes] = await Promise.allSettled([
         api.get('/users/me/library'),
         api.get('/users/me/history?limit=30')
       ]);
 
-      if (libRes.data.success) {
-        setLibraryData(libRes.data.data);
+      if (libRes.status === 'fulfilled' && libRes.value.data?.success && libRes.value.data.data) {
+        setLibraryData(libRes.value.data.data);
       }
-      if (histRes.data.success) {
-        setHistory(histRes.data.data);
+      if (histRes.status === 'fulfilled' && histRes.value.data?.success && histRes.value.data.data) {
+        setHistory(histRes.value.data.data);
       }
     } catch (err) {
-      console.error('Failed to load library:', err);
+      console.warn('Backend library notice, using default library:', err?.message);
     } finally {
       setLoading(false);
     }

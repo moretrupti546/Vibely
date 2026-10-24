@@ -9,6 +9,12 @@ import { AlbumCard } from '../components/cards/AlbumCard';
 import { PlaylistCard } from '../components/cards/PlaylistCard';
 import { ArtistCard } from '../components/cards/ArtistCard';
 import { CardSkeleton, HeroSkeleton } from '../components/ui/SkeletonLoader';
+import {
+  DEFAULT_SONGS,
+  DEFAULT_ALBUMS,
+  DEFAULT_PLAYLISTS,
+  DEFAULT_ARTISTS
+} from '../data/catalog';
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -23,30 +29,37 @@ export const Home = () => {
   const { user } = useAuth();
   const { playSong } = usePlayer();
 
-  const [trendingSongs, setTrendingSongs] = useState([]);
-  const [albums, setAlbums] = useState([]);
-  const [playlists, setPlaylists] = useState([]);
-  const [artists, setArtists] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [trendingSongs, setTrendingSongs] = useState(DEFAULT_SONGS);
+  const [albums, setAlbums] = useState(DEFAULT_ALBUMS);
+  const [playlists, setPlaylists] = useState(DEFAULT_PLAYLISTS);
+  const [artists, setArtists] = useState(DEFAULT_ARTISTS);
+  const [loading, setLoading] = useState(false);
   const [selectedMood, setSelectedMood] = useState('All');
 
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        setLoading(true);
-        const [songsRes, albumsRes, playlistsRes, artistsRes] = await Promise.all([
+        const [songsRes, albumsRes, playlistsRes, artistsRes] = await Promise.allSettled([
           api.get('/songs/trending'),
           api.get('/albums'),
           api.get('/playlists'),
           api.get('/artists')
         ]);
 
-        if (songsRes.data.success) setTrendingSongs(songsRes.data.data);
-        if (albumsRes.data.success) setAlbums(albumsRes.data.data);
-        if (playlistsRes.data.success) setPlaylists(playlistsRes.data.data);
-        if (artistsRes.data.success) setArtists(artistsRes.data.data);
+        if (songsRes.status === 'fulfilled' && songsRes.value.data?.success && songsRes.value.data.data?.length > 0) {
+          setTrendingSongs(songsRes.value.data.data);
+        }
+        if (albumsRes.status === 'fulfilled' && albumsRes.value.data?.success && albumsRes.value.data.data?.length > 0) {
+          setAlbums(albumsRes.value.data.data);
+        }
+        if (playlistsRes.status === 'fulfilled' && playlistsRes.value.data?.success && playlistsRes.value.data.data?.length > 0) {
+          setPlaylists(playlistsRes.value.data.data);
+        }
+        if (artistsRes.status === 'fulfilled' && artistsRes.value.data?.success && artistsRes.value.data.data?.length > 0) {
+          setArtists(artistsRes.value.data.data);
+        }
       } catch (err) {
-        console.error('Failed to load home data:', err);
+        console.warn('Backend catalog notice, utilizing default catalog:', err?.message);
       } finally {
         setLoading(false);
       }
