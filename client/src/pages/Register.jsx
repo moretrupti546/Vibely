@@ -43,7 +43,7 @@ export const Register = () => {
     setLoading(false);
 
     if (res.success) {
-      navigate('/');
+      navigate('/app');
     } else {
       setError(res.message);
     }

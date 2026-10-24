@@ -45,7 +45,7 @@ export const Sidebar = ({ onOpenCreatePlaylist }) => {
       {/* Main Navigation */}
       <div className="px-3 py-2 space-y-1">
         <NavLink
-          to="/"
+          to="/app"
           className={({ isActive }) =>
             `flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
               isActive
@@ -84,6 +84,14 @@ export const Sidebar = ({ onOpenCreatePlaylist }) => {
         >
           <Library className="w-5 h-5" />
           <span>Your Library</span>
+        </NavLink>
+
+        <NavLink
+          to="/"
+          className="flex items-center gap-3.5 px-4 py-2.5 rounded-xl font-medium text-xs text-slate-400 hover:text-purple-300 hover:bg-slate-800/40 transition-all duration-200"
+        >
+          <Sparkles className="w-4 h-4 text-purple-400" />
+          <span>Landing Page</span>
         </NavLink>
       </div>
 

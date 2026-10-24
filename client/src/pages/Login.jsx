@@ -21,7 +21,7 @@ export const Login = () => {
     setLoading(false);
 
     if (res.success) {
-      navigate('/');
+      navigate('/app');
     } else {
       setError(res.message);
     }
@@ -33,7 +33,7 @@ export const Login = () => {
     const res = await login('trupti@vibely.io', 'Vibely2026!');
     setLoading(false);
     if (res.success) {
-      navigate('/');
+      navigate('/app');
     } else {
       setError(res.message);
     }
