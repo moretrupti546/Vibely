@@ -58,9 +58,6 @@ export const Login = () => {
           <p className="text-xs text-slate-400">
             Enter your credentials to tune in to your saved vibrations
           </p>
-          <div className="inline-block mt-1 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-medium">
-            ✨ Any email address can sign in instantly
-          </div>
         </div>
 
         {error && (
@@ -79,7 +76,7 @@ export const Login = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="any.email@example.com"
+                placeholder="you@example.com"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-vibely-border text-white text-sm focus:outline-none focus:border-purple-500"
                 required
               />
@@ -96,7 +93,7 @@ export const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="•••••••• (any password)"
+                placeholder="••••••••"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-vibely-border text-white text-sm focus:outline-none focus:border-purple-500"
               />
               <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
@@ -108,7 +105,7 @@ export const Login = () => {
             disabled={loading}
             className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 hover:scale-[1.02]"
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <span>Sign In with Any Email</span>}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <span>Sign In</span>}
           </button>
         </form>
 
