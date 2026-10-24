@@ -39,8 +39,26 @@ export const PlaylistDetails = () => {
         return;
       }
     } catch (err) {
-      console.warn('Backend playlist fetch notice, using catalog:', err?.message);
+      console.warn('Backend playlist fetch notice, checking local storage:', err?.message);
     }
+
+    // Check user created playlists in localStorage
+    try {
+      const saved = localStorage.getItem('vibely_user_playlists');
+      if (saved) {
+        const userPlaylists = JSON.parse(saved);
+        const match = userPlaylists.find((p) => p.id === id);
+        if (match) {
+          setPlaylist({
+            ...match,
+            tracks: match.tracks || match.songs || [],
+            isOwner: true
+          });
+          setLoading(false);
+          return;
+        }
+      }
+    } catch (e) {}
 
     const found = DEFAULT_PLAYLISTS.find((p) => p.id === id || p.title.toLowerCase().includes(id.toLowerCase())) || DEFAULT_PLAYLISTS[0];
     setPlaylist(found);
@@ -49,6 +67,15 @@ export const PlaylistDetails = () => {
 
   useEffect(() => {
     fetchPlaylist();
+
+    const handleUpdate = () => {
+      fetchPlaylist();
+    };
+
+    window.addEventListener('vibely_playlist_updated', handleUpdate);
+    return () => {
+      window.removeEventListener('vibely_playlist_updated', handleUpdate);
+    };
   }, [id]);
 
   const handlePlayAll = () => {
@@ -65,14 +92,30 @@ export const PlaylistDetails = () => {
   };
 
   const handleRemoveTrack = async (songId) => {
+    const updatedTracks = (playlist.tracks || []).filter((s) => s.id !== songId);
+    const updatedPl = {
+      ...playlist,
+      tracks: updatedTracks,
+      songCount: updatedTracks.length
+    };
+    setPlaylist(updatedPl);
+
+    // Save to localStorage
     try {
-      const res = await api.delete(`/playlists/${playlist.id}/tracks/${songId}`);
-      if (res.data.success) {
-        showToast('Track removed from playlist.', 'info');
-        fetchPlaylist();
+      const saved = localStorage.getItem('vibely_user_playlists');
+      if (saved) {
+        const list = JSON.parse(saved).map((p) => (p.id === playlist.id ? updatedPl : p));
+        localStorage.setItem('vibely_user_playlists', JSON.stringify(list));
       }
+    } catch (e) {}
+
+    showToast('Track removed from playlist.', 'info');
+    window.dispatchEvent(new CustomEvent('vibely_playlist_updated', { detail: updatedPl }));
+
+    try {
+      await api.delete(`/playlists/${playlist.id}/tracks/${songId}`);
     } catch (err) {
-      showToast('Failed to remove track.', 'error');
+      console.warn('Backend remove track notice:', err?.message);
     }
   };
 
@@ -95,7 +138,7 @@ export const PlaylistDetails = () => {
     );
   }
 
-  const isOwner = playlist.isOwner;
+  const isOwner = playlist.isOwner || (playlist.id && String(playlist.id).startsWith('playlist-user')) || (user && playlist.userId === user.id);
 
   return (
     <div className="space-y-8 pb-24">

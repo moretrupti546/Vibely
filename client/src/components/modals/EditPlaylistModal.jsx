@@ -20,20 +20,35 @@ export const EditPlaylistModal = ({ isOpen, onClose, playlist, onUpdated }) => {
     }
 
     setLoading(true);
+    const updatedPl = {
+      ...playlist,
+      title: title.trim(),
+      description: description.trim(),
+      coverArt: coverArt.trim() || playlist.coverArt
+    };
+
+    // Update in local storage
     try {
-      const res = await api.patch(`/playlists/${playlist.id}`, {
+      const saved = localStorage.getItem('vibely_user_playlists');
+      if (saved) {
+        const list = JSON.parse(saved).map((p) => (p.id === playlist.id ? updatedPl : p));
+        localStorage.setItem('vibely_user_playlists', JSON.stringify(list));
+      }
+    } catch (e) {}
+
+    window.dispatchEvent(new CustomEvent('vibely_playlist_updated', { detail: updatedPl }));
+    showToast('Playlist updated successfully! ✨', 'success');
+    onUpdated && onUpdated(updatedPl);
+    onClose();
+
+    try {
+      await api.patch(`/playlists/${playlist.id}`, {
         title: title.trim(),
         description: description.trim(),
         coverArt: coverArt.trim() || undefined
       });
-
-      if (res.data.success) {
-        showToast('Playlist updated successfully! ✨', 'success');
-        onUpdated && onUpdated(res.data.data);
-        onClose();
-      }
     } catch (err) {
-      showToast(err.response?.data?.message || 'Failed to update playlist.', 'error');
+      console.warn('Backend edit playlist notice:', err?.message);
     } finally {
       setLoading(false);
     }

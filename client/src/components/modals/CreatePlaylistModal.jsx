@@ -20,13 +20,15 @@ export const CreatePlaylistModal = ({ isOpen, onClose, onCreated }) => {
     }
 
     setLoading(true);
-    const fallbackPlaylist = {
+    const newPlaylistObj = {
       id: `playlist-user-${Date.now()}`,
       title: title.trim(),
       description: description.trim() || 'Curated personal playlist',
       coverArt: coverArt.trim() || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80',
       songCount: 0,
-      songs: []
+      songs: [],
+      tracks: [],
+      isOwner: true
     };
 
     try {
@@ -36,22 +38,31 @@ export const CreatePlaylistModal = ({ isOpen, onClose, onCreated }) => {
         coverArt: coverArt.trim() || undefined
       });
 
-      if (res.data?.success) {
-        showToast('Playlist created successfully! ✨', 'success');
-        onCreated && onCreated(res.data.data);
-      } else {
-        showToast('Playlist created successfully! ✨', 'success');
-        onCreated && onCreated(fallbackPlaylist);
-      }
-    } catch (err) {
-      // Save locally for Vercel preview
+      const savedPl = (res.data?.success && res.data.data) ? { ...res.data.data, isOwner: true } : newPlaylistObj;
+      
+      // Save locally to user playlists
       try {
         const saved = localStorage.getItem('vibely_user_playlists');
         const list = saved ? JSON.parse(saved) : [];
-        localStorage.setItem('vibely_user_playlists', JSON.stringify([fallbackPlaylist, ...list]));
+        const updated = [savedPl, ...list.filter((p) => p.id !== savedPl.id)];
+        localStorage.setItem('vibely_user_playlists', JSON.stringify(updated));
       } catch (e) {}
+
+      window.dispatchEvent(new CustomEvent('vibely_playlist_updated', { detail: savedPl }));
       showToast('Playlist created successfully! ✨', 'success');
-      onCreated && onCreated(fallbackPlaylist);
+      onCreated && onCreated(savedPl);
+    } catch (err) {
+      // Local fallback for Vercel static preview
+      try {
+        const saved = localStorage.getItem('vibely_user_playlists');
+        const list = saved ? JSON.parse(saved) : [];
+        const updated = [newPlaylistObj, ...list.filter((p) => p.id !== newPlaylistObj.id)];
+        localStorage.setItem('vibely_user_playlists', JSON.stringify(updated));
+      } catch (e) {}
+
+      window.dispatchEvent(new CustomEvent('vibely_playlist_updated', { detail: newPlaylistObj }));
+      showToast('Playlist created successfully! ✨', 'success');
+      onCreated && onCreated(newPlaylistObj);
     } finally {
       setTitle('');
       setDescription('');

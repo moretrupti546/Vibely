@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate, Link } from 'react-router-dom';
 import { ToastProvider } from './context/ToastContext';
 import { AuthProvider } from './context/AuthContext';
 import { PlayerProvider } from './context/PlayerContext';
@@ -26,6 +26,7 @@ import { ArrowLeft, Sparkles } from 'lucide-react';
 export function AppContent() {
   const [createPlaylistOpen, setCreatePlaylistOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isLandingPage = location.pathname === '/';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
@@ -115,7 +116,11 @@ export function AppContent() {
       <CreatePlaylistModal
         isOpen={createPlaylistOpen}
         onClose={() => setCreatePlaylistOpen(false)}
-        onCreated={() => {}}
+        onCreated={(newPl) => {
+          if (newPl?.id) {
+            navigate(`/playlist/${newPl.id}`);
+          }
+        }}
       />
     </div>
   );

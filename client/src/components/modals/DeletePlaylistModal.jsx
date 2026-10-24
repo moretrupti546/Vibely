@@ -11,15 +11,25 @@ export const DeletePlaylistModal = ({ isOpen, onClose, playlist, onDeleted }) =>
 
   const handleDelete = async () => {
     setLoading(true);
+    showToast(`Playlist "${playlist.title}" deleted.`, 'info');
+
+    // Remove from local storage
     try {
-      const res = await api.delete(`/playlists/${playlist.id}`);
-      if (res.data.success) {
-        showToast(`Playlist "${playlist.title}" deleted.`, 'info');
-        onDeleted && onDeleted();
-        onClose();
+      const saved = localStorage.getItem('vibely_user_playlists');
+      if (saved) {
+        const list = JSON.parse(saved).filter((p) => p.id !== playlist.id);
+        localStorage.setItem('vibely_user_playlists', JSON.stringify(list));
       }
+    } catch (e) {}
+
+    window.dispatchEvent(new CustomEvent('vibely_playlist_updated'));
+    onDeleted && onDeleted();
+    onClose();
+
+    try {
+      await api.delete(`/playlists/${playlist.id}`);
     } catch (err) {
-      showToast(err.response?.data?.message || 'Failed to delete playlist.', 'error');
+      console.warn('Backend delete playlist notice:', err?.message);
     } finally {
       setLoading(false);
     }

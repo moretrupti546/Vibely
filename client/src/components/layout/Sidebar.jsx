@@ -1,27 +1,65 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Home, Compass, Library, PlusSquare, Heart, Music, Disc3, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 
+const getStoredPlaylists = () => {
+  try {
+    const saved = localStorage.getItem('vibely_user_playlists');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) {}
+  return [];
+};
+
 export const Sidebar = ({ onOpenCreatePlaylist }) => {
   const { isAuthenticated, user } = useAuth();
-  const [userPlaylists, setUserPlaylists] = useState([]);
+  const [userPlaylists, setUserPlaylists] = useState(getStoredPlaylists);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const syncPlaylists = useCallback(() => {
+    const local = getStoredPlaylists();
+    setUserPlaylists(local);
+
     if (isAuthenticated) {
       api.get('/users/me/library')
         .then((res) => {
-          if (res.data.success && res.data.data.playlists) {
-            setUserPlaylists(res.data.data.playlists);
+          if (res.data?.success && Array.isArray(res.data.data?.playlists)) {
+            const serverPlaylists = res.data.data.playlists;
+            const merged = [...local];
+            serverPlaylists.forEach((sp) => {
+              if (!merged.some((p) => p.id === sp.id)) {
+                merged.push(sp);
+              }
+            });
+            setUserPlaylists(merged);
+            try {
+              localStorage.setItem('vibely_user_playlists', JSON.stringify(merged));
+            } catch (e) {}
           }
         })
         .catch(() => {});
-    } else {
-      setUserPlaylists([]);
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    syncPlaylists();
+
+    const handleUpdate = () => {
+      syncPlaylists();
+    };
+
+    window.addEventListener('vibely_playlist_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+
+    return () => {
+      window.removeEventListener('vibely_playlist_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, [syncPlaylists]);
 
   return (
     <aside className="w-64 bg-vibely-surface/90 border-r border-vibely-border flex flex-col h-full select-none z-20 shrink-0">
@@ -134,8 +172,13 @@ export const Sidebar = ({ onOpenCreatePlaylist }) => {
 
       {/* Scrollable Playlist Section */}
       <div className="mt-4 flex-1 overflow-y-auto px-4 pb-24">
-        <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 px-3">
-          Your Playlists
+        <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 px-3 flex items-center justify-between">
+          <span>Your Playlists</span>
+          {userPlaylists.length > 0 && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-bold">
+              {userPlaylists.length}
+            </span>
+          )}
         </div>
         {userPlaylists.length > 0 ? (
           <div className="space-y-0.5">
@@ -144,21 +187,22 @@ export const Sidebar = ({ onOpenCreatePlaylist }) => {
                 key={pl.id}
                 to={`/playlist/${pl.id}`}
                 className={({ isActive }) =>
-                  `block px-3 py-2 rounded-lg text-sm truncate transition-colors ${
+                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm truncate transition-colors ${
                     isActive
                       ? 'text-purple-300 font-medium bg-purple-500/10'
-                      : 'text-slate-400 hover:text-slate-200'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
                   }`
                 }
               >
-                {pl.title}
+                <Music className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                <span className="truncate">{pl.title}</span>
               </NavLink>
             ))}
           </div>
         ) : (
           <div className="px-3 py-4 text-xs text-slate-400">
             {isAuthenticated
-              ? 'No playlists yet. Create one above!'
+              ? 'No playlists created yet. Create one above!'
               : 'Sign in to access your personal playlists.'}
           </div>
         )}

@@ -13,21 +13,41 @@ export const AddToPlaylistModal = ({ isOpen, onClose, song }) => {
       const saved = localStorage.getItem('vibely_user_playlists');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.length > 0) return [...parsed, ...DEFAULT_PLAYLISTS];
+        if (Array.isArray(parsed)) return parsed;
       }
     } catch (e) {}
-    return DEFAULT_PLAYLISTS;
+    return [];
   });
   const [loading, setLoading] = useState(false);
   const [addingId, setAddingId] = useState(null);
 
   useEffect(() => {
     if (isOpen && isAuthenticated) {
+      let local = [];
+      try {
+        const saved = localStorage.getItem('vibely_user_playlists');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) local = parsed;
+        }
+      } catch (e) {}
+      setPlaylists(local);
+
       setLoading(true);
       api.get('/users/me/library')
         .then((res) => {
-          if (res.data?.success && res.data.data?.playlists?.length) {
-            setPlaylists(res.data.data.playlists);
+          if (res.data?.success && Array.isArray(res.data.data?.playlists)) {
+            const serverPlaylists = res.data.data.playlists;
+            const merged = [...local];
+            serverPlaylists.forEach((sp) => {
+              if (!merged.some((p) => p.id === sp.id)) {
+                merged.push(sp);
+              }
+            });
+            setPlaylists(merged);
+            try {
+              localStorage.setItem('vibely_user_playlists', JSON.stringify(merged));
+            } catch (e) {}
           }
         })
         .catch(() => {})
@@ -40,6 +60,25 @@ export const AddToPlaylistModal = ({ isOpen, onClose, song }) => {
   const handleAdd = async (playlistId, playlistTitle) => {
     setAddingId(playlistId);
     showToast(`Added "${song.title}" to "${playlistTitle}" ✨`, 'success');
+
+    // Add song to playlist in localStorage
+    try {
+      const saved = localStorage.getItem('vibely_user_playlists');
+      if (saved) {
+        const list = JSON.parse(saved);
+        const target = list.find((p) => p.id === playlistId);
+        if (target) {
+          const currentTracks = target.tracks || target.songs || [];
+          if (!currentTracks.some((t) => t.id === song.id)) {
+            target.tracks = [...currentTracks, song];
+            target.songCount = target.tracks.length;
+            localStorage.setItem('vibely_user_playlists', JSON.stringify(list));
+            window.dispatchEvent(new CustomEvent('vibely_playlist_updated', { detail: target }));
+          }
+        }
+      }
+    } catch (e) {}
+
     onClose();
 
     try {

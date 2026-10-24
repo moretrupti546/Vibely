@@ -22,12 +22,12 @@ export const Library = () => {
 
   const [libraryData, setLibraryData] = useState(() => {
     let likedSongs = DEFAULT_SONGS.slice(0, 4);
-    let playlists = DEFAULT_PLAYLISTS;
+    let playlists = [];
     try {
       const savedLikes = localStorage.getItem('vibely_liked_songs_full');
       if (savedLikes) likedSongs = JSON.parse(savedLikes);
       const savedPl = localStorage.getItem('vibely_user_playlists');
-      if (savedPl) playlists = JSON.parse(savedPl);
+      if (savedPl && Array.isArray(JSON.parse(savedPl))) playlists = JSON.parse(savedPl);
     } catch (e) {}
     return {
       playlists,
@@ -44,16 +44,18 @@ export const Library = () => {
   const [selectedSongForPlaylist, setSelectedSongForPlaylist] = useState(null);
 
   const fetchLibrary = async () => {
+    let localPlaylists = [];
     try {
       const savedLikes = localStorage.getItem('vibely_liked_songs_full');
       const savedPl = localStorage.getItem('vibely_user_playlists');
-      if (savedLikes || savedPl) {
-        setLibraryData((prev) => ({
-          ...prev,
-          likedSongs: savedLikes ? JSON.parse(savedLikes) : prev.likedSongs,
-          playlists: savedPl ? JSON.parse(savedPl) : prev.playlists
-        }));
+      if (savedPl && Array.isArray(JSON.parse(savedPl))) {
+        localPlaylists = JSON.parse(savedPl);
       }
+      setLibraryData((prev) => ({
+        ...prev,
+        likedSongs: savedLikes ? JSON.parse(savedLikes) : prev.likedSongs,
+        playlists: localPlaylists
+      }));
     } catch (e) {}
 
     if (!isAuthenticated) {
@@ -67,17 +69,27 @@ export const Library = () => {
       ]);
 
       if (libRes.status === 'fulfilled' && libRes.value.data?.success && libRes.value.data.data) {
+        const serverData = libRes.value.data.data;
+        const serverPlaylists = Array.isArray(serverData.playlists) ? serverData.playlists : [];
+        const mergedPlaylists = [...localPlaylists];
+        serverPlaylists.forEach((sp) => {
+          if (!mergedPlaylists.some((p) => p.id === sp.id)) {
+            mergedPlaylists.push(sp);
+          }
+        });
+
         setLibraryData((prev) => ({
           ...prev,
-          ...libRes.value.data.data,
-          likedSongs: libRes.value.data.data.likedSongs?.length ? libRes.value.data.data.likedSongs : prev.likedSongs
+          ...serverData,
+          playlists: mergedPlaylists,
+          likedSongs: serverData.likedSongs?.length ? serverData.likedSongs : prev.likedSongs
         }));
       }
       if (histRes.status === 'fulfilled' && histRes.value.data?.success && histRes.value.data.data) {
         setHistory(histRes.value.data.data);
       }
     } catch (err) {
-      console.warn('Backend library notice, using default library:', err?.message);
+      console.warn('Backend library notice, using local library:', err?.message);
     } finally {
       setLoading(false);
     }
@@ -85,6 +97,18 @@ export const Library = () => {
 
   useEffect(() => {
     fetchLibrary();
+
+    const handleUpdate = () => {
+      fetchLibrary();
+    };
+
+    window.addEventListener('vibely_playlist_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+
+    return () => {
+      window.removeEventListener('vibely_playlist_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
   }, [isAuthenticated]);
 
   const handleTabChange = (tab) => {
