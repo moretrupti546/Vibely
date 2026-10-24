@@ -7,12 +7,14 @@ import { AlbumCard } from '../components/cards/AlbumCard';
 import { PlaylistCard } from '../components/cards/PlaylistCard';
 
 const GENRES = [
+  { name: 'Bollywood', gradient: 'from-amber-500 via-rose-600 to-purple-800' },
+  { name: 'Sufi', gradient: 'from-emerald-600 via-teal-700 to-indigo-900' },
+  { name: 'Romance', gradient: 'from-pink-600 via-rose-500 to-red-800' },
   { name: 'Synthwave', gradient: 'from-purple-600 to-indigo-800' },
   { name: 'Lo-Fi', gradient: 'from-blue-600 to-cyan-800' },
   { name: 'Ambient', gradient: 'from-emerald-600 to-teal-800' },
   { name: 'Indie Pop', gradient: 'from-pink-600 to-rose-800' },
-  { name: 'Electronic', gradient: 'from-amber-600 to-orange-800' },
-  { name: 'Chillhop', gradient: 'from-violet-600 to-fuchsia-800' }
+  { name: 'Electronic', gradient: 'from-amber-600 to-orange-800' }
 ];
 
 export const Explore = () => {

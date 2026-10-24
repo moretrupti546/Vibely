@@ -17,7 +17,7 @@ const getGreeting = () => {
   return 'Good evening';
 };
 
-const MOODS = ['All', 'Synthwave', 'Lo-Fi', 'Ambient', 'Indie Pop', 'Electronic'];
+const MOODS = ['All', 'Bollywood', 'Sufi', 'Romance', 'Synthwave', 'Lo-Fi', 'Ambient', 'Indie Pop', 'Electronic'];
 
 export const Home = () => {
   const { user } = useAuth();
@@ -57,7 +57,13 @@ export const Home = () => {
 
   const filteredSongs = selectedMood === 'All'
     ? trendingSongs
-    : trendingSongs.filter((s) => s.genre?.toLowerCase() === selectedMood.toLowerCase());
+    : trendingSongs.filter((s) => {
+        const g = (s.genre || '').toLowerCase();
+        const m = selectedMood.toLowerCase();
+        if (m === 'romance') return g.includes('romance') || g.includes('bollywood');
+        if (m === 'sufi') return g.includes('sufi');
+        return g.includes(m);
+      });
 
   const heroSong = trendingSongs[0];
 
@@ -155,7 +161,7 @@ export const Home = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {filteredSongs.slice(0, 10).map((song) => (
+            {filteredSongs.slice(0, 20).map((song) => (
               <SongCard key={song.id} song={song} queueList={filteredSongs} />
             ))}
           </div>

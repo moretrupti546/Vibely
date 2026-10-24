@@ -1,3 +1,7 @@
+const https = require('https');
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
 const prisma = require('../config/db');
 
 /**
@@ -232,7 +236,7 @@ const searchAll = async (req, res, next) => {
 const getTrendingSongs = async (req, res, next) => {
   try {
     const songs = await prisma.song.findMany({
-      take: 10,
+      take: 20,
       orderBy: { plays: 'desc' },
       include: {
         artist: { select: { id: true, name: true, verified: true } },
@@ -293,10 +297,128 @@ const recordPlay = async (req, res, next) => {
   }
 };
 
+/**
+ * Helper to pipe remote audio stream with guaranteed audio/mpeg Content-Type
+ */
+const pipeAudioResponse = (sourceRes, req, clientRes) => {
+  const status = sourceRes.statusCode === 206 ? 206 : 200;
+  clientRes.status(status);
+
+  clientRes.setHeader('Content-Type', 'audio/mpeg');
+  clientRes.setHeader('Accept-Ranges', 'bytes');
+  clientRes.setHeader('Access-Control-Allow-Origin', '*');
+  clientRes.setHeader('Cache-Control', 'public, max-age=86400');
+
+  if (sourceRes.headers['content-range']) {
+    clientRes.setHeader('Content-Range', sourceRes.headers['content-range']);
+  }
+  if (sourceRes.headers['content-length']) {
+    clientRes.setHeader('Content-Length', sourceRes.headers['content-length']);
+  }
+
+  sourceRes.pipe(clientRes);
+};
+
+/**
+ * Stream song audio by ID with guaranteed audio/mpeg headers
+ */
+const streamSong = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const song = await prisma.song.findUnique({
+      where: { id }
+    });
+
+    if (!song || !song.audioUrl) {
+      return res.status(404).json({ success: false, message: 'Track not found.' });
+    }
+
+    const audioUrl = song.audioUrl;
+
+    // Handle local audio files
+    if (audioUrl.startsWith('/audio/') || audioUrl.startsWith('audio/')) {
+      const cleanPath = audioUrl.replace(/^\/?audio\//, '');
+      const filePath = path.join(__dirname, '../../../client/public/audio', cleanPath);
+      if (fs.existsSync(filePath)) {
+        const stat = fs.statSync(filePath);
+        const fileSize = stat.size;
+        const range = req.headers.range;
+
+        res.setHeader('Accept-Ranges', 'bytes');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+
+        if (range) {
+          const parts = range.replace(/bytes=/, '').split('-');
+          const start = parseInt(parts[0], 10);
+          const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+          const chunksize = (end - start) + 1;
+          const file = fs.createReadStream(filePath, { start, end });
+          res.writeHead(206, {
+            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+            'Content-Length': chunksize,
+            'Content-Type': 'audio/mp4'
+          });
+          return file.pipe(res);
+        } else {
+          res.writeHead(200, {
+            'Content-Length': fileSize,
+            'Content-Type': 'audio/mp4'
+          });
+          return fs.createReadStream(filePath).pipe(res);
+        }
+      }
+    }
+
+    // External URL handling
+    const clientRange = req.headers.range;
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(audioUrl);
+    } catch {
+      return res.status(404).json({ success: false, message: 'Invalid track audio URL.' });
+    }
+
+    const client = parsedUrl.protocol === 'https:' ? https : http;
+
+    const requestHeaders = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    };
+    if (clientRange) {
+      requestHeaders['Range'] = clientRange;
+    }
+
+    const proxyReq = client.get(audioUrl, { headers: requestHeaders }, (proxyRes) => {
+      if (proxyRes.statusCode >= 300 && proxyRes.statusCode < 400 && proxyRes.headers.location) {
+        const redirectUrl = new URL(proxyRes.headers.location, audioUrl);
+        const redirectClient = redirectUrl.protocol === 'https:' ? https : http;
+        redirectClient.get(redirectUrl.toString(), { headers: requestHeaders }, (redRes) => {
+          pipeAudioResponse(redRes, req, res);
+        }).on('error', (err) => {
+          console.error('Audio stream redirect error:', err.message);
+          res.redirect(audioUrl);
+        });
+        return;
+      }
+
+      pipeAudioResponse(proxyRes, req, res);
+    });
+
+    proxyReq.on('error', (err) => {
+      console.error('Audio stream proxy error:', err.message);
+      res.redirect(audioUrl);
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllSongs,
   getSongById,
   searchAll,
   getTrendingSongs,
-  recordPlay
+  recordPlay,
+  streamSong
 };

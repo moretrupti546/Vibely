@@ -70,14 +70,23 @@ export const PlayerProvider = ({ children }) => {
     };
 
     const handleError = (e) => {
+      const audio = audioRef.current;
+      if (!audio || !audio.src || audio.error?.code === 1) {
+        return;
+      }
       console.warn('Audio playback error:', e);
       setIsAudioLoading(false);
       setIsPlaying(false);
       showToast('Track audio stream is temporarily unavailable.', 'error');
     };
 
+    const handleCanPlay = () => {
+      setIsAudioLoading(false);
+    };
+
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('canplay', handleCanPlay);
     audio.addEventListener('waiting', handleWaiting);
     audio.addEventListener('playing', handlePlaying);
     audio.addEventListener('ended', handleEnded);
@@ -86,6 +95,7 @@ export const PlayerProvider = ({ children }) => {
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('canplay', handleCanPlay);
       audio.removeEventListener('waiting', handleWaiting);
       audio.removeEventListener('playing', handlePlaying);
       audio.removeEventListener('ended', handleEnded);
@@ -121,17 +131,29 @@ export const PlayerProvider = ({ children }) => {
     setIsAudioLoading(true);
 
     try {
-      audioRef.current.src = song.audioUrl;
-      audioRef.current.currentTime = 0;
-      await audioRef.current.play();
+      const audio = audioRef.current;
+      const targetSrc = song.audioUrl || `/api/songs/${song.id}/stream`;
+
+      if (!audio.src || !audio.src.endsWith(targetSrc)) {
+        audio.src = targetSrc;
+        audio.currentTime = 0;
+      }
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        await playPromise;
+      }
       setIsPlaying(true);
+      setIsAudioLoading(false);
 
       // Track play count
       api.post(`/songs/${song.id}/play`).catch(() => {});
     } catch (err) {
-      console.error('Failed to play track:', err);
+      if (err.name !== 'AbortError') {
+        console.warn('Audio play notice:', err.message);
+      }
       setIsAudioLoading(false);
-      setIsPlaying(false);
+      setIsPlaying(!audioRef.current.paused);
     }
   };
 

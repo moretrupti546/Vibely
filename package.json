@@ -4,11 +4,15 @@
   "private": true,
   "description": "Vibely — Modern Full-Stack Music Streaming Platform",
   "scripts": {
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"magenta,cyan\" \"npm run start:server\" \"npm run client\"",
     "server": "npm --prefix server run dev",
     "client": "npm --prefix client run dev",
     "start:server": "npm --prefix server start",
     "install:all": "npm --prefix server install && npm --prefix client install",
     "db:push": "npm --prefix server run prisma:push",
     "seed": "npm --prefix server run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
   }
 }
