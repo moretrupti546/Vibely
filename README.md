@@ -7,7 +7,7 @@
 
 ## 📖 Project Overview
 
-**Vibely** is a modern, responsive music streaming platform designed with a high-fidelity dark aesthetic, electric violet accents, and an uninterrupted audio streaming engine. 
+**Vibely** is a modern, responsive, full-stack music streaming platform designed with a high-fidelity dark aesthetic, electric violet accents, and an uninterrupted global audio streaming engine. 
 
 Featuring a dedicated public **Landing Page** at `/`, an immersive **Music Application** at `/app`, and authentic studio Bollywood and global soundscapes, Vibely delivers a state-of-the-art streaming experience modeled after Spotify and Apple Music.
 

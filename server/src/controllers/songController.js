@@ -274,6 +274,11 @@ const recordPlay = async (req, res, next) => {
   try {
     const { id } = req.params;
 
+    const existing = await prisma.song.findUnique({ where: { id } });
+    if (!existing) {
+      return res.json({ success: true, plays: 0 });
+    }
+
     const updated = await prisma.song.update({
       where: { id },
       data: { plays: { increment: 1 } }
@@ -293,7 +298,7 @@ const recordPlay = async (req, res, next) => {
       plays: updated.plays
     });
   } catch (error) {
-    next(error);
+    res.json({ success: true, plays: 0 });
   }
 };
 
@@ -348,6 +353,8 @@ const streamSong = async (req, res, next) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Cache-Control', 'public, max-age=86400');
 
+        const contentType = cleanPath.toLowerCase().endsWith('.mp3') ? 'audio/mpeg' : 'audio/mp4';
+
         if (range) {
           const parts = range.replace(/bytes=/, '').split('-');
           const start = parseInt(parts[0], 10);
@@ -357,13 +364,13 @@ const streamSong = async (req, res, next) => {
           res.writeHead(206, {
             'Content-Range': `bytes ${start}-${end}/${fileSize}`,
             'Content-Length': chunksize,
-            'Content-Type': 'audio/mp4'
+            'Content-Type': contentType
           });
           return file.pipe(res);
         } else {
           res.writeHead(200, {
             'Content-Length': fileSize,
-            'Content-Type': 'audio/mp4'
+            'Content-Type': contentType
           });
           return fs.createReadStream(filePath).pipe(res);
         }

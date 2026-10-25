@@ -131,8 +131,8 @@ export const PlaylistDetails = () => {
     return (
       <div className="py-24 text-center text-slate-400">
         <p>Playlist not found.</p>
-        <Link to="/" className="text-purple-400 hover:underline mt-2 inline-block">
-          Return Home
+        <Link to="/library" className="text-purple-400 hover:underline mt-2 inline-block">
+          Return to Library
         </Link>
       </div>
     );

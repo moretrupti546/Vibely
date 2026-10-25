@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { CheckCircle2, UserPlus, UserCheck, Play, ArrowLeft, Loader2, Disc3 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -11,6 +11,7 @@ import { DEFAULT_ARTISTS, DEFAULT_SONGS, DEFAULT_ALBUMS } from '../data/catalog'
 
 export const ArtistDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { playSong } = usePlayer();
   const { showToast } = useToast();
@@ -84,8 +85,8 @@ export const ArtistDetails = () => {
     return (
       <div className="py-24 text-center text-slate-400">
         <p>Artist not found.</p>
-        <Link to="/" className="text-purple-400 hover:underline mt-2 inline-block">
-          Return Home
+        <Link to="/app" className="text-purple-400 hover:underline mt-2 inline-block">
+          Return to Music
         </Link>
       </div>
     );
@@ -93,13 +94,13 @@ export const ArtistDetails = () => {
 
   return (
     <div className="space-y-10 pb-24">
-      <Link
-        to="/"
+      <button
+        onClick={() => navigate(-1)}
         className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Back</span>
-      </Link>
+      </button>
 
       {/* Artist Hero Header */}
       <section className="relative overflow-hidden rounded-3xl p-8 md:p-12 border border-vibely-border bg-gradient-to-r from-purple-950/80 via-slate-900 to-slate-950 flex flex-col md:flex-row items-center gap-8 shadow-2xl">

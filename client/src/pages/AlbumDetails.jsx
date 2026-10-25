@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Play, Pause, Bookmark, Shuffle, Disc3, Loader2, ArrowLeft } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -18,6 +18,7 @@ const formatSeconds = (secs) => {
 
 export const AlbumDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
   const { showToast } = useToast();
@@ -99,8 +100,8 @@ export const AlbumDetails = () => {
     return (
       <div className="py-24 text-center text-slate-400">
         <p>Album not found.</p>
-        <Link to="/" className="text-purple-400 hover:underline mt-2 inline-block">
-          Return Home
+        <Link to="/app" className="text-purple-400 hover:underline mt-2 inline-block">
+          Return to Music
         </Link>
       </div>
     );
@@ -111,13 +112,13 @@ export const AlbumDetails = () => {
 
   return (
     <div className="space-y-8 pb-24">
-      <Link
-        to="/"
+      <button
+        onClick={() => navigate(-1)}
         className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Back</span>
-      </Link>
+      </button>
 
       {/* Album Header */}
       <section className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8 p-6 md:p-8 rounded-3xl bg-vibely-surface border border-vibely-border">

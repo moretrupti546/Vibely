@@ -65,7 +65,7 @@ export const Sidebar = ({ onOpenCreatePlaylist }) => {
     <aside className="w-64 bg-vibely-surface/90 border-r border-vibely-border flex flex-col h-full select-none z-20 shrink-0">
       {/* Brand Logo */}
       <div className="p-6 pb-4">
-        <NavLink to="/" className="flex items-center gap-2.5 group">
+        <NavLink to="/app" className="flex items-center gap-2.5 group">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-pink-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/25 group-hover:scale-105 transition-transform duration-300">
             <Sparkles className="w-5 h-5 text-white" />
           </div>

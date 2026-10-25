@@ -214,7 +214,7 @@ async function main() {
     {
       title: 'Tum Hi Ho',
       duration: 262,
-      audioUrl: '/audio/tum-hi-ho.m4a',
+      audioUrl: '/audio/tum-hi-ho.mp3',
       coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 4850000,
@@ -224,7 +224,7 @@ async function main() {
     {
       title: 'Kesariya (Brahmāstra)',
       duration: 268,
-      audioUrl: '/audio/kesariya.m4a',
+      audioUrl: '/audio/kesariya.mp3',
       coverArt: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 5210000,
@@ -234,7 +234,7 @@ async function main() {
     {
       title: 'Channa Mereya',
       duration: 289,
-      audioUrl: '/audio/channa-mereya.m4a',
+      audioUrl: '/audio/channa-mereya.mp3',
       coverArt: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 4320000,
@@ -246,7 +246,7 @@ async function main() {
     {
       title: 'Dil Diyan Gallan',
       duration: 260,
-      audioUrl: '/audio/dil-diyan-gallan.m4a',
+      audioUrl: '/audio/dil-diyan-gallan.mp3',
       coverArt: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 4920000,
@@ -257,8 +257,8 @@ async function main() {
     // --- KK (Krishnakumar Kunnath) ---
     {
       title: 'Khuda Jaane',
-      duration: 333,
-      audioUrl: '/audio/khuda-jaane.m4a',
+      duration: 335,
+      audioUrl: '/audio/khuda-jaane.mp3',
       coverArt: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 4620000,
@@ -268,7 +268,7 @@ async function main() {
     {
       title: 'Zara Sa (Jannat)',
       duration: 303,
-      audioUrl: '/audio/zara-sa.m4a',
+      audioUrl: '/audio/zara-sa.mp3',
       coverArt: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 4180000,
@@ -279,8 +279,8 @@ async function main() {
     // --- Shreya Ghoshal ---
     {
       title: 'Deewani Mastani (Bajirao Mastani)',
-      duration: 340,
-      audioUrl: '/audio/deewani-mastani.m4a',
+      duration: 272,
+      audioUrl: '/audio/deewani-mastani.mp3',
       coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 4410000,
@@ -289,8 +289,8 @@ async function main() {
     },
     {
       title: 'Yeh Aaina (Kabir Singh)',
-      duration: 279,
-      audioUrl: '/audio/yeh-aaina.m4a',
+      duration: 310,
+      audioUrl: '/audio/yeh-aaina.mp3',
       coverArt: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 3740000,
@@ -302,7 +302,7 @@ async function main() {
     {
       title: 'Kun Faya Kun (Rockstar)',
       duration: 473,
-      audioUrl: '/audio/kun-faya-kun.m4a',
+      audioUrl: '/audio/kun-faya-kun.mp3',
       coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
       genre: 'Sufi',
       plays: 5890000,
@@ -311,8 +311,8 @@ async function main() {
     },
     {
       title: 'Chaiyya Chaiyya (Dil Se)',
-      duration: 395,
-      audioUrl: '/audio/chaiyya-chaiyya.m4a',
+      duration: 369,
+      audioUrl: '/audio/chaiyya-chaiyya.mp3',
       coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood Dance',
       plays: 6120000,
@@ -323,8 +323,8 @@ async function main() {
     // --- Neha Kakkar ---
     {
       title: 'London Thumakda (Queen)',
-      duration: 230,
-      audioUrl: '/audio/london-thumakda.m4a',
+      duration: 232,
+      audioUrl: '/audio/london-thumakda.mp3',
       coverArt: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood Dance',
       plays: 4780000,
@@ -335,8 +335,8 @@ async function main() {
     // --- Armaan Malik ---
     {
       title: 'Main Rahoon Ya Na Rahoon',
-      duration: 308,
-      audioUrl: '/audio/main-rahoon.m4a',
+      duration: 309,
+      audioUrl: '/audio/main-rahoon.mp3',
       coverArt: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=600&q=80',
       genre: 'Bollywood',
       plays: 3820000,
@@ -348,7 +348,7 @@ async function main() {
     {
       title: 'Cyberpunk Skyline',
       duration: 212,
-      audioUrl: '/audio/tum-hi-ho.m4a',
+      audioUrl: '/audio/tum-hi-ho.mp3',
       coverArt: albumMap['Neon Odyssey 2084'].coverArt,
       genre: 'Synthwave',
       plays: 245100,
@@ -358,7 +358,7 @@ async function main() {
     {
       title: 'Lo-Fi Rain on the Window',
       duration: 180,
-      audioUrl: '/audio/kesariya.m4a',
+      audioUrl: '/audio/kesariya.mp3',
       coverArt: albumMap['Midnight Coffee & Rain'].coverArt,
       genre: 'Lo-Fi',
       plays: 389400,

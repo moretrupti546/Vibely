@@ -26,6 +26,11 @@ import {
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { usePlayer } from '../context/PlayerContext';
+import {
+  DEFAULT_SONGS,
+  DEFAULT_ARTISTS,
+  DEFAULT_PLAYLISTS
+} from '../data/catalog';
 
 const MOODS = [
   {
@@ -155,26 +160,31 @@ export const LandingPage = () => {
   const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [trendingSongs, setTrendingSongs] = useState([]);
-  const [artists, setArtists] = useState([]);
-  const [playlists, setPlaylists] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [trendingSongs, setTrendingSongs] = useState(() => DEFAULT_SONGS.slice(0, 6));
+  const [artists, setArtists] = useState(() => DEFAULT_ARTISTS.slice(0, 5));
+  const [playlists, setPlaylists] = useState(() => DEFAULT_PLAYLISTS.slice(0, 4));
+  const [loading, setLoading] = useState(false);
   const [policyModal, setPolicyModal] = useState(null); // 'privacy' | 'terms' | null
 
   useEffect(() => {
     let isMounted = true;
     const fetchShowcaseData = async () => {
       try {
-        setLoading(true);
-        const [songsRes, artistsRes, playlistsRes] = await Promise.all([
+        const [songsRes, artistsRes, playlistsRes] = await Promise.allSettled([
           api.get('/songs/trending'),
           api.get('/artists'),
           api.get('/playlists')
         ]);
         if (isMounted) {
-          if (songsRes.data?.success) setTrendingSongs(songsRes.data.data.slice(0, 6));
-          if (artistsRes.data?.success) setArtists(artistsRes.data.data.slice(0, 5));
-          if (playlistsRes.data?.success) setPlaylists(playlistsRes.data.data.slice(0, 4));
+          if (songsRes.status === 'fulfilled' && songsRes.value.data?.success && songsRes.value.data.data?.length > 0) {
+            setTrendingSongs(songsRes.value.data.data.slice(0, 6));
+          }
+          if (artistsRes.status === 'fulfilled' && artistsRes.value.data?.success && artistsRes.value.data.data?.length > 0) {
+            setArtists(artistsRes.value.data.data.slice(0, 5));
+          }
+          if (playlistsRes.status === 'fulfilled' && playlistsRes.value.data?.success && playlistsRes.value.data.data?.length > 0) {
+            setPlaylists(playlistsRes.value.data.data.slice(0, 4));
+          }
         }
       } catch (err) {
         console.warn('Could not load showcase data:', err);

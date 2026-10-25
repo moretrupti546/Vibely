@@ -12,7 +12,9 @@ import {
   VolumeX,
   Heart,
   ListMusic,
-  Loader2
+  Loader2,
+  Disc3,
+  Sparkles
 } from 'lucide-react';
 import { usePlayer } from '../../context/PlayerContext';
 import { QueueDrawer } from './QueueDrawer';
@@ -35,6 +37,8 @@ export const BottomPlayer = () => {
     isMuted,
     isShuffle,
     repeatMode,
+    audioMode,
+    toggleAudioMode,
     togglePlay,
     seek,
     setVolumeLevel,
@@ -151,6 +155,28 @@ export const BottomPlayer = () => {
               )}
               {repeatMode !== 'off' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-purple-400 rounded-full" />}
             </button>
+
+            <button
+              onClick={toggleAudioMode}
+              className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
+                audioMode === 'full'
+                  ? 'bg-purple-600/20 text-purple-300 border-purple-500/30 hover:bg-purple-600/30'
+                  : 'bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/30'
+              }`}
+              title={audioMode === 'full' ? 'Currently playing Full Song (click to switch to 30s Preview)' : 'Currently playing 30s Preview (click to switch to Full Song)'}
+            >
+              {audioMode === 'full' ? (
+                <>
+                  <Disc3 className="w-3.5 h-3.5 text-purple-400" />
+                  <span>Full Song</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span>30s Preview</span>
+                </>
+              )}
+            </button>
           </div>
 
           {/* Time & Slider */}
@@ -169,7 +195,20 @@ export const BottomPlayer = () => {
                 }}
               />
             </div>
-            <span className="w-10 font-mono">{formatTime(duration)}</span>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="w-10 font-mono">{formatTime(duration)}</span>
+              <button
+                onClick={toggleAudioMode}
+                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full transition-all border ${
+                  audioMode === 'full'
+                    ? 'bg-purple-600/20 text-purple-300 border-purple-500/30 hover:bg-purple-600/30'
+                    : 'bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/30'
+                }`}
+                title={audioMode === 'full' ? 'Switch to 30s Preview' : 'Switch to Full Song'}
+              >
+                {audioMode === 'full' ? 'Full' : '30s'}
+              </button>
+            </div>
           </div>
         </div>
 
