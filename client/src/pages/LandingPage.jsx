@@ -287,13 +287,13 @@ export const LandingPage = () => {
                 >
                   Sign In
                 </Link>
-                <button
-                  onClick={handleStartListening}
+                <Link
+                  to="/app"
                   className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 hover:scale-[1.02] active:scale-95 transition-all"
                 >
                   <span>Start Listening</span>
                   <ChevronRight className="w-4 h-4" />
-                </button>
+                </Link>
               </>
             )}
           </div>
@@ -375,15 +375,13 @@ export const LandingPage = () => {
                   >
                     Sign In
                   </Link>
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      handleStartListening();
-                    }}
-                    className="w-full py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-center shadow-lg shadow-purple-600/30"
+                  <Link
+                    to="/app"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-center shadow-lg shadow-purple-600/30"
                   >
                     Start Listening
-                  </button>
+                  </Link>
                 </>
               )}
             </div>
@@ -461,13 +459,13 @@ export const LandingPage = () => {
 
             {/* CTAs with Micro-Interaction Classes */}
             <div className="animate-fade-in-up stagger-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-              <button
-                onClick={handleStartListening}
+              <Link
+                to="/app"
                 className="btn-premium w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-purple-600/30 hover:shadow-purple-600/50 flex items-center justify-center gap-3"
               >
                 <span>Start Listening</span>
                 <ArrowRight className="w-5 h-5" />
-              </button>
+              </Link>
 
               <Link
                 to="/explore"
@@ -1155,12 +1153,12 @@ export const LandingPage = () => {
             </p>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={handleStartListening}
-                className="btn-premium w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-purple-600/30 hover:shadow-purple-600/50 transition-all"
+              <Link
+                to="/app"
+                className="btn-premium w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-purple-600/30 hover:shadow-purple-600/50 transition-all text-center"
               >
-                Join Vibely
-              </button>
+                Start Listening
+              </Link>
               <Link
                 to="/login"
                 className="btn-premium w-full sm:w-auto px-7 py-4 rounded-2xl bg-vibely-surface border border-vibely-border hover:border-slate-500 text-slate-300 hover:text-white font-semibold text-base transition-all"

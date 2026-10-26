@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Play, Flame, Disc, Radio, Compass, Music2 } from 'lucide-react';
+import { Sparkles, Play, Pause, Flame, Disc, Radio, Compass, Music2 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { usePlayer } from '../context/PlayerContext';

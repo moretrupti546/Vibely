@@ -141,6 +141,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('vibely_token', fallbackToken);
     localStorage.setItem('vibely_user', JSON.stringify(fallbackUser));
     showToast(`Welcome to Vibely, ${cleanName}! ✨`, 'success');
+    return { success: true };
   };
 
   const logout = async () => {

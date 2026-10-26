@@ -23,67 +23,49 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 
-export function AppContent() {
-  const [createPlaylistOpen, setCreatePlaylistOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const isLandingPage = location.pathname === '/';
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
-
-  // Standalone Public Landing Page
-  if (isLandingPage) {
-    return (
-      <div className="min-h-screen bg-vibely-dark text-slate-100 relative">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-        </Routes>
-        <BottomPlayer />
+/**
+ * Layout wrapper for Authentication pages (Login / Register)
+ */
+function AuthLayout({ children }) {
+  return (
+    <div className="min-h-screen bg-vibely-dark text-slate-100 flex flex-col justify-between relative selection:bg-purple-600 selection:text-white">
+      <div className="p-6 flex items-center justify-between max-w-7xl mx-auto w-full">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Vibely Home</span>
+        </Link>
+        <Link to="/" className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-display font-bold text-white text-base">Vibely</span>
+        </Link>
       </div>
-    );
-  }
 
-  // Standalone Auth Pages (Login / Register) with clean background and back link
-  if (isAuthPage) {
-    return (
-      <div className="min-h-screen bg-vibely-dark text-slate-100 flex flex-col justify-between relative selection:bg-purple-600 selection:text-white">
-        <div className="p-6 flex items-center justify-between max-w-7xl mx-auto w-full">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Vibely Home</span>
-          </Link>
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-display font-bold text-white text-base">Vibely</span>
-          </Link>
-        </div>
-
-        <div className="flex-1 flex items-center justify-center px-4">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </div>
-
-        <div className="p-6 text-center text-xs text-slate-500">
-          © 2026 Vibely Inc. Feel Every Beat.
-        </div>
-        <BottomPlayer />
+      <div className="flex-1 flex items-center justify-center px-4">
+        {children}
       </div>
-    );
-  }
 
-  // Full-Featured Music Streaming Application Shell
+      <div className="p-6 text-center text-xs text-slate-500">
+        © 2026 Vibely Inc. Feel Every Beat.
+      </div>
+      <BottomPlayer />
+    </div>
+  );
+}
+
+/**
+ * Layout wrapper for the full-featured music streaming application
+ */
+function AppShell({ children, onOpenCreatePlaylist }) {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-vibely-dark text-slate-100">
       {/* Desktop Sidebar */}
       <div className="hidden md:block h-full">
-        <Sidebar onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)} />
+        <Sidebar onOpenCreatePlaylist={onOpenCreatePlaylist} />
       </div>
 
       {/* Main Content Area */}
@@ -92,17 +74,7 @@ export function AppContent() {
 
         {/* Scrollable Page Body */}
         <main className="flex-1 overflow-y-auto px-4 md:px-8 py-6 pb-36">
-          <Routes>
-            <Route path="/app" element={<Home />} />
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/song/:id" element={<SongDetails />} />
-            <Route path="/album/:id" element={<AlbumDetails />} />
-            <Route path="/playlist/:id" element={<PlaylistDetails />} />
-            <Route path="/artist/:id" element={<ArtistDetails />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="*" element={<Navigate to="/app" replace />} />
-          </Routes>
+          {children}
         </main>
 
         {/* Persistent Bottom Audio Player */}
@@ -111,6 +83,115 @@ export function AppContent() {
         {/* Mobile Bottom Navigation */}
         <MobileNav />
       </div>
+    </div>
+  );
+}
+
+export function AppContent() {
+  const [createPlaylistOpen, setCreatePlaylistOpen] = useState(false);
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <Routes>
+        {/* Standalone Public Landing Page */}
+        <Route
+          path="/"
+          element={
+            <div className="min-h-screen bg-vibely-dark text-slate-100 relative">
+              <LandingPage />
+              <BottomPlayer />
+            </div>
+          }
+        />
+
+        {/* Auth Pages */}
+        <Route
+          path="/login"
+          element={
+            <AuthLayout>
+              <Login />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <AuthLayout>
+              <Register />
+            </AuthLayout>
+          }
+        />
+
+        {/* Main Music App Routes wrapped in AppShell */}
+        <Route
+          path="/app"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <Home />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/explore"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <Explore />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/library"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <Library />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/song/:id"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <SongDetails />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/album/:id"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <AlbumDetails />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/playlist/:id"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <PlaylistDetails />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/artist/:id"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <ArtistDetails />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <Profile />
+            </AppShell>
+          }
+        />
+
+        {/* Fallback & Redirects */}
+        <Route path="*" element={<Navigate to="/app" replace />} />
+      </Routes>
 
       {/* Global Create Playlist Modal */}
       <CreatePlaylistModal
@@ -122,7 +203,7 @@ export function AppContent() {
           }
         }}
       />
-    </div>
+    </>
   );
 }
 

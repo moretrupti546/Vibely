@@ -42,10 +42,10 @@ export const Register = () => {
     const res = await register(name, email, password);
     setLoading(false);
 
-    if (res.success) {
+    if (res?.success) {
       navigate('/app');
     } else {
-      setError(res.message);
+      setError(res?.message || 'Registration failed. Please try again.');
     }
   };
 

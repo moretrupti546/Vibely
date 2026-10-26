@@ -20,10 +20,10 @@ export const Login = () => {
     const res = await login(email, password);
     setLoading(false);
 
-    if (res.success) {
+    if (res?.success) {
       navigate('/app');
     } else {
-      setError(res.message);
+      setError(res?.message || 'Login failed. Please check your credentials.');
     }
   };
 
@@ -32,10 +32,10 @@ export const Login = () => {
     setLoading(true);
     const res = await login('trupti@vibely.io', 'Vibely2026!');
     setLoading(false);
-    if (res.success) {
+    if (res?.success) {
       navigate('/app');
     } else {
-      setError(res.message);
+      setError(res?.message || 'Login failed. Please try again.');
     }
   };
 
