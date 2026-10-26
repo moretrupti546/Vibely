@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   X,
   Crown,
@@ -11,14 +12,20 @@ import {
   ArrowRight,
   Music2,
   AlertTriangle,
-  RotateCcw
+  RotateCcw,
+  Lock,
+  LogIn
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { usePlayer } from '../../context/PlayerContext';
+import { useToast } from '../../context/ToastContext';
 
 export const SubscriptionModal = ({ isOpen, onClose, onSubscribed, song = null }) => {
-  const { isPro, subscribeToPro, cancelSubscription, user } = useAuth();
+  const { isPro, subscribeToPro, cancelSubscription, user, isAuthenticated } = useAuth();
   const { downloadTrack } = usePlayer();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+
   const [selectedPlan, setSelectedPlan] = useState('lifetime'); // 'monthly' | 'lifetime'
   const [activating, setActivating] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
@@ -27,17 +34,27 @@ export const SubscriptionModal = ({ isOpen, onClose, onSubscribed, song = null }
   if (!isOpen) return null;
 
   const handleActivate = () => {
+    // Strictly require login before allowing user to get VIP Pro
+    if (!isAuthenticated) {
+      onClose();
+      showToast('Please log in or sign up to activate VIP Pro! 🔐', 'info');
+      navigate('/login?redirect=pro');
+      return;
+    }
+
     setActivating(true);
     setTimeout(() => {
-      subscribeToPro(selectedPlan === 'lifetime' ? 'VIP Lifetime Pass' : 'VIP Monthly Pro');
+      const success = subscribeToPro(selectedPlan === 'lifetime' ? 'VIP Lifetime Pass' : 'VIP Monthly Pro');
       setActivating(false);
-      onSubscribed && onSubscribed();
-      if (song) {
-        setTimeout(() => {
-          downloadTrack(song);
-        }, 400);
+      if (success) {
+        onSubscribed && onSubscribed();
+        if (song) {
+          setTimeout(() => {
+            downloadTrack(song);
+          }, 400);
+        }
+        onClose();
       }
-      onClose();
     }, 600);
   };
 
@@ -289,6 +306,25 @@ export const SubscriptionModal = ({ isOpen, onClose, onSubscribed, song = null }
               </div>
             </div>
 
+            {/* Authentication Notice if not logged in */}
+            {!isAuthenticated && (
+              <div className="p-3.5 rounded-2xl bg-purple-950/40 border border-purple-500/40 flex items-center justify-between gap-3 text-xs animate-in fade-in">
+                <div className="flex items-center gap-2.5 text-slate-300">
+                  <Lock className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>Log in is required to activate and link your VIP Pro pass.</span>
+                </div>
+                <button
+                  onClick={() => {
+                    onClose();
+                    navigate('/login?redirect=pro');
+                  }}
+                  className="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs whitespace-nowrap shadow-md transition-all hover:scale-105"
+                >
+                  Log In
+                </button>
+              </div>
+            )}
+
             {/* CTA Buttons */}
             <div className="space-y-2.5">
               <button
@@ -298,6 +334,12 @@ export const SubscriptionModal = ({ isOpen, onClose, onSubscribed, song = null }
               >
                 {activating ? (
                   <Sparkles className="w-5 h-5 animate-spin" />
+                ) : !isAuthenticated ? (
+                  <>
+                    <LogIn className="w-4 h-4 text-amber-200" />
+                    <span>Log In to Get VIP Pro (Free Trial)</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </>
                 ) : (
                   <>
                     <Crown className="w-4 h-4 text-amber-200 fill-amber-200" />
@@ -308,7 +350,9 @@ export const SubscriptionModal = ({ isOpen, onClose, onSubscribed, song = null }
               </button>
 
               <p className="text-[11px] text-center text-slate-400">
-                Cancel anytime in 1 click. Zero hidden fees. Includes instant offline downloads.
+                {isAuthenticated
+                  ? 'Cancel anytime in 1 click. Zero hidden fees. Includes instant offline downloads.'
+                  : 'Account required. Sign in or sign up in seconds to unlock VIP downloads.'}
               </p>
             </div>
           </div>
