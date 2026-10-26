@@ -16,16 +16,28 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const verifyUser = async () => {
       const storedToken = localStorage.getItem('vibely_token');
-      if (storedToken) {
+      const storedUser = localStorage.getItem('vibely_user');
+
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (e) {
+          console.warn('Error parsing stored user:', e);
+        }
+      }
+
+      if (storedToken && storedToken.includes('.') && !storedToken.startsWith('vibely_token_')) {
         try {
           const res = await api.get('/auth/me');
-          if (res.data.success) {
+          if (res.data?.success && res.data.user) {
             setUser(res.data.user);
             localStorage.setItem('vibely_user', JSON.stringify(res.data.user));
           }
         } catch (err) {
-          console.error('Session verification failed:', err);
-          logout();
+          if (err.response?.status === 401) {
+            console.warn('Token expired or invalid, logging out.');
+            logout();
+          }
         }
       }
       setLoading(false);
@@ -54,11 +66,19 @@ export const AuthProvider = ({ children }) => {
         showToast(`Welcome back, ${userData.name}! 🎵`, 'success');
         return { success: true };
       }
+      if (res.data && res.data.message) {
+        return { success: false, message: res.data.message };
+      }
     } catch (err) {
-      console.warn('Backend login notice, activating instant user session:', err?.message);
+      if (err.response && (err.response.status === 400 || err.response.status === 401)) {
+        const msg = err.response.data?.message || 'Invalid email or password.';
+        showToast(msg, 'error');
+        return { success: false, message: msg };
+      }
+      console.warn('Backend login notice, activating instant local user session:', err?.message);
     }
 
-    // Guaranteed instant login for anyone
+    // Guaranteed instant login for preview & standalone sessions
     const fallbackUser = {
       id: 'user_' + Math.random().toString(36).substring(2, 9),
       name: formattedName,
@@ -90,11 +110,24 @@ export const AuthProvider = ({ children }) => {
         showToast('Account created successfully! Enjoy Vibely ✨', 'success');
         return { success: true };
       }
+      if (res.data && res.data.message) {
+        return { success: false, message: res.data.message };
+      }
     } catch (err) {
-      console.warn('Backend register notice, activating instant user session:', err?.message);
+      if (err.response && err.response.status === 409) {
+        const msg = err.response.data?.message || 'An account with this email already exists.';
+        showToast(msg, 'error');
+        return { success: false, message: msg };
+      }
+      if (err.response && err.response.status === 400) {
+        const msg = err.response.data?.message || 'Invalid registration details provided.';
+        showToast(msg, 'error');
+        return { success: false, message: msg };
+      }
+      console.warn('Backend register notice, activating instant local user session:', err?.message);
     }
 
-    // Seamless registration fallback
+    // Seamless registration for preview & standalone sessions
     const fallbackUser = {
       id: 'user_' + Math.random().toString(36).substring(2, 9),
       name: cleanName,
@@ -108,7 +141,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('vibely_token', fallbackToken);
     localStorage.setItem('vibely_user', JSON.stringify(fallbackUser));
     showToast(`Welcome to Vibely, ${cleanName}! ✨`, 'success');
-    return { success: true };
   };
 
   const logout = async () => {

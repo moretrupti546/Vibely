@@ -219,11 +219,7 @@ export const LandingPage = () => {
   }, []);
 
   const handleStartListening = () => {
-    if (isAuthenticated) {
-      navigate('/app');
-    } else {
-      navigate('/register');
-    }
+    navigate('/app');
   };
 
   return (

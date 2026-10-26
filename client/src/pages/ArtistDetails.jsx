@@ -105,7 +105,14 @@ export const ArtistDetails = () => {
       {/* Artist Hero Header */}
       <section className="relative overflow-hidden rounded-3xl p-8 md:p-12 border border-vibely-border bg-gradient-to-r from-purple-950/80 via-slate-900 to-slate-950 flex flex-col md:flex-row items-center gap-8 shadow-2xl">
         <div className="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden shadow-2xl shrink-0 border-4 border-purple-500/30">
-          <img src={artist.image} alt={artist.name} className="w-full h-full object-cover" />
+          <img
+            src={artist.image || '/assets/playlists/default-playlist.svg'}
+            alt={artist.name}
+            className="w-full h-full object-cover select-none"
+            onError={(e) => {
+              e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+            }}
+          />
         </div>
 
         <div className="flex-1 space-y-3 text-center md:text-left">

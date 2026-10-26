@@ -60,9 +60,12 @@ export const Navbar = () => {
               className="flex items-center gap-2.5 p-1.5 pr-3 rounded-full bg-vibely-surface border border-vibely-border hover:border-purple-500/40 transition-all group"
             >
               <img
-                src={user?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80'}
+                src={user?.avatar || '/assets/playlists/default-playlist.svg'}
                 alt={user?.name || 'User'}
                 className="w-7 h-7 rounded-full object-cover border border-purple-500/50"
+                onError={(e) => {
+                  e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+                }}
               />
               <span className="text-sm font-semibold text-slate-200 group-hover:text-white">
                 {user?.name}

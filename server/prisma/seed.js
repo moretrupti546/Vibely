@@ -159,6 +159,55 @@ async function main() {
       image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=80',
       verified: true,
       monthlyListeners: 1250400
+    },
+    {
+      name: 'Sonu Nigam',
+      bio: 'The golden master of Bollywood playback singing, revered for incredible vocal versatility, emotional depth, and timeless romantic melodies.',
+      image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
+      verified: true,
+      monthlyListeners: 29400000
+    },
+    {
+      name: 'Sunidhi Chauhan',
+      bio: 'Dynamic vocal sensation and queen of energetic Bollywood dance tracks, soulful melodies, and electric live stage presence.',
+      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+      verified: true,
+      monthlyListeners: 24100000
+    },
+    {
+      name: 'Anuv Jain',
+      bio: 'Acclaimed indie singer-songwriter crafting gentle baritone acoustic melodies, poetic storytelling, and nostalgic anthems.',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+      verified: true,
+      monthlyListeners: 14200000
+    },
+    {
+      name: 'Shankar Mahadevan',
+      bio: 'Four-time National Film Award winner, composer of Shankar-Ehsaan-Loy, and vocal virtuoso celebrating pure Indian classical fusion.',
+      image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+      verified: true,
+      monthlyListeners: 18700000
+    },
+    {
+      name: 'Taylor Swift',
+      bio: 'Global musical powerhouse defining eras of narrative country, dazzling synth-pop, and atmospheric indie folk.',
+      image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+      verified: true,
+      monthlyListeners: 104000000
+    },
+    {
+      name: 'Ed Sheeran',
+      bio: 'Grammy-winning British acoustic pop titan renowned for global stadium anthems and intimate acoustic ballads.',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+      verified: true,
+      monthlyListeners: 82000000
+    },
+    {
+      name: 'Coldplay',
+      bio: 'Legendary British rock band creating uplifting stadium anthems, celestial melodies, and kaleidoscopic world tours.',
+      image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=600&q=80',
+      verified: true,
+      monthlyListeners: 79000000
     }
   ];
 
@@ -282,6 +331,55 @@ async function main() {
       genre: 'Lo-Fi',
       coverArt: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=80',
       artistId: artistMap['Luna Eclipse'].id
+    },
+    {
+      title: 'Kal Ho Naa Ho & Golden Melodies',
+      releaseYear: 2024,
+      genre: 'Bollywood',
+      coverArt: '/assets/playlists/bollywood-romance.svg',
+      artistId: artistMap['Sonu Nigam'].id
+    },
+    {
+      title: 'Dhoom & Electrifying Anthems',
+      releaseYear: 2024,
+      genre: 'Bollywood Dance',
+      coverArt: '/assets/playlists/desi-party.svg',
+      artistId: artistMap['Sunidhi Chauhan'].id
+    },
+    {
+      title: 'Baarishein & Acoustic Notes',
+      releaseYear: 2024,
+      genre: 'Indie Acoustic',
+      coverArt: '/assets/playlists/wanderlust.svg',
+      artistId: artistMap['Anuv Jain'].id
+    },
+    {
+      title: 'Breathless & Classical Fusion',
+      releaseYear: 2024,
+      genre: 'Sufi Classical',
+      coverArt: '/assets/playlists/sufi-divinity.svg',
+      artistId: artistMap['Shankar Mahadevan'].id
+    },
+    {
+      title: '1989 & Pop Anthems',
+      releaseYear: 2024,
+      genre: 'Pop',
+      coverArt: '/assets/playlists/synthwave-nights.svg',
+      artistId: artistMap['Taylor Swift'].id
+    },
+    {
+      title: 'Divide & Acoustic Singalongs',
+      releaseYear: 2024,
+      genre: 'Acoustic Pop',
+      coverArt: '/assets/playlists/wanderlust.svg',
+      artistId: artistMap['Ed Sheeran'].id
+    },
+    {
+      title: 'Yellow & Stadium Wonders',
+      releaseYear: 2024,
+      genre: 'Rock',
+      coverArt: '/assets/playlists/synthwave-nights.svg',
+      artistId: artistMap['Coldplay'].id
     }
   ];
 
@@ -533,6 +631,76 @@ async function main() {
       plays: 2890000,
       artistId: artistMap['Neon Mirage'].id,
       albumId: albumMap['After Hours & Neon Dreams'].id
+    },
+    {
+      title: 'Main Agar Kahoon (Om Shanti Om)',
+      duration: 278,
+      audioUrl: '/audio/dil-diyan-gallan.mp3',
+      coverArt: '/assets/playlists/bollywood-romance.svg',
+      genre: 'Bollywood Romance',
+      plays: 8900000,
+      artistId: artistMap['Sonu Nigam'].id,
+      albumId: albumMap['Kal Ho Naa Ho & Golden Melodies'].id
+    },
+    {
+      title: 'Kamli & Desi Beats',
+      duration: 254,
+      audioUrl: '/audio/ghungroo.mp3',
+      coverArt: '/assets/playlists/desi-party.svg',
+      genre: 'Bollywood Dance',
+      plays: 7200000,
+      artistId: artistMap['Sunidhi Chauhan'].id,
+      albumId: albumMap['Dhoom & Electrifying Anthems'].id
+    },
+    {
+      title: 'Baarishein (Acoustic)',
+      duration: 215,
+      audioUrl: '/audio/main-rahoon.mp3',
+      coverArt: '/assets/playlists/wanderlust.svg',
+      genre: 'Indie Acoustic',
+      plays: 6400000,
+      artistId: artistMap['Anuv Jain'].id,
+      albumId: albumMap['Baarishein & Acoustic Notes'].id
+    },
+    {
+      title: 'Mitwa & Breathless',
+      duration: 295,
+      audioUrl: '/audio/chaiyya-chaiyya.mp3',
+      coverArt: '/assets/playlists/sufi-divinity.svg',
+      genre: 'Sufi Classical',
+      plays: 9100000,
+      artistId: artistMap['Shankar Mahadevan'].id,
+      albumId: albumMap['Breathless & Classical Fusion'].id
+    },
+    {
+      title: 'Cruel Summer & Neon Vibes',
+      duration: 238,
+      audioUrl: '/audio/midnight-rain.mp3',
+      coverArt: '/assets/playlists/synthwave-nights.svg',
+      genre: 'Pop',
+      plays: 14200000,
+      artistId: artistMap['Taylor Swift'].id,
+      albumId: albumMap['1989 & Pop Anthems'].id
+    },
+    {
+      title: 'Perfect & Acoustic Love',
+      duration: 263,
+      audioUrl: '/audio/agar-tum-saath-ho.mp3',
+      coverArt: '/assets/playlists/wanderlust.svg',
+      genre: 'Acoustic Pop',
+      plays: 12100000,
+      artistId: artistMap['Ed Sheeran'].id,
+      albumId: albumMap['Divide & Acoustic Singalongs'].id
+    },
+    {
+      title: 'Viva La Vida & Paradise',
+      duration: 242,
+      audioUrl: '/audio/cyber-city-drive.mp3',
+      coverArt: '/assets/playlists/synthwave-nights.svg',
+      genre: 'Rock',
+      plays: 11800000,
+      artistId: artistMap['Coldplay'].id,
+      albumId: albumMap['Yellow & Stadium Wonders'].id
     }
   ];
 

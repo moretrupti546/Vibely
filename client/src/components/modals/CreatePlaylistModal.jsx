@@ -24,7 +24,7 @@ export const CreatePlaylistModal = ({ isOpen, onClose, onCreated }) => {
       id: `playlist-user-${Date.now()}`,
       title: title.trim(),
       description: description.trim() || 'Curated personal playlist',
-      coverArt: coverArt.trim() || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80',
+      coverArt: coverArt.trim() || '/assets/playlists/default-playlist.svg',
       songCount: 0,
       songs: [],
       tracks: [],

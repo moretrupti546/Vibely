@@ -138,13 +138,7 @@ export const Sidebar = ({ onOpenCreatePlaylist }) => {
       {/* Quick Actions */}
       <div className="px-3 space-y-1">
         <button
-          onClick={() => {
-            if (!isAuthenticated) {
-              navigate('/login');
-            } else {
-              onOpenCreatePlaylist();
-            }
-          }}
+          onClick={onOpenCreatePlaylist}
           className="w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/40 text-sm font-medium transition-all group"
         >
           <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-purple-500/30 to-pink-500/30 border border-purple-500/40 flex items-center justify-center group-hover:scale-110 transition-transform">

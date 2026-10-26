@@ -15,10 +15,22 @@ export const PlayerProvider = ({ children }) => {
     audioRef.current = new Audio();
   }
 
-  const [currentSong, setCurrentSong] = useState(null);
+  const [currentSong, setCurrentSong] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vibely_last_played_song');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return DEFAULT_SONGS[0];
+  });
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vibely_last_played_song');
+      if (saved) return JSON.parse(saved).duration || 260;
+    } catch (e) {}
+    return DEFAULT_SONGS[0]?.duration || 260;
+  });
   const [audioMode, setAudioMode] = useState(() => {
     return localStorage.getItem('vibely_audio_mode') || 'full';
   });
@@ -27,8 +39,14 @@ export const PlayerProvider = ({ children }) => {
     return saved !== null ? parseFloat(saved) : 0.75;
   });
   const [isMuted, setIsMuted] = useState(false);
-  const [queue, setQueue] = useState([]);
-  const [queueIndex, setQueueIndex] = useState(-1);
+  const [queue, setQueue] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vibely_last_queue');
+      if (saved && Array.isArray(JSON.parse(saved))) return JSON.parse(saved);
+    } catch (e) {}
+    return DEFAULT_SONGS;
+  });
+  const [queueIndex, setQueueIndex] = useState(0);
   const [isShuffle, setIsShuffle] = useState(false);
   const [repeatMode, setRepeatMode] = useState('off'); // 'off', 'all', 'one'
   const [likedSongIds, setLikedSongIds] = useState(() => {
@@ -160,6 +178,15 @@ export const PlayerProvider = ({ children }) => {
         return; // Aborted purposefully (e.g. user skipped track)
       }
       console.warn('Audio playback error:', e, audio.error);
+
+      // Auto-fallback to previewUrl (m4a stream) if full mp3 failed
+      if (audio.src && audio.src.endsWith('.mp3') && currentSongRef.current?.previewUrl) {
+        console.warn('Auto-recovering track with AAC/M4A stream:', currentSongRef.current.previewUrl);
+        audio.src = currentSongRef.current.previewUrl;
+        audio.play().catch(() => {});
+        return;
+      }
+
       setIsAudioLoading(false);
       setIsPlaying(false);
 
@@ -203,6 +230,9 @@ export const PlayerProvider = ({ children }) => {
       setQueue(newQueue);
       const idx = newQueue.findIndex((s) => s.id === song.id);
       setQueueIndex(idx !== -1 ? idx : 0);
+      try {
+        localStorage.setItem('vibely_last_queue', JSON.stringify(newQueue));
+      } catch (e) {}
     } else if (!queueRef.current.some((s) => s.id === song.id)) {
       setQueue((prev) => [...prev, song]);
       setQueueIndex(queueRef.current.length);
@@ -212,6 +242,9 @@ export const PlayerProvider = ({ children }) => {
     }
 
     setCurrentSong(song);
+    try {
+      localStorage.setItem('vibely_last_played_song', JSON.stringify(song));
+    } catch (e) {}
     const initialDur = song.duration || 260;
     setDuration(initialDur);
     setIsAudioLoading(true);

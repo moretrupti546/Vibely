@@ -243,6 +243,23 @@ export const Explore = () => {
           </div>
         </section>
       )}
+
+      {/* Featured Artists section when search is empty */}
+      {!searchTerm && (
+        <section className="space-y-4 pt-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <User className="w-5 h-5 text-purple-400" />
+              <h2 className="font-display text-xl font-bold text-white">Popular & Trending Artists</h2>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {DEFAULT_ARTISTS.map((artist) => (
+              <ArtistCard key={artist.id} artist={artist} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

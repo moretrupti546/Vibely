@@ -22,7 +22,7 @@ export const AddToPlaylistModal = ({ isOpen, onClose, song }) => {
   const [addingId, setAddingId] = useState(null);
 
   useEffect(() => {
-    if (isOpen && isAuthenticated) {
+    if (isOpen) {
       let local = [];
       try {
         const saved = localStorage.getItem('vibely_user_playlists');
@@ -33,25 +33,27 @@ export const AddToPlaylistModal = ({ isOpen, onClose, song }) => {
       } catch (e) {}
       setPlaylists(local);
 
-      setLoading(true);
-      api.get('/users/me/library')
-        .then((res) => {
-          if (res.data?.success && Array.isArray(res.data.data?.playlists)) {
-            const serverPlaylists = res.data.data.playlists;
-            const merged = [...local];
-            serverPlaylists.forEach((sp) => {
-              if (!merged.some((p) => p.id === sp.id)) {
-                merged.push(sp);
-              }
-            });
-            setPlaylists(merged);
-            try {
-              localStorage.setItem('vibely_user_playlists', JSON.stringify(merged));
-            } catch (e) {}
-          }
-        })
-        .catch(() => {})
-        .finally(() => setLoading(false));
+      if (isAuthenticated) {
+        setLoading(true);
+        api.get('/users/me/library')
+          .then((res) => {
+            if (res.data?.success && Array.isArray(res.data.data?.playlists)) {
+              const serverPlaylists = res.data.data.playlists;
+              const merged = [...local];
+              serverPlaylists.forEach((sp) => {
+                if (!merged.some((p) => p.id === sp.id)) {
+                  merged.push(sp);
+                }
+              });
+              setPlaylists(merged);
+              try {
+                localStorage.setItem('vibely_user_playlists', JSON.stringify(merged));
+              } catch (e) {}
+            }
+          })
+          .catch(() => {})
+          .finally(() => setLoading(false));
+      }
     }
   }, [isOpen, isAuthenticated]);
 
