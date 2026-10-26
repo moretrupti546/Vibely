@@ -40,8 +40,18 @@ export const SongRow = ({
       }`}
     >
       {/* Index or Play Button */}
-      <div className="w-6 text-center text-xs font-mono shrink-0">
-        <span className="group-hover:hidden">{isCurrent && isPlaying ? '🔊' : index + 1}</span>
+      <div className="w-6 text-center text-xs font-mono shrink-0 flex items-center justify-center">
+        <div className="group-hover:hidden flex items-center justify-center">
+          {isCurrent && isPlaying ? (
+            <div className="flex items-end justify-center gap-0.5 h-3.5 w-4" title="Playing">
+              <span className="w-0.5 bg-purple-400 rounded-full eq-bar-1 h-3" />
+              <span className="w-0.5 bg-pink-400 rounded-full eq-bar-2 h-3.5" />
+              <span className="w-0.5 bg-cyan-400 rounded-full eq-bar-3 h-2" />
+            </div>
+          ) : (
+            <span>{index + 1}</span>
+          )}
+        </div>
         <button
           onClick={handlePlayToggle}
           className="hidden group-hover:flex items-center justify-center text-white hover:text-purple-400"

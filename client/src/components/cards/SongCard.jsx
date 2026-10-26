@@ -26,9 +26,15 @@ export const SongCard = ({ song, queueList = [] }) => {
   };
 
   return (
-    <div className="group relative p-3.5 rounded-2xl bg-vibely-surface/60 hover:bg-vibely-surface border border-vibely-border hover:border-purple-500/30 transition-all duration-300 shadow-lg hover:shadow-purple-500/10 flex flex-col">
+    <div
+      className={`group relative p-3.5 rounded-2xl bg-vibely-surface/60 hover:bg-vibely-surface border music-card-hover flex flex-col focus-within:border-purple-500/50 focus-within:ring-1 focus-within:ring-purple-500/40 transition-all ${
+        isCurrent && isPlaying
+          ? 'border-purple-500/70 shadow-lg shadow-purple-600/30 ring-1 ring-purple-500/40 bg-purple-950/20'
+          : 'border-vibely-border'
+      }`}
+    >
       {/* Artwork with floating play button */}
-      <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-3 bg-slate-900">
+      <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-3 bg-slate-900 shadow-md">
         <img
           src={song.coverArt}
           alt={song.title}
@@ -36,16 +42,17 @@ export const SongCard = ({ song, queueList = [] }) => {
           loading="lazy"
         />
 
-        {/* Hover overlay & Play button */}
+        {/* Hover & Keyboard Focus Overlay & Play button */}
         <div
-          className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
-            isCurrent ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+          className={`absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center transition-all duration-300 ${
+            isCurrent ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'
           }`}
         >
           <button
             onClick={handlePlayClick}
-            className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 text-white flex items-center justify-center shadow-xl shadow-purple-600/40 hover:scale-110 transition-all"
+            className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 text-white flex items-center justify-center shadow-xl shadow-purple-600/40 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-300 focus-visible:scale-110 transition-all"
             title={isCurrent && isPlaying ? 'Pause' : 'Play'}
+            aria-label={isCurrent && isPlaying ? `Pause ${song.title}` : `Play ${song.title}`}
           >
             {isCurrent && isPlaying ? (
               <Pause className="w-5 h-5 fill-current" />
@@ -54,6 +61,15 @@ export const SongCard = ({ song, queueList = [] }) => {
             )}
           </button>
         </div>
+
+        {/* Playing Equalizer Indicator Badge (bottom-left) */}
+        {isCurrent && isPlaying && (
+          <div className="absolute bottom-2.5 left-2.5 px-2 py-1 rounded-md bg-black/60 backdrop-blur-md flex items-end gap-0.5 h-4.5 pointer-events-none">
+            <span className="w-0.5 bg-purple-400 rounded-full eq-bar-1 h-3" />
+            <span className="w-0.5 bg-pink-400 rounded-full eq-bar-2 h-4" />
+            <span className="w-0.5 bg-indigo-400 rounded-full eq-bar-3 h-2.5" />
+          </div>
+        )}
 
         {/* Like badge */}
         <button

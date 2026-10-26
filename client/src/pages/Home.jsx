@@ -79,20 +79,34 @@ export const Home = () => {
       });
 
   const heroSong = trendingSongs[0];
+  const { currentSong, isPlaying, togglePlay } = usePlayer();
+  const isHeroPlaying = currentSong?.id === heroSong?.id && isPlaying;
+
+  const handleHeroPlay = () => {
+    if (isHeroPlaying) {
+      togglePlay();
+    } else {
+      playSong(heroSong, trendingSongs);
+    }
+  };
 
   return (
-    <div className="space-y-10 pb-20">
+    <div className="space-y-10 pb-20 relative">
+      {/* Ambient Neon Floating Background Glows */}
+      <div className="fixed top-20 right-10 w-96 h-96 bg-purple-600/15 rounded-full blur-[140px] pointer-events-none -z-10 animate-neon-purple" />
+      <div className="fixed bottom-20 left-10 w-96 h-96 bg-pink-600/12 rounded-full blur-[140px] pointer-events-none -z-10 animate-neon-pink" />
+
       {/* Hero Featured Release */}
       {loading ? (
         <HeroSkeleton />
       ) : heroSong ? (
-        <section className="relative w-full rounded-3xl overflow-hidden p-8 md:p-12 border border-vibely-border bg-gradient-to-r from-purple-950/80 via-slate-900 to-slate-950 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+        <section className="relative w-full rounded-3xl overflow-hidden p-8 md:p-12 border border-vibely-border bg-gradient-to-r from-purple-950/80 via-slate-900 to-slate-950 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl animate-neon-card-glow">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-purple-600/20 via-transparent to-transparent pointer-events-none" />
 
           <div className="relative z-10 max-w-xl space-y-4 text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Featured Release</span>
+              <Sparkles className="w-3.5 h-3.5 text-pink-400 animate-pulse" />
+              <span>{isHeroPlaying ? 'Now Playing Worldwide' : 'Featured Release'}</span>
             </div>
 
             <h1 className="font-display text-3xl md:text-5xl font-black text-white leading-tight">
@@ -105,11 +119,20 @@ export const Home = () => {
 
             <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4">
               <button
-                onClick={() => playSong(heroSong, trendingSongs)}
-                className="flex items-center gap-2.5 px-7 py-3.5 rounded-full font-bold text-sm bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-xl shadow-purple-600/30 hover:scale-105 transition-all"
+                onClick={handleHeroPlay}
+                className="flex items-center gap-2.5 px-7 py-3.5 rounded-full font-bold text-sm bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-xl shadow-purple-600/40 hover:scale-105 active:scale-95 transition-all btn-premium"
               >
-                <Play className="w-5 h-5 fill-current" />
-                <span>Play Now</span>
+                {isHeroPlaying ? (
+                  <>
+                    <Pause className="w-5 h-5 fill-current" />
+                    <span>Pause Stream</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-5 h-5 fill-current ml-0.5" />
+                    <span>Play Now</span>
+                  </>
+                )}
               </button>
 
               <Link
@@ -118,15 +141,35 @@ export const Home = () => {
               >
                 View Track
               </Link>
+
+              {isHeroPlaying && (
+                <div className="flex items-end gap-1 h-6 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-purple-500/30">
+                  <span className="w-1 bg-purple-400 rounded-full eq-bar-1 h-4" />
+                  <span className="w-1 bg-pink-400 rounded-full eq-bar-2 h-5" />
+                  <span className="w-1 bg-cyan-400 rounded-full eq-bar-3 h-3" />
+                  <span className="w-1 bg-indigo-400 rounded-full eq-bar-4 h-5" />
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="relative z-10 w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl border border-white/10 shrink-0 group">
+          <div
+            onClick={handleHeroPlay}
+            className="relative z-10 w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden shadow-2xl border border-white/10 shrink-0 group cursor-pointer"
+            title={isHeroPlaying ? 'Pause' : 'Play'}
+          >
             <img
               src={heroSong.coverArt}
               alt={heroSong.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ${
+                isHeroPlaying ? 'scale-105' : ''
+              }`}
             />
+            {isHeroPlaying && (
+              <div className="absolute inset-0 bg-purple-950/30 backdrop-blur-[1px] flex items-center justify-center">
+                <Disc className="w-16 h-16 text-white/90 animate-spin-slow drop-shadow-lg" />
+              </div>
+            )}
           </div>
         </section>
       ) : null}

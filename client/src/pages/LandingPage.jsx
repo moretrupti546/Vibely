@@ -21,7 +21,8 @@ import {
   Radio,
   Headphones,
   Layers,
-  ChevronRight
+  ChevronRight,
+  Activity
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -31,6 +32,9 @@ import {
   DEFAULT_ARTISTS,
   DEFAULT_PLAYLISTS
 } from '../data/catalog';
+import { MusicVisualizer } from '../components/ui/MusicVisualizer';
+import { PlaylistCard } from '../components/cards/PlaylistCard';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const MOODS = [
   {
@@ -160,11 +164,27 @@ export const LandingPage = () => {
   const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [trendingSongs, setTrendingSongs] = useState(() => DEFAULT_SONGS.slice(0, 6));
-  const [artists, setArtists] = useState(() => DEFAULT_ARTISTS.slice(0, 5));
-  const [playlists, setPlaylists] = useState(() => DEFAULT_PLAYLISTS.slice(0, 4));
+  const [trendingSongs, setTrendingSongs] = useState(() => DEFAULT_SONGS.slice(0, 9));
+  const [artists, setArtists] = useState(() => DEFAULT_ARTISTS.slice(0, 8));
+  const [playlists, setPlaylists] = useState(() => DEFAULT_PLAYLISTS.slice(0, 6));
   const [loading, setLoading] = useState(false);
   const [policyModal, setPolicyModal] = useState(null); // 'privacy' | 'terms' | null
+
+  // Scroll reveal observers for smooth viewport entry
+  const [showcaseRef, showcaseVisible] = useScrollReveal({ threshold: 0.05 });
+  const [visualizerRef, visualizerVisible] = useScrollReveal({ threshold: 0.05 });
+  const [moodsRef, moodsVisible] = useScrollReveal({ threshold: 0.05 });
+  const [featuresRef, featuresVisible] = useScrollReveal({ threshold: 0.05 });
+  const [howItWorksRef, howItWorksVisible] = useScrollReveal({ threshold: 0.05 });
+  const [ctaRef, ctaVisible] = useScrollReveal({ threshold: 0.05 });
+
+  // Hero showcase songs
+  const heroSong = DEFAULT_SONGS[0]; // Tum Hi Ho
+  const secondaryHeroSong = DEFAULT_SONGS[1]; // Kesariya
+  const tertiaryHeroSong = DEFAULT_SONGS[4]; // Agar Tum Saath Ho
+  const isHeroPlaying = currentSong?.id === heroSong?.id && isPlaying;
+  const isSecondaryPlaying = currentSong?.id === secondaryHeroSong?.id && isPlaying;
+  const isTertiaryPlaying = currentSong?.id === tertiaryHeroSong?.id && isPlaying;
 
   useEffect(() => {
     let isMounted = true;
@@ -177,13 +197,13 @@ export const LandingPage = () => {
         ]);
         if (isMounted) {
           if (songsRes.status === 'fulfilled' && songsRes.value.data?.success && songsRes.value.data.data?.length > 0) {
-            setTrendingSongs(songsRes.value.data.data.slice(0, 6));
+            setTrendingSongs(songsRes.value.data.data.slice(0, 9));
           }
           if (artistsRes.status === 'fulfilled' && artistsRes.value.data?.success && artistsRes.value.data.data?.length > 0) {
-            setArtists(artistsRes.value.data.data.slice(0, 5));
+            setArtists(artistsRes.value.data.data.slice(0, 8));
           }
           if (playlistsRes.status === 'fulfilled' && playlistsRes.value.data?.success && playlistsRes.value.data.data?.length > 0) {
-            setPlaylists(playlistsRes.value.data.data.slice(0, 4));
+            setPlaylists(playlistsRes.value.data.data.slice(0, 6));
           }
         }
       } catch (err) {
@@ -208,10 +228,10 @@ export const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-vibely-dark text-slate-100 selection:bg-purple-600 selection:text-white font-body relative overflow-x-hidden">
-      {/* Background Ambient Glows */}
-      <div className="fixed top-0 left-1/4 w-96 h-96 bg-purple-600/15 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse-slow" />
-      <div className="fixed top-1/3 right-10 w-[30rem] h-[30rem] bg-pink-600/10 rounded-full blur-[160px] pointer-events-none -z-10" />
-      <div className="fixed bottom-10 left-10 w-80 h-80 bg-indigo-600/15 rounded-full blur-[130px] pointer-events-none -z-10" />
+      {/* Background Animated Neon Ambient Glows */}
+      <div className="fixed top-0 left-1/4 w-[32rem] h-[32rem] bg-purple-600/20 rounded-full blur-[140px] pointer-events-none -z-10 animate-neon-purple" />
+      <div className="fixed top-1/3 right-10 w-[30rem] h-[30rem] bg-pink-600/18 rounded-full blur-[160px] pointer-events-none -z-10 animate-neon-pink" />
+      <div className="fixed bottom-10 left-10 w-[26rem] h-[26rem] bg-cyan-600/15 rounded-full blur-[140px] pointer-events-none -z-10 animate-neon-cyan" />
 
       {/* Sticky Navigation Bar */}
       <header className="sticky top-0 z-50 h-20 bg-vibely-dark/80 backdrop-blur-2xl border-b border-vibely-border">
@@ -233,22 +253,22 @@ export const LandingPage = () => {
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <a href="#hero" className="hover:text-purple-300 transition-colors">
+            <a href="#hero" className="nav-link-animated hover:text-purple-300 transition-colors">
               Home
             </a>
-            <Link to="/explore" className="hover:text-purple-300 transition-colors">
+            <Link to="/explore" className="nav-link-animated hover:text-purple-300 transition-colors">
               Explore
             </Link>
-            <a href="#showcase" className="hover:text-purple-300 transition-colors">
+            <a href="#showcase" className="nav-link-animated hover:text-purple-300 transition-colors">
               Showcase
             </a>
-            <a href="#moods" className="hover:text-purple-300 transition-colors">
+            <a href="#moods" className="nav-link-animated hover:text-purple-300 transition-colors">
               Moods
             </a>
-            <a href="#features" className="hover:text-purple-300 transition-colors">
+            <a href="#features" className="nav-link-animated hover:text-purple-300 transition-colors">
               Features
             </a>
-            <a href="#how-it-works" className="hover:text-purple-300 transition-colors">
+            <a href="#how-it-works" className="nav-link-animated hover:text-purple-300 transition-colors">
               About
             </a>
           </nav>
@@ -376,16 +396,61 @@ export const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section id="hero" className="relative pt-12 md:pt-20 pb-20 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section id="hero" className="relative pt-12 md:pt-20 pb-20 md:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-visible">
+        {/* Subtle Background Sound-Wave Graphic */}
+        <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden flex items-center justify-center opacity-20">
+          <svg className="w-[125%] h-72 text-purple-500 animate-wave-drift" viewBox="0 0 1200 220" fill="none" preserveAspectRatio="none">
+            <path
+              d="M0,110 C150,170 300,50 450,120 C600,190 750,30 900,110 C1050,190 1200,60 1350,110"
+              stroke="url(#heroWaveGrad1)"
+              strokeWidth="2.5"
+              fill="none"
+            />
+            <path
+              d="M0,130 C180,70 360,180 540,110 C720,40 900,170 1080,100 C1260,30 1380,150 1500,120"
+              stroke="url(#heroWaveGrad2)"
+              strokeWidth="1.75"
+              strokeDasharray="5 5"
+              fill="none"
+            />
+            <defs>
+              <linearGradient id="heroWaveGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.8" />
+                <stop offset="50%" stopColor="#ec4899" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.8" />
+              </linearGradient>
+              <linearGradient id="heroWaveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ec4899" stopOpacity="0.6" />
+                <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.6" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          {/* Ambient Soundwave Equalizer Pulse in Background */}
+          <div className="absolute inset-x-8 bottom-6 flex items-end justify-between h-20 opacity-20 pointer-events-none">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <span
+                key={i}
+                className="w-1 bg-gradient-to-t from-purple-500/40 to-pink-500/40 rounded-t-full transition-all duration-300"
+                style={{
+                  height: isPlaying ? undefined : `${15 + Math.sin(i * 0.5) * 10}%`,
+                  animation: isPlaying ? `eqBarPulse${['A','B','C','D','E','F','G','H'][i % 8]} ${0.8 + (i % 6) * 0.12}s ease-in-out infinite` : undefined
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Hero Left: Headlines & CTAs */}
+          {/* Hero Left: Headlines & CTAs with Staggered Entrance */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold shadow-inner">
-              <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+            <div className="animate-fade-in-up stagger-1 inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold shadow-inner">
+              <Sparkles className="w-3.5 h-3.5 text-pink-400 animate-pulse" />
               <span>Feel Every Beat with 100% Studio Sound</span>
             </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
+            <h1 className="animate-fade-in-up stagger-2 font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
               Your Music. <br className="hidden sm:inline" />
               Your Mood. <br />
               <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-300 bg-clip-text text-transparent">
@@ -393,16 +458,16 @@ export const LandingPage = () => {
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+            <p className="animate-fade-in-up stagger-3 text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
               Discover new sounds, revisit your favorites, and find the perfect soundtrack for every moment.
               Featuring authentic Bollywood anthems, acoustic masterworks, and curated vibes.
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            {/* CTAs with Micro-Interaction Classes */}
+            <div className="animate-fade-in-up stagger-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
               <button
                 onClick={handleStartListening}
-                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-purple-600/30 hover:shadow-purple-600/50 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
+                className="btn-premium w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-purple-600/30 hover:shadow-purple-600/50 flex items-center justify-center gap-3"
               >
                 <span>Start Listening</span>
                 <ArrowRight className="w-5 h-5" />
@@ -410,80 +475,221 @@ export const LandingPage = () => {
 
               <Link
                 to="/explore"
-                className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-vibely-surface/90 hover:bg-slate-800 border border-vibely-border hover:border-purple-500/40 text-slate-200 hover:text-white font-semibold text-base transition-all flex items-center justify-center gap-2.5 shadow-md"
+                className="btn-premium w-full sm:w-auto px-7 py-4 rounded-2xl bg-vibely-surface/90 hover:bg-slate-800 border border-vibely-border hover:border-purple-500/40 text-slate-200 hover:text-white font-semibold text-base flex items-center justify-center gap-2.5 shadow-md"
               >
                 <Compass className="w-5 h-5 text-purple-400" />
                 <span>Explore Music</span>
               </Link>
             </div>
 
-            {/* Stats row */}
-            <div className="pt-6 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0 border-t border-vibely-border/60">
-              <div>
-                <span className="block font-display text-2xl font-bold text-white">100%</span>
+            {/* Stats row with Staggered Entrance */}
+            <div className="animate-fade-in-up stagger-5 pt-6 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0 border-t border-vibely-border/60">
+              <div className="group">
+                <span className="block font-display text-2xl font-bold text-white group-hover:text-purple-300 transition-colors">100%</span>
                 <span className="text-xs text-slate-400">Authentic Audio</span>
               </div>
-              <div>
-                <span className="block font-display text-2xl font-bold text-white">0 ms</span>
+              <div className="group">
+                <span className="block font-display text-2xl font-bold text-white group-hover:text-pink-300 transition-colors">0 ms</span>
                 <span className="text-xs text-slate-400">Instant Streaming</span>
               </div>
-              <div>
-                <span className="block font-display text-2xl font-bold text-white">Free</span>
+              <div className="group">
+                <span className="block font-display text-2xl font-bold text-white group-hover:text-indigo-300 transition-colors">Free</span>
                 <span className="text-xs text-slate-400">No Paywall</span>
               </div>
             </div>
           </div>
 
-          {/* Hero Right: 3D Visual Cards & Equalizer */}
-          <div className="lg:col-span-5 relative flex items-center justify-center">
-            {/* Soft backdrop glow */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/25 to-pink-500/20 rounded-3xl blur-2xl -z-10" />
+          {/* Hero Right: 3D Visual Cards, Floating Artwork & Equalizer */}
+          <div className="lg:col-span-5 relative flex items-center justify-center animate-fade-in-scale stagger-3">
+            {/* Soft backdrop neon glows */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/30 via-pink-500/25 to-indigo-600/20 rounded-3xl blur-3xl -z-10 animate-neon-purple" />
+            <div className="absolute -inset-4 bg-pink-500/15 rounded-3xl blur-2xl -z-10 animate-neon-pink" />
+
+            {/* Floating Satellite 1: Top-Right Trending Badge (Kesariya) */}
+            <div
+              onClick={() => {
+                if (isSecondaryPlaying) {
+                  togglePlay();
+                } else {
+                  playSong(secondaryHeroSong, trendingSongs);
+                }
+              }}
+              className="animate-float-slow absolute -top-8 -right-2 sm:-right-6 z-20 hidden sm:flex items-center gap-3 p-3 rounded-2xl bg-vibely-surface/90 backdrop-blur-xl border border-purple-500/40 shadow-2xl shadow-purple-600/25 cursor-pointer hover:scale-105 transition-all group"
+              title={isSecondaryPlaying ? 'Pause Kesariya' : 'Play Kesariya'}
+            >
+              <div className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-md">
+                <img
+                  src={secondaryHeroSong?.coverArt || 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=300&q=80'}
+                  alt={secondaryHeroSong?.title || 'Trending Track'}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  {isSecondaryPlaying ? (
+                    <Pause className="w-4 h-4 text-white fill-current" />
+                  ) : (
+                    <Play className="w-4 h-4 text-white fill-current ml-0.5" />
+                  )}
+                </div>
+              </div>
+              <div className="min-w-0 pr-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-pulse" />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">Trending #1</span>
+                </div>
+                <h4 className="text-xs font-bold text-white truncate max-w-[120px]">
+                  {secondaryHeroSong?.title || 'Kesariya'}
+                </h4>
+                <p className="text-[10px] text-slate-400 truncate max-w-[120px]">
+                  {secondaryHeroSong?.artist?.name || 'Arijit Singh'}
+                </p>
+              </div>
+              {isSecondaryPlaying && (
+                <div className="flex items-end gap-0.5 h-4 shrink-0 pr-1">
+                  <span className="w-0.5 bg-purple-400 rounded-full eq-bar-1 h-3" />
+                  <span className="w-0.5 bg-pink-400 rounded-full eq-bar-2 h-4" />
+                  <span className="w-0.5 bg-indigo-400 rounded-full eq-bar-3 h-2" />
+                </div>
+              )}
+            </div>
+
+            {/* Floating Satellite 2: Bottom-Left Hi-Res Studio Badge */}
+            <div className="animate-float-reverse absolute -bottom-7 -left-2 sm:-left-6 z-20 flex items-center gap-3 px-3.5 py-2.5 rounded-2xl bg-vibely-surface/90 backdrop-blur-xl border border-pink-500/40 shadow-2xl shadow-pink-600/20 hover:scale-105 transition-all">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-500/20 to-purple-500/20 border border-pink-500/30 flex items-center justify-center text-pink-400">
+                <Headphones className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="block text-xs font-bold text-white">Lossless Studio M4A</span>
+                <span className="block text-[10px] text-purple-300 font-medium">24-Bit / 48 kHz Pure Master</span>
+              </div>
+              <div className="flex items-end gap-0.5 h-3.5 shrink-0 pl-1">
+                <span className={`w-0.5 rounded-full transition-all ${isPlaying ? 'bg-pink-400 eq-bar-2 h-3.5' : 'bg-slate-600 h-1.5'}`} />
+                <span className={`w-0.5 rounded-full transition-all ${isPlaying ? 'bg-purple-400 eq-bar-3 h-3' : 'bg-slate-600 h-1.5'}`} />
+                <span className={`w-0.5 rounded-full transition-all ${isPlaying ? 'bg-cyan-400 eq-bar-1 h-2.5' : 'bg-slate-600 h-1.5'}`} />
+              </div>
+            </div>
+
+            {/* Floating Satellite 3: Top-Left Ambient Pill */}
+            <div className="animate-float-gentle absolute -top-4 -left-3 z-20 hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-vibely-surface/85 backdrop-blur-md border border-purple-500/30 text-[11px] font-semibold text-purple-300 shadow-xl">
+              <Sparkles className="w-3 h-3 text-pink-400" />
+              <span>Zero Paywalls</span>
+            </div>
+
+            {/* Floating Satellite 4: Mid-Right Floating Album Vinyl Artwork (Khuda Jaane) */}
+            <div
+              onClick={() => {
+                if (isTertiaryPlaying) {
+                  togglePlay();
+                } else {
+                  playSong(tertiaryHeroSong, trendingSongs);
+                }
+              }}
+              className="animate-float-drift absolute -bottom-10 -right-2 sm:-right-8 z-20 hidden md:flex items-center gap-3 p-3 rounded-2xl bg-vibely-surface/90 backdrop-blur-xl border border-pink-500/40 shadow-2xl shadow-pink-600/20 cursor-pointer hover:scale-105 transition-all group"
+              title={isTertiaryPlaying ? 'Pause Khuda Jaane' : 'Play Khuda Jaane'}
+            >
+              <div className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-md">
+                <img
+                  src={tertiaryHeroSong?.coverArt || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=300&q=80'}
+                  alt={tertiaryHeroSong?.title || 'Khuda Jaane'}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
+                  {isTertiaryPlaying ? (
+                    <Pause className="w-4 h-4 text-white fill-current" />
+                  ) : (
+                    <Play className="w-4 h-4 text-white fill-current ml-0.5" />
+                  )}
+                </div>
+              </div>
+              <div className="min-w-0 pr-1">
+                <div className="flex items-center gap-1.5">
+                  <Disc3 className={`w-3 h-3 text-pink-400 ${isTertiaryPlaying ? 'animate-spin-slow' : ''}`} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-pink-300">Golden Duet</span>
+                </div>
+                <h4 className="text-xs font-bold text-white truncate max-w-[120px]">
+                  {tertiaryHeroSong?.title || 'Khuda Jaane'}
+                </h4>
+                <p className="text-[10px] text-slate-400 truncate max-w-[120px]">
+                  {tertiaryHeroSong?.artist?.name || 'KK & Shreya'}
+                </p>
+              </div>
+              {isTertiaryPlaying && (
+                <div className="flex items-end gap-0.5 h-4 shrink-0 pr-1">
+                  <span className="w-0.5 bg-pink-400 rounded-full eq-bar-1 h-3" />
+                  <span className="w-0.5 bg-purple-400 rounded-full eq-bar-2 h-4" />
+                  <span className="w-0.5 bg-indigo-400 rounded-full eq-bar-3 h-2" />
+                </div>
+              )}
+            </div>
 
             <div className="w-full max-w-md space-y-4">
-              {/* Floating Hero Card 1 (Now Playing Preview) */}
-              <div className="p-5 rounded-3xl bg-vibely-surface/90 backdrop-blur-xl border border-vibely-border shadow-2xl relative overflow-hidden group hover:border-purple-500/40 transition-all">
+              {/* Main Featured Hero Card (Tum Hi Ho) */}
+              <div className="p-5 rounded-3xl bg-vibely-surface/90 backdrop-blur-xl border border-purple-500/30 shadow-2xl relative overflow-hidden group animate-neon-card-glow music-card-hover">
                 <div className="flex items-center gap-4">
-                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-lg">
+                  <div
+                    onClick={() => {
+                      if (isHeroPlaying) {
+                        togglePlay();
+                      } else {
+                        playSong(heroSong, trendingSongs);
+                      }
+                    }}
+                    className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-lg cursor-pointer"
+                    title={isHeroPlaying ? 'Pause Tum Hi Ho' : 'Play Tum Hi Ho'}
+                  >
                     <img
-                      src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80"
-                      alt="Tum Hi Ho"
+                      src={heroSong?.coverArt || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80"}
+                      alt={heroSong?.title || "Tum Hi Ho"}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-purple-900/30 flex items-center justify-center">
-                      <Disc3 className="w-7 h-7 text-white/90 animate-spin-slow" />
+                      <Disc3 className={`w-7 h-7 text-white/90 ${isHeroPlaying ? 'animate-spin-slow' : ''}`} />
+                    </div>
+                    {/* Play/Pause hover icon overlay */}
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center shadow-md">
+                        {isHeroPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
+                      </div>
                     </div>
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className={`inline-block w-2 h-2 rounded-full ${isHeroPlaying ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`} />
                       <span className="text-[11px] uppercase tracking-wider font-bold text-purple-400">
-                        Featured Song
+                        {isHeroPlaying ? 'Now Playing' : 'Featured Song'}
                       </span>
                     </div>
-                    <h3 className="font-semibold text-white text-base truncate">Tum Hi Ho</h3>
-                    <p className="text-xs text-slate-400 truncate">Arijit Singh • Aashiqui 2</p>
+                    <h3 className="font-semibold text-white text-base truncate">{heroSong?.title || 'Tum Hi Ho'}</h3>
+                    <p className="text-xs text-slate-400 truncate">
+                      {heroSong?.artist?.name || 'Arijit Singh'} • {heroSong?.album?.title || 'Aashiqui 2'}
+                    </p>
                   </div>
 
-                  {/* Equalizer Wave Bars */}
+                  {/* Equalizer Wave Bars (True state reflection) */}
                   <div className="flex items-end gap-1 h-6 shrink-0 pr-1">
-                    <span className="w-1 bg-purple-500 rounded-full animate-[pulse_1s_ease-in-out_infinite] h-3" />
-                    <span className="w-1 bg-pink-500 rounded-full animate-[pulse_1.4s_ease-in-out_infinite] h-6" />
-                    <span className="w-1 bg-indigo-500 rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-4" />
-                    <span className="w-1 bg-purple-400 rounded-full animate-[pulse_1.2s_ease-in-out_infinite] h-5" />
+                    <MusicVisualizer isPlaying={isHeroPlaying} barCount={6} size="sm" />
                   </div>
                 </div>
 
                 {/* Interactive Play Bar */}
                 <div className="mt-4 pt-3 border-t border-vibely-border flex items-center justify-between text-xs text-slate-400">
-                  <span className="flex items-center gap-1.5 text-purple-300 font-medium">
-                    <Radio className="w-3.5 h-3.5 animate-pulse text-pink-400" />
-                    Lossless M4A Studio Audio
-                  </span>
+                  <button
+                    onClick={() => {
+                      if (isHeroPlaying) {
+                        togglePlay();
+                      } else {
+                        playSong(heroSong, trendingSongs);
+                      }
+                    }}
+                    className="flex items-center gap-1.5 text-purple-300 hover:text-white font-medium transition-colors"
+                  >
+                    <Radio className={`w-3.5 h-3.5 ${isHeroPlaying ? 'animate-pulse text-pink-400' : 'text-slate-400'}`} />
+                    <span>{isHeroPlaying ? 'Playing Studio Stream' : 'Click to Play Track'}</span>
+                  </button>
                   <Link
                     to="/explore"
                     className="hover:text-white flex items-center gap-1 transition-colors font-semibold"
                   >
-                    <span>Listen</span>
+                    <span>Browse All</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -494,8 +700,90 @@ export const LandingPage = () => {
         </div>
       </section>
 
+      {/* Interactive Live Music Visualizer Ribbon */}
+      <section
+        ref={visualizerRef}
+        className={`py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto transition-all duration-700 reveal-hidden ${
+          visualizerVisible ? 'reveal-visible' : ''
+        }`}
+      >
+        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-vibely-surface/95 via-vibely-card/90 to-vibely-surface/95 border border-purple-500/30 shadow-2xl relative overflow-hidden backdrop-blur-xl">
+          {/* Ambient neon pulse */}
+          <div className="absolute top-0 right-1/4 w-72 h-72 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-pink-600/15 rounded-full blur-[100px] pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="space-y-1.5 text-center lg:text-left max-w-sm shrink-0">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-semibold">
+                <Activity className="w-3.5 h-3.5 text-pink-400" />
+                <span>Live Audio Frequency Engine</span>
+              </div>
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
+                Feel the Live Equalizer
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300">
+                {isPlaying
+                  ? `Active playback: "${currentSong?.title || heroSong.title}" • Dynamic 24-band frequency spectrum`
+                  : 'Engine on standby • Click play on any song to activate live animated equalizer'}
+              </p>
+            </div>
+
+            {/* Central Equalizer Wave Visualizer */}
+            <div className="flex-1 w-full max-w-lg px-2 flex flex-col items-center">
+              <MusicVisualizer isPlaying={isPlaying} barCount={24} size="md" className="w-full" />
+              <div className="w-full flex justify-between text-[10px] text-slate-500 font-mono mt-2 pt-1 border-t border-vibely-border/40">
+                <span>20Hz Sub</span>
+                <span>250Hz Warmth</span>
+                <span>2kHz Mids</span>
+                <span>8kHz Highs</span>
+                <span>16kHz Air</span>
+              </div>
+            </div>
+
+            {/* Quick Play/Pause Action Button */}
+            <div className="shrink-0">
+              <button
+                onClick={() => {
+                  if (isPlaying) {
+                    togglePlay();
+                  } else if (currentSong) {
+                    togglePlay();
+                  } else {
+                    playSong(heroSong, trendingSongs);
+                  }
+                }}
+                className={`btn-premium flex items-center gap-2.5 px-6 py-3 rounded-2xl font-bold text-sm shadow-xl transition-all ${
+                  isPlaying
+                    ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-pink-600/30'
+                    : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-purple-600/30'
+                }`}
+                title={isPlaying ? 'Pause music' : 'Start music and visualizer'}
+              >
+                {isPlaying ? (
+                  <>
+                    <Pause className="w-4 h-4 fill-current" />
+                    <span>Pause Audio</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 fill-current ml-0.5" />
+                    <span>Experience Sound</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Music Showcase Section */}
-      <section id="showcase" className="py-20 bg-vibely-surface/40 border-y border-vibely-border">
+      <section
+        id="showcase"
+        ref={showcaseRef}
+        className={`py-20 bg-vibely-surface/40 border-y border-vibely-border transition-all duration-700 reveal-hidden ${
+          showcaseVisible ? 'reveal-visible' : ''
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -529,14 +817,14 @@ export const LandingPage = () => {
               return (
                 <div
                   key={song.id}
-                  className="p-4 rounded-2xl bg-vibely-surface/80 hover:bg-vibely-surface border border-vibely-border hover:border-purple-500/40 transition-all duration-300 group flex items-center justify-between shadow-lg"
+                  className="p-4 rounded-2xl bg-vibely-surface/80 hover:bg-vibely-surface border border-vibely-border music-card-hover group flex items-center justify-between shadow-lg focus-within:border-purple-500/50"
                 >
                   <div className="flex items-center gap-3.5 min-w-0 pr-3">
                     <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 shadow-md">
                       <img
                         src={song.coverArt}
                         alt={song.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <button
                         onClick={() => {
@@ -546,8 +834,8 @@ export const LandingPage = () => {
                             playSong(song, trendingSongs);
                           }
                         }}
-                        className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity ${
-                          isThisPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                        className={`absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center transition-opacity duration-300 ${
+                          isThisPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'
                         }`}
                         aria-label={`Play ${song.title}`}
                       >
@@ -559,6 +847,15 @@ export const LandingPage = () => {
                           )}
                         </div>
                       </button>
+
+                      {/* Playing Equalizer Indicator Badge (bottom-left) */}
+                      {isThisPlaying && (
+                        <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/70 backdrop-blur-md flex items-end gap-0.5 h-3 pointer-events-none">
+                          <span className="w-0.5 bg-purple-400 rounded-full eq-bar-1 h-2" />
+                          <span className="w-0.5 bg-pink-400 rounded-full eq-bar-2 h-3" />
+                          <span className="w-0.5 bg-indigo-400 rounded-full eq-bar-3 h-1.5" />
+                        </div>
+                      )}
                     </div>
 
                     <div className="min-w-0">
@@ -582,7 +879,7 @@ export const LandingPage = () => {
                         playSong(song, trendingSongs);
                       }
                     }}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
                       isThisPlaying
                         ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30 scale-105'
                         : 'bg-vibely-card text-slate-300 hover:text-white hover:bg-purple-600 hover:scale-105'
@@ -600,6 +897,34 @@ export const LandingPage = () => {
             })}
           </div>
 
+          {/* Curated Playlists Showcase Grid */}
+          <div className="pt-8 border-t border-vibely-border space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                  <ListMusic className="w-5 h-5 text-pink-400" />
+                  <span>Curated Vibe Playlists</span>
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+                  Handcrafted collections engineered for your mood, commute, and late-night listening.
+                </p>
+              </div>
+              <Link
+                to="/explore"
+                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-purple-400 hover:text-purple-300 transition-colors"
+              >
+                <span>Browse all</span>
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {playlists.map((pl) => (
+                <PlaylistCard key={pl.id} playlist={pl} />
+              ))}
+            </div>
+          </div>
+
           {/* Popular Artists Strip */}
           <div className="pt-8 border-t border-vibely-border space-y-6">
             <h3 className="font-display text-xl font-bold text-white flex items-center gap-2">
@@ -611,7 +936,7 @@ export const LandingPage = () => {
                 <Link
                   key={art.id}
                   to={`/artist/${art.id}`}
-                  className="p-4 rounded-2xl bg-vibely-surface/60 hover:bg-vibely-surface border border-vibely-border hover:border-purple-500/40 text-center transition-all group shadow-md"
+                  className="p-4 rounded-2xl bg-vibely-surface/60 hover:bg-vibely-surface border border-vibely-border music-card-hover text-center transition-all group shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
                 >
                   <img
                     src={art.image}
@@ -632,7 +957,13 @@ export const LandingPage = () => {
       </section>
 
       {/* Mood-Based Discovery Section */}
-      <section id="moods" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section
+        id="moods"
+        ref={moodsRef}
+        className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 transition-all duration-700 reveal-hidden ${
+          moodsVisible ? 'reveal-visible' : ''
+        }`}
+      >
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-pink-400">
             <Radio className="w-4 h-4" />
@@ -647,11 +978,12 @@ export const LandingPage = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {MOODS.map((mood) => (
+          {MOODS.map((mood, idx) => (
             <div
               key={mood.id}
               onClick={() => navigate(`/explore?genre=${encodeURIComponent(mood.genre)}`)}
-              className={`group relative p-6 rounded-3xl bg-gradient-to-br ${mood.gradient} bg-vibely-surface border ${mood.border} hover:scale-[1.02] transition-all duration-300 cursor-pointer overflow-hidden shadow-xl`}
+              className={`group relative p-6 rounded-3xl bg-gradient-to-br ${mood.gradient} bg-vibely-surface border ${mood.border} music-card-hover cursor-pointer overflow-hidden shadow-xl stagger-item`}
+              style={{ transitionDelay: `${idx * 60}ms` }}
             >
               <div className="relative z-10 space-y-3">
                 <span className={`inline-block font-display text-lg font-bold text-white group-hover:text-purple-200 transition-colors`}>
@@ -678,7 +1010,13 @@ export const LandingPage = () => {
       </section>
 
       {/* Feature Highlights Section */}
-      <section id="features" className="py-20 bg-vibely-surface/50 border-y border-vibely-border">
+      <section
+        id="features"
+        ref={featuresRef}
+        className={`py-20 bg-vibely-surface/50 border-y border-vibely-border transition-all duration-700 reveal-hidden ${
+          featuresVisible ? 'reveal-visible' : ''
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-400">
@@ -699,10 +1037,11 @@ export const LandingPage = () => {
               return (
                 <div
                   key={idx}
-                  className="p-7 rounded-3xl bg-vibely-surface border border-vibely-border hover:border-purple-500/40 hover:bg-vibely-card/60 transition-all duration-300 space-y-4 group shadow-lg"
+                  className="p-7 rounded-3xl bg-vibely-surface border border-vibely-border music-card-hover space-y-4 group shadow-lg stagger-item"
+                  style={{ transitionDelay: `${idx * 80}ms` }}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600/20 to-pink-500/20 border border-purple-500/30 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600/20 to-pink-500/20 border border-purple-500/30 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                       <Icon className="w-6 h-6 text-purple-400" />
                     </div>
                     <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-800 text-purple-300 border border-slate-700">
@@ -725,7 +1064,13 @@ export const LandingPage = () => {
       </section>
 
       {/* How Vibely Works (3-Step Experience) */}
-      <section id="how-it-works" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section
+        id="how-it-works"
+        ref={howItWorksRef}
+        className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 transition-all duration-700 reveal-hidden ${
+          howItWorksVisible ? 'reveal-visible' : ''
+        }`}
+      >
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-400">
             <Layers className="w-4 h-4" />
@@ -741,7 +1086,10 @@ export const LandingPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Step 1 */}
-          <div className="p-8 rounded-3xl bg-vibely-surface/80 border border-vibely-border relative space-y-4 shadow-xl">
+          <div
+            className="p-8 rounded-3xl bg-vibely-surface/80 border border-vibely-border relative space-y-4 shadow-xl music-card-hover stagger-item"
+            style={{ transitionDelay: '0ms' }}
+          >
             <span className="font-display text-5xl font-black text-purple-500/25 block">01</span>
             <h3 className="font-display text-xl font-bold text-white">
               Discover your next favorite song
@@ -752,7 +1100,10 @@ export const LandingPage = () => {
           </div>
 
           {/* Step 2 */}
-          <div className="p-8 rounded-3xl bg-vibely-surface/80 border border-vibely-border relative space-y-4 shadow-xl">
+          <div
+            className="p-8 rounded-3xl bg-vibely-surface/80 border border-vibely-border relative space-y-4 shadow-xl music-card-hover stagger-item"
+            style={{ transitionDelay: '100ms' }}
+          >
             <span className="font-display text-5xl font-black text-pink-500/25 block">02</span>
             <h3 className="font-display text-xl font-bold text-white">
               Build playlists for every mood
@@ -763,7 +1114,10 @@ export const LandingPage = () => {
           </div>
 
           {/* Step 3 */}
-          <div className="p-8 rounded-3xl bg-vibely-surface/80 border border-vibely-border relative space-y-4 shadow-xl">
+          <div
+            className="p-8 rounded-3xl bg-vibely-surface/80 border border-vibely-border relative space-y-4 shadow-xl music-card-hover stagger-item"
+            style={{ transitionDelay: '200ms' }}
+          >
             <span className="font-display text-5xl font-black text-indigo-500/25 block">03</span>
             <h3 className="font-display text-xl font-bold text-white">
               Press play and enjoy your music
@@ -776,7 +1130,12 @@ export const LandingPage = () => {
       </section>
 
       {/* Final Call to Action Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section
+        ref={ctaRef}
+        className={`py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto transition-all duration-700 reveal-hidden ${
+          ctaVisible ? 'reveal-visible' : ''
+        }`}
+      >
         <div className="p-10 md:p-16 rounded-[2.5rem] bg-gradient-to-r from-purple-900/60 via-indigo-900/40 to-slate-900/80 border border-purple-500/30 text-center relative overflow-hidden shadow-2xl space-y-6">
           <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-500/20 rounded-full blur-[100px] pointer-events-none" />
 
@@ -796,13 +1155,13 @@ export const LandingPage = () => {
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 onClick={handleStartListening}
-                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-purple-600/30 hover:shadow-purple-600/50 hover:scale-[1.02] active:scale-95 transition-all"
+                className="btn-premium w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-purple-600/30 hover:shadow-purple-600/50 transition-all"
               >
                 Join Vibely
               </button>
               <Link
                 to="/login"
-                className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-vibely-surface border border-vibely-border hover:border-slate-500 text-slate-300 hover:text-white font-semibold text-base transition-all"
+                className="btn-premium w-full sm:w-auto px-7 py-4 rounded-2xl bg-vibely-surface border border-vibely-border hover:border-slate-500 text-slate-300 hover:text-white font-semibold text-base transition-all"
               >
                 Sign In
               </Link>

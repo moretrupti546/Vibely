@@ -6,9 +6,9 @@ export const AlbumCard = ({ album }) => {
   return (
     <Link
       to={`/album/${album.id}`}
-      className="group relative p-3.5 rounded-2xl bg-vibely-surface/60 hover:bg-vibely-surface border border-vibely-border hover:border-purple-500/30 transition-all duration-300 shadow-lg hover:shadow-purple-500/10 flex flex-col"
+      className="group relative p-3.5 rounded-2xl bg-vibely-surface/60 hover:bg-vibely-surface border border-vibely-border music-card-hover flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-within:border-purple-500/50"
     >
-      <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-3 bg-slate-900">
+      <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-3 bg-slate-900 shadow-md">
         <img
           src={album.coverArt}
           alt={album.title}
@@ -16,8 +16,8 @@ export const AlbumCard = ({ album }) => {
           loading="lazy"
         />
 
-        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-500 text-white flex items-center justify-center shadow-xl shadow-purple-600/40 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-500 text-white flex items-center justify-center shadow-xl shadow-purple-600/40 transform translate-y-2 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-300">
             <Play className="w-5 h-5 fill-current ml-0.5" />
           </div>
         </div>

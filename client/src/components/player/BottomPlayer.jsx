@@ -71,12 +71,21 @@ export const BottomPlayer = () => {
             />
           </Link>
           <div className="min-w-0 pr-2">
-            <Link
-              to={`/song/${currentSong.id}`}
-              className="block font-semibold text-sm md:text-base text-white hover:underline truncate"
-            >
-              {currentSong.title}
-            </Link>
+            <div className="flex items-center gap-1.5">
+              <Link
+                to={`/song/${currentSong.id}`}
+                className="font-semibold text-sm md:text-base text-white hover:underline truncate"
+              >
+                {currentSong.title}
+              </Link>
+              {isPlaying && (
+                <div className="hidden sm:flex items-end gap-0.5 h-3.5 shrink-0 px-1 py-0.5 rounded bg-purple-500/10" title="Audio playing">
+                  <span className="w-0.5 bg-purple-400 rounded-full eq-bar-1 h-3" />
+                  <span className="w-0.5 bg-pink-400 rounded-full eq-bar-2 h-2.5" />
+                  <span className="w-0.5 bg-indigo-400 rounded-full eq-bar-3 h-3" />
+                </div>
+              )}
+            </div>
             <Link
               to={`/artist/${currentSong.artist?.id}`}
               className="block text-xs text-slate-400 hover:text-purple-300 truncate"
