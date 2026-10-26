@@ -8,6 +8,7 @@ import { useToast } from '../context/ToastContext';
 import { SongRow } from '../components/cards/SongRow';
 import { AlbumCard } from '../components/cards/AlbumCard';
 import { DEFAULT_ARTISTS, DEFAULT_SONGS, DEFAULT_ALBUMS } from '../data/catalog';
+import { useFollowedArtists } from '../hooks/useFollowedArtists';
 
 export const ArtistDetails = () => {
   const { id } = useParams();
@@ -15,10 +16,11 @@ export const ArtistDetails = () => {
   const { isAuthenticated } = useAuth();
   const { playSong } = usePlayer();
   const { showToast } = useToast();
+  const { isFollowing, toggleFollow } = useFollowedArtists();
 
   const [artist, setArtist] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isFollowed, setIsFollowed] = useState(false);
+  const isFollowed = isFollowing(artist?.id);
 
   useEffect(() => {
     const fetchArtist = async () => {
@@ -50,20 +52,9 @@ export const ArtistDetails = () => {
     fetchArtist();
   }, [id]);
 
-  const handleToggleFollow = async () => {
-    if (!isAuthenticated) {
-      showToast('Please log in to follow artists.', 'info');
-      return;
-    }
-
-    const nextFollow = !isFollowed;
-    setIsFollowed(nextFollow);
-    showToast(nextFollow ? `Following ${artist.name} 🌟` : `Unfollowed ${artist.name}`, 'success');
-
-    try {
-      await api.post(`/users/me/artists/${artist.id}`);
-    } catch (err) {
-      console.warn('Backend follow sync notice:', err?.message);
+  const handleToggleFollow = () => {
+    if (artist) {
+      toggleFollow(artist);
     }
   };
 

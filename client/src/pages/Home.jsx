@@ -16,6 +16,7 @@ import {
   DEFAULT_ARTISTS
 } from '../data/catalog';
 import { MOOD_DEFINITIONS } from '../data/moodCatalog';
+import { useFollowedArtists } from '../hooks/useFollowedArtists';
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -29,6 +30,11 @@ const MOODS = ['All', 'Bollywood', 'Sufi', 'Romance', 'Synthwave', 'Lo-Fi', 'Amb
 export const Home = () => {
   const { user } = useAuth();
   const { playSong } = usePlayer();
+  const {
+    followedIds,
+    recommendedSongs,
+    followedArtistObjects
+  } = useFollowedArtists();
 
   const [trendingSongs, setTrendingSongs] = useState(DEFAULT_SONGS);
   const [albums, setAlbums] = useState(DEFAULT_ALBUMS);
@@ -273,6 +279,59 @@ export const Home = () => {
         )}
       </section>
 
+      {/* Recommended For You (Based on Followed Artists) */}
+      <section className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-purple-400" />
+              <h2 className="font-display text-xl md:text-2xl font-bold text-white">
+                Recommended For You
+              </h2>
+            </div>
+            <p className="text-xs text-slate-400">
+              {followedArtistObjects.length > 0 ? (
+                <>
+                  Personalized based on artists you follow:{' '}
+                  <span className="text-purple-300 font-semibold">
+                    {followedArtistObjects.slice(0, 3).map((a) => a.name).join(', ')}
+                    {followedArtistObjects.length > 3 ? ` +${followedArtistObjects.length - 3} more` : ''}
+                  </span>
+                </>
+              ) : (
+                'Follow artists below to calibrate your personalized sound stream'
+              )}
+            </p>
+          </div>
+
+          {recommendedSongs.length > 0 && (
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => playSong(recommendedSongs[0], recommendedSongs)}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full font-bold text-xs bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/25 transition-all hover:scale-105"
+              >
+                <Play className="w-3.5 h-3.5 fill-white" />
+                <span>Play Mix</span>
+              </button>
+            </div>
+          )}
+        </div>
+
+        {recommendedSongs.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {recommendedSongs.slice(0, 10).map((song) => (
+              <SongCard key={`rec-${song.id}`} song={song} queueList={recommendedSongs} />
+            ))}
+          </div>
+        ) : (
+          <div className="p-8 rounded-2xl bg-vibely-surface border border-vibely-border text-center space-y-2">
+            <p className="text-xs text-slate-300">
+              No recommendations yet! Follow artists in the section below to get personalized music.
+            </p>
+          </div>
+        )}
+      </section>
+
       {/* Popular Albums */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
@@ -321,23 +380,34 @@ export const Home = () => {
         )}
       </section>
 
-      {/* Featured Artists */}
+      {/* Artists Section with Interactive Follow & Follower Count */}
       <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <Music2 className="w-6 h-6 text-cyan-400" />
-            <h2 className="font-display text-xl md:text-2xl font-bold text-white">Featured Artists</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <Music2 className="w-6 h-6 text-cyan-400" />
+              <h2 className="font-display text-xl md:text-2xl font-bold text-white">
+                Artists You Can Follow
+              </h2>
+            </div>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Follow your favorite voices — Vibely will automatically calibrate your recommendations above.
+            </p>
           </div>
+
+          <span className="text-xs text-purple-400 font-semibold px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 w-fit">
+            {followedIds.length} Artist{followedIds.length === 1 ? '' : 's'} Followed
+          </span>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {Array.from({ length: 5 }).map((_, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
               <CardSkeleton key={i} />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {artists.map((artist) => (
               <ArtistCard key={artist.id} artist={artist} />
             ))}

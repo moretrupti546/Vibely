@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Library as LibraryIcon, Heart, Disc, ListMusic, History, Plus, Loader2, Sparkles } from 'lucide-react';
+import { Library as LibraryIcon, Heart, Disc, ListMusic, History, Plus, Loader2, Sparkles, User, Play } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { usePlayer } from '../context/PlayerContext';
 import { PlaylistCard } from '../components/cards/PlaylistCard';
 import { AlbumCard } from '../components/cards/AlbumCard';
+import { ArtistCard } from '../components/cards/ArtistCard';
 import { SongRow } from '../components/cards/SongRow';
 import { CreatePlaylistModal } from '../components/modals/CreatePlaylistModal';
 import { AddToPlaylistModal } from '../components/modals/AddToPlaylistModal';
+import { useFollowedArtists } from '../hooks/useFollowedArtists';
 import {
   DEFAULT_PLAYLISTS,
   DEFAULT_SONGS,
@@ -17,6 +20,8 @@ import {
 
 export const Library = () => {
   const { isAuthenticated } = useAuth();
+  const { playSong } = usePlayer();
+  const { followedIds, recommendedSongs, followedArtistObjects } = useFollowedArtists();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'playlists';
 
@@ -161,6 +166,7 @@ export const Library = () => {
           { id: 'playlists', label: 'Playlists', icon: ListMusic, count: libraryData.playlists.length },
           { id: 'liked', label: 'Liked Songs', icon: Heart, count: libraryData.likedSongs.length },
           { id: 'albums', label: 'Saved Albums', icon: Disc, count: libraryData.savedAlbums.length },
+          { id: 'artists', label: 'Followed Artists', icon: User, count: followedArtistObjects.length },
           { id: 'history', label: 'History', icon: History, count: history.length }
         ].map((tab) => {
           const Icon = tab.icon;
@@ -264,6 +270,75 @@ export const Library = () => {
                     <AlbumCard key={album.id} album={album} />
                   ))}
                 </div>
+              )}
+            </div>
+          )}
+
+          {/* Followed Artists Tab */}
+          {activeTab === 'artists' && (
+            <div className="space-y-8">
+              {followedArtistObjects.length === 0 ? (
+                <div className="p-12 text-center rounded-3xl bg-vibely-surface border border-vibely-border max-w-md mx-auto space-y-3">
+                  <User className="w-10 h-10 text-slate-500 mx-auto" />
+                  <h3 className="font-bold text-white text-base">No artists followed yet</h3>
+                  <p className="text-xs text-slate-400">
+                    Follow artists on the Home or Explore pages to calibrate your recommendations.
+                  </p>
+                  <Link
+                    to="/app"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-md"
+                  >
+                    <span>Browse Artists</span>
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    {followedArtistObjects.map((artist) => (
+                      <ArtistCard key={artist.id} artist={artist} />
+                    ))}
+                  </div>
+
+                  {/* Personalized Recommendations Section for Followed Artists */}
+                  {recommendedSongs.length > 0 && (
+                    <div className="mt-8 pt-6 border-t border-vibely-border space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-purple-400" />
+                            <h3 className="font-display font-bold text-lg text-white">
+                              Recommended Tracks for Your Artists
+                            </h3>
+                          </div>
+                          <p className="text-xs text-slate-400">
+                            Algorithmic picks matching the genres and discographies of artists you follow.
+                          </p>
+                        </div>
+
+                        <button
+                          onClick={() => playSong(recommendedSongs[0], recommendedSongs)}
+                          className="flex items-center gap-1.5 px-4 py-2 rounded-full font-bold text-xs bg-purple-600 hover:bg-purple-500 text-white shadow-md transition-all hover:scale-105"
+                        >
+                          <Play className="w-3.5 h-3.5 fill-white" />
+                          <span>Play Mix</span>
+                        </button>
+                      </div>
+
+                      <div className="p-4 rounded-3xl bg-vibely-surface border border-vibely-border space-y-1">
+                        {recommendedSongs.slice(0, 8).map((song, idx) => (
+                          <SongRow
+                            key={`lib-rec-${song.id}-${idx}`}
+                            song={song}
+                            index={idx}
+                            queueList={recommendedSongs}
+                            showAlbum={true}
+                            onAddToPlaylist={(s) => setSelectedSongForPlaylist(s)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
