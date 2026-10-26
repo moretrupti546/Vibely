@@ -11,7 +11,39 @@ export const AuthProvider = ({ children }) => {
   });
   const [token, setToken] = useState(() => localStorage.getItem('vibely_token'));
   const [loading, setLoading] = useState(true);
+  const [isPro, setIsPro] = useState(() => {
+    try {
+      const savedSub = localStorage.getItem('vibely_subscription');
+      if (savedSub === 'pro' || savedSub === 'vip') return true;
+      const savedUser = localStorage.getItem('vibely_user');
+      if (savedUser && JSON.parse(savedUser).isPro) return true;
+    } catch (e) {}
+    return false;
+  });
   const { showToast } = useToast();
+
+  const subscribeToPro = (plan = 'VIP Lifetime') => {
+    setIsPro(true);
+    localStorage.setItem('vibely_subscription', 'vip');
+    setUser((prev) => {
+      const updated = prev ? { ...prev, isPro: true, plan } : { id: 'vip_guest', name: 'VIP Guest', isPro: true, plan };
+      localStorage.setItem('vibely_user', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('🌟 Welcome to Vibely VIP! Offline downloads unlocked.', 'success');
+  };
+
+  const cancelSubscription = () => {
+    setIsPro(false);
+    localStorage.removeItem('vibely_subscription');
+    setUser((prev) => {
+      if (!prev) return null;
+      const updated = { ...prev, isPro: false, plan: 'Free' };
+      localStorage.setItem('vibely_user', JSON.stringify(updated));
+      return updated;
+    });
+    showToast('VIP Subscription deactivated.', 'info');
+  };
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -173,6 +205,9 @@ export const AuthProvider = ({ children }) => {
         token,
         loading,
         isAuthenticated: !!user,
+        isPro,
+        subscribeToPro,
+        cancelSubscription,
         login,
         register,
         logout,

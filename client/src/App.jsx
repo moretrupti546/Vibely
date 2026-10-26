@@ -9,6 +9,8 @@ import { Navbar } from './components/layout/Navbar';
 import { MobileNav } from './components/layout/MobileNav';
 import { BottomPlayer } from './components/player/BottomPlayer';
 import { CreatePlaylistModal } from './components/modals/CreatePlaylistModal';
+import { SubscriptionModal } from './components/modals/SubscriptionModal';
+import { usePlayer } from './context/PlayerContext';
 
 import { LandingPage } from './pages/LandingPage';
 import { Home } from './pages/Home';
@@ -89,6 +91,7 @@ function AppShell({ children, onOpenCreatePlaylist }) {
 
 export function AppContent() {
   const [createPlaylistOpen, setCreatePlaylistOpen] = useState(false);
+  const { isSubscriptionModalOpen, closeSubscriptionModal, pendingSongForDownload } = usePlayer();
   const navigate = useNavigate();
 
   return (
@@ -202,6 +205,13 @@ export function AppContent() {
             navigate(`/playlist/${newPl.id}`);
           }
         }}
+      />
+
+      {/* Global VIP Subscription Modal */}
+      <SubscriptionModal
+        isOpen={isSubscriptionModalOpen}
+        onClose={closeSubscriptionModal}
+        song={pendingSongForDownload}
       />
     </>
   );

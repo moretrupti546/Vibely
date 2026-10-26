@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, User, LogOut, Settings, Heart, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, User, LogOut, Settings, Heart, Sparkles, Crown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { usePlayer } from '../../context/PlayerContext';
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, isPro } = useAuth();
+  const { openSubscriptionModal } = usePlayer();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -53,6 +55,20 @@ export const Navbar = () => {
 
       {/* User Actions / Auth Pill */}
       <div className="flex items-center gap-3">
+        {/* VIP Status or Upgrade Button */}
+        <button
+          onClick={() => openSubscriptionModal()}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all shadow-md ${
+            isPro
+              ? 'bg-gradient-to-r from-amber-500/20 to-purple-500/20 border border-amber-500/50 text-amber-300 hover:scale-105'
+              : 'hidden sm:flex bg-gradient-to-r from-purple-600/30 to-amber-500/30 hover:from-purple-600/50 hover:to-amber-500/50 border border-amber-500/40 text-amber-200 hover:scale-105 active:scale-95 group'
+          }`}
+          title={isPro ? 'Vibely VIP Member - Unlimited Offline Downloads' : 'Unlock Offline Downloads & Studio Audio'}
+        >
+          <Crown className={`w-3.5 h-3.5 ${isPro ? 'text-amber-400 fill-amber-400' : 'text-amber-400 group-hover:rotate-12 transition-transform'}`} />
+          <span>{isPro ? 'VIP PRO' : 'Get VIP'}</span>
+        </button>
+
         {isAuthenticated ? (
           <div className="relative" ref={dropdownRef}>
             <button

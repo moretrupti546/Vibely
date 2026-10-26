@@ -14,9 +14,12 @@ import {
   ListMusic,
   Loader2,
   Disc3,
-  Sparkles
+  Sparkles,
+  Download,
+  Crown
 } from 'lucide-react';
 import { usePlayer } from '../../context/PlayerContext';
+import { useAuth } from '../../context/AuthContext';
 import { QueueDrawer } from './QueueDrawer';
 
 const formatTime = (secs) => {
@@ -48,8 +51,10 @@ export const BottomPlayer = () => {
     toggleShuffle,
     toggleRepeat,
     isSongLiked,
-    toggleLike
+    toggleLike,
+    downloadTrack
   } = usePlayer();
+  const { isPro } = useAuth();
 
   const [queueOpen, setQueueOpen] = useState(false);
 
@@ -224,8 +229,20 @@ export const BottomPlayer = () => {
           </div>
         </div>
 
-        {/* Right: Volume & Queue */}
-        <div className="hidden md:flex items-center justify-end gap-3 w-1/4">
+        {/* Right: Volume & Queue & Download */}
+        <div className="hidden md:flex items-center justify-end gap-2.5 w-1/4">
+          {/* Download Button */}
+          <button
+            onClick={() => downloadTrack(currentSong)}
+            className="p-2 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors relative group"
+            title={isPro ? `Download "${currentSong.title}" (320kbps MP3)` : 'Download Track (VIP Subscription)'}
+          >
+            <Download className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            {!isPro && (
+              <Crown className="w-2.5 h-2.5 text-amber-400 fill-amber-400 absolute top-1 right-1" />
+            )}
+          </button>
+
           <button
             onClick={() => setQueueOpen(!queueOpen)}
             className={`p-2 rounded-lg transition-colors ${

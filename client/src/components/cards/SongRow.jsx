@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Pause, Heart, MoreHorizontal, Plus, Trash2 } from 'lucide-react';
+import { Play, Pause, Heart, Plus, Trash2, ListPlus, FastForward, Download, Crown } from 'lucide-react';
 import { usePlayer } from '../../context/PlayerContext';
+import { useAuth } from '../../context/AuthContext';
 
 const formatSeconds = (secs) => {
   if (!secs) return '0:00';
@@ -18,7 +19,8 @@ export const SongRow = ({
   onRemove = null,
   onAddToPlaylist = null
 }) => {
-  const { currentSong, isPlaying, playSong, togglePlay, isSongLiked, toggleLike } = usePlayer();
+  const { currentSong, isPlaying, playSong, togglePlay, isSongLiked, toggleLike, addToQueue, playNextInQueue, downloadTrack } = usePlayer();
+  const { isPro } = useAuth();
 
   const isCurrent = currentSong?.id === song.id;
   const isLiked = isSongLiked(song.id);
@@ -108,7 +110,38 @@ export const SongRow = ({
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-3 shrink-0">
+      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        {/* Play Next */}
+        <button
+          onClick={() => playNextInQueue(song)}
+          className="p-1.5 text-slate-400 opacity-0 group-hover:opacity-100 hover:text-purple-400 hover:scale-110 active:scale-95 transition-all"
+          title="Play next in queue"
+        >
+          <FastForward className="w-4 h-4" />
+        </button>
+
+        {/* Add to Queue */}
+        <button
+          onClick={() => addToQueue(song)}
+          className="p-1.5 text-slate-400 opacity-0 group-hover:opacity-100 hover:text-purple-400 hover:scale-110 active:scale-95 transition-all"
+          title="Add to queue"
+        >
+          <ListPlus className="w-4 h-4" />
+        </button>
+
+        {/* Download with VIP status */}
+        <button
+          onClick={() => downloadTrack(song)}
+          className="p-1.5 text-slate-400 opacity-0 group-hover:opacity-100 hover:text-amber-400 hover:scale-110 active:scale-95 transition-all relative"
+          title={isPro ? `Download "${song.title}" (320kbps MP3)` : 'Download Track (VIP Subscription)'}
+        >
+          <Download className="w-4 h-4" />
+          {!isPro && (
+            <Crown className="w-2.5 h-2.5 text-amber-400 fill-amber-400 absolute -top-0.5 -right-0.5" />
+          )}
+        </button>
+
+        {/* Like */}
         <button
           onClick={() => toggleLike(song)}
           className={`p-1.5 transition-colors ${

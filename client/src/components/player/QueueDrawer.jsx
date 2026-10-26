@@ -1,9 +1,11 @@
 import React from 'react';
-import { X, Music2, Trash2, Play } from 'lucide-react';
+import { X, Music2, Trash2, Play, Download, FastForward, Crown } from 'lucide-react';
 import { usePlayer } from '../../context/PlayerContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const QueueDrawer = ({ isOpen, onClose }) => {
-  const { queue, queueIndex, currentSong, playSong, removeFromQueue, clearQueue } = usePlayer();
+  const { queue, queueIndex, currentSong, playSong, removeFromQueue, clearQueue, playNextInQueue, downloadTrack } = usePlayer();
+  const { isPro } = useAuth();
 
   if (!isOpen) return null;
 
@@ -53,10 +55,23 @@ export const QueueDrawer = ({ isOpen, onClose }) => {
               <div className="font-semibold text-sm text-white truncate">{currentSong.title}</div>
               <div className="text-xs text-slate-400 truncate">{currentSong.artist?.name}</div>
             </div>
-            <div className="flex gap-0.5 items-end h-4">
-              <span className="w-1 bg-purple-500 rounded-full animate-bounce h-3" />
-              <span className="w-1 bg-purple-400 rounded-full animate-bounce delay-100 h-4" />
-              <span className="w-1 bg-pink-500 rounded-full animate-bounce delay-200 h-2" />
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => downloadTrack(currentSong)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors relative"
+                title={isPro ? 'Download track (320kbps MP3)' : 'Download Track (VIP)'}
+              >
+                <Download className="w-4 h-4" />
+                {!isPro && (
+                  <Crown className="w-2.5 h-2.5 text-amber-400 fill-amber-400 absolute -top-0.5 -right-0.5" />
+                )}
+              </button>
+
+              <div className="flex gap-0.5 items-end h-4">
+                <span className="w-1 bg-purple-500 rounded-full animate-bounce h-3" />
+                <span className="w-1 bg-purple-400 rounded-full animate-bounce delay-100 h-4" />
+                <span className="w-1 bg-pink-500 rounded-full animate-bounce delay-200 h-2" />
+              </div>
             </div>
           </div>
         </div>
@@ -96,15 +111,32 @@ export const QueueDrawer = ({ isOpen, onClose }) => {
                 </div>
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
+                    onClick={() => playNextInQueue(song)}
+                    className="p-1.5 text-slate-400 hover:text-purple-400 hover:scale-110 transition-all"
+                    title="Play next in queue"
+                  >
+                    <FastForward className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => downloadTrack(song)}
+                    className="p-1.5 text-slate-400 hover:text-amber-400 hover:scale-110 transition-all relative"
+                    title={isPro ? `Download "${song.title}" (320kbps MP3)` : 'Download Track (VIP)'}
+                  >
+                    <Download className="w-4 h-4" />
+                    {!isPro && (
+                      <Crown className="w-2 h-2 text-amber-400 fill-amber-400 absolute -top-0.5 -right-0.5" />
+                    )}
+                  </button>
+                  <button
                     onClick={() => playSong(song)}
-                    className="p-1.5 text-slate-400 hover:text-purple-400 transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-purple-400 hover:scale-110 transition-all"
                     title="Play now"
                   >
                     <Play className="w-4 h-4 fill-current" />
                   </button>
                   <button
                     onClick={() => removeFromQueue(song.id)}
-                    className="p-1.5 text-slate-400 hover:text-rose-400 transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-rose-400 hover:scale-110 transition-all"
                     title="Remove from queue"
                   >
                     <Trash2 className="w-4 h-4" />

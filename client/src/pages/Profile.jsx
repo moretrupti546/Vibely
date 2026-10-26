@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, Mail, Calendar, Edit3, LogOut, Heart, Disc, ListMusic, History, Sparkles, X, Loader2 } from 'lucide-react';
+import { User, Mail, Calendar, Edit3, LogOut, Heart, Disc, ListMusic, History, Sparkles, X, Loader2, Crown, Zap, CheckCircle2, Download } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { usePlayer } from '../context/PlayerContext';
 import { useToast } from '../context/ToastContext';
 import { SongRow } from '../components/cards/SongRow';
 
 export const Profile = () => {
-  const { user, isAuthenticated, logout, updateUser } = useAuth();
+  const { user, isAuthenticated, logout, updateUser, isPro, cancelSubscription } = useAuth();
+  const { openSubscriptionModal } = usePlayer();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -114,10 +116,17 @@ export const Profile = () => {
         </div>
 
         <div className="flex-1 space-y-3 text-center md:text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Vibely Member</span>
-          </div>
+          {isPro ? (
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-pink-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold uppercase tracking-wider shadow-lg shadow-amber-500/10">
+              <Crown className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+              <span>VIP PRO Member</span>
+            </div>
+          ) : (
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Vibely Member</span>
+            </div>
+          )}
 
           <h1 className="font-display text-3xl md:text-5xl font-black text-white leading-tight">
             {user?.name}
@@ -149,6 +158,16 @@ export const Profile = () => {
               <span>Edit Profile</span>
             </button>
 
+            {!isPro && (
+              <button
+                onClick={() => openSubscriptionModal()}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs bg-gradient-to-r from-amber-500 to-pink-500 text-slate-950 hover:brightness-110 shadow-lg shadow-amber-500/20 transition-all hover:scale-105"
+              >
+                <Crown className="w-4 h-4 fill-slate-950" />
+                <span>Upgrade to VIP</span>
+              </button>
+            )}
+
             <button
               onClick={() => {
                 logout();
@@ -159,6 +178,60 @@ export const Profile = () => {
               <LogOut className="w-4 h-4" />
               <span>Sign Out</span>
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* VIP Membership Perks Showcase */}
+      <section className={`p-6 md:p-8 rounded-3xl border transition-all ${isPro ? 'bg-gradient-to-br from-amber-950/20 via-purple-950/30 to-slate-950 border-amber-500/30 shadow-xl' : 'bg-gradient-to-br from-purple-950/30 to-slate-900 border-vibely-border'}`}>
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                <Crown className="w-5 h-5 fill-amber-400" />
+              </div>
+              <h3 className="font-display font-black text-xl text-white">
+                {isPro ? 'Vibely VIP Subscription Active' : 'Vibely VIP Membership'}
+              </h3>
+            </div>
+            <p className="text-sm text-slate-300 max-w-xl">
+              {isPro
+                ? 'Your VIP privileges are active! Enjoy unrestricted 320kbps offline track downloads, Lossless Audio streaming, dynamic queue priority, and exclusive badge styling.'
+                : 'Unlock offline MP3 track downloads, 320kbps ultra-HD audio, zero waiting queues, and high-fidelity sound on any device.'}
+            </p>
+            <div className="flex flex-wrap gap-4 pt-1 text-xs text-slate-400">
+              <span className="flex items-center gap-1.5 text-emerald-400">
+                <CheckCircle2 className="w-4 h-4" /> 320kbps Offline Downloads
+              </span>
+              <span className="flex items-center gap-1.5 text-purple-400">
+                <CheckCircle2 className="w-4 h-4" /> Lossless Audio Engine
+              </span>
+              <span className="flex items-center gap-1.5 text-pink-400">
+                <CheckCircle2 className="w-4 h-4" /> Next-Play Queue Control
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            {isPro ? (
+              <button
+                onClick={() => {
+                  cancelSubscription();
+                  showToast('VIP Subscription deactivated for testing.', 'info');
+                }}
+                className="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white border border-vibely-border transition-all"
+              >
+                Cancel VIP Plan
+              </button>
+            ) : (
+              <button
+                onClick={() => openSubscriptionModal()}
+                className="flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm bg-gradient-to-r from-amber-400 via-pink-500 to-purple-600 hover:from-amber-300 hover:to-purple-500 text-slate-950 shadow-xl shadow-amber-500/20 transition-all hover:scale-105"
+              >
+                <Zap className="w-4 h-4 fill-slate-950" />
+                <span>Start Free VIP Trial</span>
+              </button>
+            )}
           </div>
         </div>
       </section>

@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Pause, Heart } from 'lucide-react';
+import { Play, Pause, Heart, MoreHorizontal, FastForward, ListPlus, Download, Crown } from 'lucide-react';
 import { usePlayer } from '../../context/PlayerContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const SongCard = ({ song, queueList = [] }) => {
-  const { currentSong, isPlaying, playSong, togglePlay, isSongLiked, toggleLike } = usePlayer();
+  const { currentSong, isPlaying, playSong, togglePlay, isSongLiked, toggleLike, addToQueue, playNextInQueue, downloadTrack } = usePlayer();
+  const { isPro } = useAuth();
   const [imgSrc, setImgSrc] = useState(song.coverArt || '/assets/covers/default-cover.svg');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   // Keep imgSrc updated if song changes
-  React.useEffect(() => {
+  useEffect(() => {
     setImgSrc(song.coverArt || '/assets/covers/default-cover.svg');
   }, [song.coverArt]);
+
+  useEffect(() => {
+    const handleOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleOutside);
+      return () => document.removeEventListener('mousedown', handleOutside);
+    }
+  }, [menuOpen]);
 
   const isCurrent = currentSong?.id === song.id;
   const isLiked = isSongLiked(song.id);
@@ -77,6 +93,72 @@ export const SongCard = ({ song, queueList = [] }) => {
             <span className="w-0.5 bg-indigo-400 rounded-full eq-bar-3 h-2.5" />
           </div>
         )}
+
+        {/* Quick Menu Button (top-left) */}
+        <div className="absolute top-2.5 left-2.5 z-20" ref={menuRef}>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setMenuOpen(!menuOpen);
+            }}
+            className="p-1.5 rounded-full bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 hover:bg-black/80 text-slate-300 hover:text-white transition-all shadow-md"
+            title="More actions"
+          >
+            <MoreHorizontal className="w-4 h-4" />
+          </button>
+
+          {menuOpen && (
+            <div className="absolute left-0 mt-1.5 w-44 rounded-2xl bg-slate-900/95 backdrop-blur-2xl border border-vibely-border shadow-2xl p-1.5 z-30 animate-in fade-in zoom-in-95">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  playNextInQueue(song);
+                  setMenuOpen(false);
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:text-white hover:bg-purple-600/20 transition-colors text-left"
+              >
+                <FastForward className="w-3.5 h-3.5 text-purple-400" />
+                <span>Play Next</span>
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  addToQueue(song);
+                  setMenuOpen(false);
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:text-white hover:bg-purple-600/20 transition-colors text-left"
+              >
+                <ListPlus className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Add to Queue</span>
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  downloadTrack(song);
+                  setMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:text-white hover:bg-amber-500/20 transition-colors text-left"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Download className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Download</span>
+                </div>
+                {!isPro && (
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold flex items-center gap-0.5">
+                    <Crown className="w-2.5 h-2.5 fill-amber-300" />
+                    <span>VIP</span>
+                  </span>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Like badge */}
         <button

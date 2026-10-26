@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Play, Pause, Heart, Plus, Disc, User, Sparkles, Loader2, ArrowLeft } from 'lucide-react';
+import { Play, Pause, Heart, Plus, Disc, User, Sparkles, Loader2, ArrowLeft, FastForward, ListPlus, Download, Crown } from 'lucide-react';
 import api from '../services/api';
 import { usePlayer } from '../context/PlayerContext';
+import { useAuth } from '../context/AuthContext';
 import { SongCard } from '../components/cards/SongCard';
 import { AddToPlaylistModal } from '../components/modals/AddToPlaylistModal';
 import { DEFAULT_SONGS } from '../data/catalog';
@@ -17,7 +18,8 @@ const formatSeconds = (secs) => {
 export const SongDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { currentSong, isPlaying, playSong, togglePlay, isSongLiked, toggleLike } = usePlayer();
+  const { currentSong, isPlaying, playSong, togglePlay, isSongLiked, toggleLike, addToQueue, playNextInQueue, downloadTrack } = usePlayer();
+  const { isPro } = useAuth();
 
   const [song, setSong] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -118,7 +120,7 @@ export const SongDetails = () => {
           </div>
 
           {/* Action Row */}
-          <div className="pt-3 flex items-center justify-center md:justify-start gap-4">
+          <div className="pt-3 flex flex-wrap items-center justify-center md:justify-start gap-3">
             <button
               onClick={() => {
                 if (isCurrent) togglePlay();
@@ -134,6 +136,43 @@ export const SongDetails = () => {
               <span>{isCurrent && isPlaying ? 'Pause' : 'Play Track'}</span>
             </button>
 
+            {/* Play Next */}
+            <button
+              onClick={() => playNextInQueue(song)}
+              className="flex items-center gap-2 px-4 py-3 rounded-full bg-vibely-surface border border-vibely-border hover:border-purple-500/40 text-slate-200 hover:text-white font-semibold text-xs transition-all hover:scale-105"
+              title="Play Next (Queue directly after current song)"
+            >
+              <FastForward className="w-4 h-4 text-purple-400" />
+              <span>Play Next</span>
+            </button>
+
+            {/* Add to Queue */}
+            <button
+              onClick={() => addToQueue(song)}
+              className="flex items-center gap-2 px-4 py-3 rounded-full bg-vibely-surface border border-vibely-border hover:border-indigo-500/40 text-slate-200 hover:text-white font-semibold text-xs transition-all hover:scale-105"
+              title="Add to queue"
+            >
+              <ListPlus className="w-4 h-4 text-indigo-400" />
+              <span>Add to Queue</span>
+            </button>
+
+            {/* Download Track (VIP) */}
+            <button
+              onClick={() => downloadTrack(song)}
+              className="flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-amber-500/15 to-purple-500/15 border border-amber-500/40 hover:border-amber-400 text-amber-200 hover:text-white font-semibold text-xs transition-all hover:scale-105 relative group shadow-md"
+              title={isPro ? 'Download 320kbps Studio MP3' : 'Download Track (VIP Subscription)'}
+            >
+              <Download className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+              <span>Download</span>
+              {!isPro && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold flex items-center gap-0.5">
+                  <Crown className="w-2.5 h-2.5 fill-amber-300" />
+                  <span>VIP</span>
+                </span>
+              )}
+            </button>
+
+            {/* Like */}
             <button
               onClick={() => toggleLike(song)}
               className={`p-3 rounded-full border border-vibely-border transition-all hover:scale-105 ${
@@ -146,6 +185,7 @@ export const SongDetails = () => {
               <Heart className={`w-5 h-5 ${isLiked ? 'fill-pink-500' : ''}`} />
             </button>
 
+            {/* Add to Playlist */}
             <button
               onClick={() => setAddToPlaylistOpen(true)}
               className="p-3 rounded-full bg-vibely-surface border border-vibely-border text-slate-300 hover:text-white transition-all hover:scale-105"

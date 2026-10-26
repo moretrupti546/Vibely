@@ -7,8 +7,21 @@ import { DEFAULT_SONGS } from '../data/catalog';
 const PlayerContext = createContext(null);
 
 export const PlayerProvider = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isPro, subscribeToPro } = useAuth();
   const { showToast } = useToast();
+
+  const [subModalOpen, setSubModalOpen] = useState(false);
+  const [pendingSongForDownload, setPendingSongForDownload] = useState(null);
+
+  const openSubscriptionModal = (song = null) => {
+    setPendingSongForDownload(song);
+    setSubModalOpen(true);
+  };
+
+  const closeSubscriptionModal = () => {
+    setSubModalOpen(false);
+    setPendingSongForDownload(null);
+  };
 
   const audioRef = useRef(null);
   if (!audioRef.current && typeof Audio !== 'undefined') {
@@ -432,8 +445,78 @@ export const PlayerProvider = ({ children }) => {
   };
 
   const addToQueue = (song) => {
-    setQueue((prev) => [...prev, song]);
-    showToast(`Added "${song.title}" to queue 🎵`, 'success');
+    if (!song) return;
+    setQueue((prev) => {
+      const exists = prev.some((s) => s.id === song.id);
+      const updated = exists ? prev : [...prev, song];
+      try {
+        localStorage.setItem('vibely_last_queue', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+    showToast(`Added "${song.title}" to play queue 🎵`, 'success');
+  };
+
+  const playNextInQueue = (song) => {
+    if (!song) return;
+    setQueue((prev) => {
+      const qIdx = queueIndexRef.current;
+      // Filter out this song if it's already further down in the queue (keep currently playing intact)
+      const filtered = prev.filter((s, i) => s.id !== song.id || i === qIdx);
+      const insertAt = qIdx + 1;
+      const nextQ = [
+        ...filtered.slice(0, insertAt),
+        song,
+        ...filtered.slice(insertAt)
+      ];
+      try {
+        localStorage.setItem('vibely_last_queue', JSON.stringify(nextQ));
+      } catch (e) {}
+      return nextQ;
+    });
+    showToast(`"${song.title}" will play next ⏭️`, 'success');
+  };
+
+  const downloadTrack = async (song) => {
+    const targetSong = song || currentSongRef.current;
+    if (!targetSong) return;
+
+    if (!isPro) {
+      openSubscriptionModal(targetSong);
+      showToast('💎 VIP Subscription required to download tracks offline.', 'info');
+      return;
+    }
+
+    try {
+      showToast(`Downloading "${targetSong.title}" (320kbps Studio Master)... ⬇️`, 'info');
+      const audioUrl = targetSong.audioUrl || targetSong.previewUrl || '/audio/tum-hi-ho.mp3';
+      const cleanTitle = (targetSong.title || 'Track').replace(/[^a-zA-Z0-9 _-]/g, '');
+      const cleanArtist = (targetSong.artist?.name || 'Vibely').replace(/[^a-zA-Z0-9 _-]/g, '');
+      const filename = `${cleanTitle} - ${cleanArtist} [Vibely 320kbps].mp3`;
+
+      const res = await fetch(audioUrl);
+      if (!res.ok) throw new Error('File download failed');
+      const blob = await res.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 2000);
+      showToast(`Downloaded "${targetSong.title}"! Saved for offline listening 🎧`, 'success');
+    } catch (err) {
+      const audioUrl = targetSong.audioUrl || targetSong.previewUrl || '/audio/tum-hi-ho.mp3';
+      const a = document.createElement('a');
+      a.href = audioUrl;
+      a.download = `${targetSong.title}.mp3`;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast(`Downloading "${targetSong.title}" 🎧`, 'success');
+    }
   };
 
   const removeFromQueue = (songId) => {
@@ -529,6 +612,12 @@ export const PlayerProvider = ({ children }) => {
         toggleShuffle,
         toggleRepeat,
         addToQueue,
+        playNextInQueue,
+        downloadTrack,
+        isSubscriptionModalOpen: subModalOpen,
+        openSubscriptionModal,
+        closeSubscriptionModal,
+        pendingSongForDownload,
         removeFromQueue,
         clearQueue,
         isSongLiked,
