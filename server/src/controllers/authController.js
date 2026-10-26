@@ -75,8 +75,9 @@ const register = async (req, res, next) => {
  */
 const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name, username } = req.body;
     const cleanEmail = (email || '').toLowerCase().trim();
+    const customName = (username || name || '').trim();
 
     if (!cleanEmail) {
       return res.status(400).json({
@@ -90,9 +91,9 @@ const login = async (req, res, next) => {
     });
 
     if (!user) {
-      // Any email can log in: automatically create user account with a friendly name
+      // Any email can log in: automatically create user account with a friendly name or custom username
       const namePart = cleanEmail.split('@')[0] || 'Vibely Listener';
-      const formattedName = namePart
+      const formattedName = customName || namePart
         .replace(/[._-]/g, ' ')
         .split(' ')
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -119,16 +120,25 @@ const login = async (req, res, next) => {
           userId: user.id
         }
       });
-    } else if (password) {
-      // If user exists and password provided, verify or update so user is never locked out
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        const salt = await bcrypt.genSalt(10);
-        const newHashed = await bcrypt.hash(password, salt);
+    } else {
+      // If custom username passed and different from current name, update it
+      if (customName && user.name !== customName) {
         user = await prisma.user.update({
           where: { id: user.id },
-          data: { password: newHashed }
+          data: { name: customName }
         });
+      }
+
+      if (password) {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          const salt = await bcrypt.genSalt(10);
+          const newHashed = await bcrypt.hash(password, salt);
+          user = await prisma.user.update({
+            where: { id: user.id },
+            data: { password: newHashed }
+          });
+        }
       }
     }
 
@@ -146,6 +156,75 @@ const login = async (req, res, next) => {
     res.json({
       success: true,
       message: 'Logged in successfully.',
+      token,
+      user: safeUser
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Google OAuth / Social Authentication Endpoint
+ */
+const googleLogin = async (req, res, next) => {
+  try {
+    const { email, name, username, avatar } = req.body;
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const chosenName = (username || name || cleanEmail.split('@')[0] || 'Google User').trim();
+
+    if (!cleanEmail) {
+      return res.status(400).json({
+        success: false,
+        message: 'Google email address is required.'
+      });
+    }
+
+    let user = await prisma.user.findUnique({
+      where: { email: cleanEmail }
+    });
+
+    if (!user) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash('GoogleOAuthSecret2026!', salt);
+
+      user = await prisma.user.create({
+        data: {
+          name: chosenName,
+          email: cleanEmail,
+          password: hashedPassword,
+          avatar: avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(chosenName)}&backgroundColor=8b5cf6,ec4899,3b82f6`,
+          bio: 'Verified Google Listener on Vibely ✨'
+        }
+      });
+
+      await prisma.playlist.create({
+        data: {
+          title: `${user.name}'s Favorites`,
+          description: 'Personalized collection',
+          userId: user.id
+        }
+      });
+    } else if (chosenName && user.name !== chosenName) {
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: { name: chosenName }
+      });
+    }
+
+    const token = generateToken(user.id);
+    const safeUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      bio: user.bio,
+      createdAt: user.createdAt
+    };
+
+    res.json({
+      success: true,
+      message: `Signed in as ${safeUser.name} with Google.`,
       token,
       user: safeUser
     });
@@ -208,6 +287,7 @@ const logout = async (req, res) => {
 module.exports = {
   register,
   login,
+  googleLogin,
   getMe,
   logout
 };

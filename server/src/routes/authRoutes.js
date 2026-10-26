@@ -6,6 +6,7 @@ const { registerValidation, loginValidation } = require('../middleware/validatio
 
 router.post('/register', registerValidation, authController.register);
 router.post('/login', loginValidation, authController.login);
+router.post('/google', authController.googleLogin);
 router.post('/logout', authController.logout);
 router.get('/me', requireAuth, authController.getMe);
 
