@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Compass, Library, PlusSquare, Heart, Music, Disc3, Sparkles, Sliders, Sun } from 'lucide-react';
+import { Home, Compass, Library, PlusSquare, Heart, Music, Disc3, Sparkles, Sliders, Sun, GraduationCap } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 
@@ -145,6 +145,25 @@ export const Sidebar = ({ onOpenCreatePlaylist }) => {
           </div>
           <span className="px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-md bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-sm">
             DAILY
+          </span>
+        </NavLink>
+
+        <NavLink
+          to="/student"
+          className={({ isActive }) =>
+            `flex items-center justify-between px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 group ${
+              isActive
+                ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30 shadow-lg shadow-purple-500/10'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/40'
+            }`
+          }
+        >
+          <div className="flex items-center gap-3.5">
+            <GraduationCap className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
+            <span>Student Zone</span>
+          </div>
+          <span className="px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-sm">
+            STUDY
           </span>
         </NavLink>
 

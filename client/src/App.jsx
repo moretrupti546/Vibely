@@ -23,6 +23,7 @@ import { ArtistDetails } from './pages/ArtistDetails';
 import { Profile } from './pages/Profile';
 import { MoodSync } from './pages/MoodSync';
 import { Moments } from './pages/Moments';
+import { StudentZone } from './pages/StudentZone';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ArrowLeft, Sparkles } from 'lucide-react';
@@ -169,6 +170,17 @@ export function AppContent() {
             </AppShell>
           }
         />
+        <Route
+          path="/student"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <StudentZone />
+            </AppShell>
+          }
+        />
+        <Route path="/study" element={<Navigate to="/student" replace />} />
+        <Route path="/focus" element={<Navigate to="/student" replace />} />
+        <Route path="/student-zone" element={<Navigate to="/student" replace />} />
         <Route
           path="/soundtracks"
           element={<Navigate to="/moments" replace />}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Play, Pause, Flame, Disc, Radio, Compass, Music2, ArrowRight, Sun, Clock } from 'lucide-react';
+import { Sparkles, Play, Pause, Flame, Disc, Radio, Compass, Music2, ArrowRight, Sun, Clock, GraduationCap } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { usePlayer } from '../context/PlayerContext';
@@ -269,6 +269,74 @@ export const Home = () => {
               <p className="text-[11px] text-slate-400 line-clamp-1">{moment.subtitle}</p>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Vibely Student Zone Spotlight */}
+      <section className="relative overflow-hidden rounded-3xl p-6 md:p-8 border border-cyan-500/30 bg-gradient-to-r from-indigo-950/70 via-slate-900 to-cyan-950/60 shadow-2xl space-y-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider border border-cyan-500/30">
+              <GraduationCap className="w-3.5 h-3.5" />
+              <span>Vibely Student Zone</span>
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-black text-white">
+              Study. <span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-pink-400 bg-clip-text text-transparent">Vibe</span>. Repeat.
+            </h2>
+            <p className="text-xs md:text-sm text-slate-300 max-w-xl">
+              FocusFlow Pomodoro sessions (25/45/60 min), subject-targeted exam playlists (CS, Maths, Theory, De-stress), and virtual “Study with Me” campus rooms.
+            </p>
+          </div>
+
+          <Link
+            to="/student"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white shadow-lg shadow-cyan-500/20 transition-all hover:scale-105 shrink-0"
+          >
+            <span>Enter Student Zone</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        {/* 3 Quick Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <Link
+            to="/student?tab=focus"
+            className="p-4 rounded-2xl bg-slate-900/80 border border-vibely-border hover:border-cyan-500/50 hover:bg-slate-800/80 transition-all group flex items-center gap-3.5 hover:scale-105 shadow-md"
+          >
+            <span className="text-2xl">⏱️</span>
+            <div>
+              <span className="block font-display font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">
+                FocusFlow Timer
+              </span>
+              <span className="text-[10px] text-slate-400">25, 45, 60m + Lo-Fi & Rain</span>
+            </div>
+          </Link>
+
+          <Link
+            to="/student?tab=exam"
+            className="p-4 rounded-2xl bg-slate-900/80 border border-vibely-border hover:border-indigo-500/50 hover:bg-slate-800/80 transition-all group flex items-center gap-3.5 hover:scale-105 shadow-md"
+          >
+            <span className="text-2xl">📚</span>
+            <div>
+              <span className="block font-display font-bold text-sm text-white group-hover:text-indigo-300 transition-colors">
+                Exam Mode
+              </span>
+              <span className="text-[10px] text-slate-400">CS, Maths, Theory, De-stress</span>
+            </div>
+          </Link>
+
+          <Link
+            to="/student?tab=rooms"
+            className="p-4 rounded-2xl bg-slate-900/80 border border-vibely-border hover:border-pink-500/50 hover:bg-slate-800/80 transition-all group flex items-center gap-3.5 hover:scale-105 shadow-md"
+          >
+            <span className="text-2xl">🏛️</span>
+            <div>
+              <span className="block font-display font-bold text-sm text-white group-hover:text-pink-300 transition-colors">
+                Study with Me Rooms
+              </span>
+              <span className="text-[10px] text-slate-400">Sync timer & shared vibes</span>
+            </div>
+          </Link>
         </div>
       </section>
 
