@@ -22,6 +22,7 @@ import { PlaylistDetails } from './pages/PlaylistDetails';
 import { ArtistDetails } from './pages/ArtistDetails';
 import { Profile } from './pages/Profile';
 import { MoodSync } from './pages/MoodSync';
+import { Moments } from './pages/Moments';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ArrowLeft, Sparkles } from 'lucide-react';
@@ -159,6 +160,18 @@ export function AppContent() {
               <MoodSync />
             </AppShell>
           }
+        />
+        <Route
+          path="/moments"
+          element={
+            <AppShell onOpenCreatePlaylist={() => setCreatePlaylistOpen(true)}>
+              <Moments />
+            </AppShell>
+          }
+        />
+        <Route
+          path="/soundtracks"
+          element={<Navigate to="/moments" replace />}
         />
         <Route
           path="/moods"

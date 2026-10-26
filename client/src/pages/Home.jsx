@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Play, Pause, Flame, Disc, Radio, Compass, Music2, ArrowRight } from 'lucide-react';
+import { Sparkles, Play, Pause, Flame, Disc, Radio, Compass, Music2, ArrowRight, Sun, Clock } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { usePlayer } from '../context/PlayerContext';
@@ -15,7 +15,7 @@ import {
   DEFAULT_PLAYLISTS,
   DEFAULT_ARTISTS
 } from '../data/catalog';
-import { MOOD_DEFINITIONS } from '../data/moodCatalog';
+import { MOOD_DEFINITIONS, MOMENT_DEFINITIONS } from '../data/moodCatalog';
 import { useFollowedArtists } from '../hooks/useFollowedArtists';
 
 const getGreeting = () => {
@@ -196,7 +196,7 @@ export const Home = () => {
               Mood<span className="bg-gradient-to-r from-purple-400 via-pink-400 to-amber-400 bg-clip-text text-transparent">Sync</span> — Music for your feelings
             </h2>
             <p className="text-xs md:text-sm text-slate-300 max-w-xl">
-              Select how you feel right now. Calibrate your emotional intensity or dive into bespoke soundtracks for coding, college commutes, and late-night thoughts.
+              Select how you feel right now. Calibrate your emotional intensity with bespoke music for happy, sad, stressed, heartbroken, romantic, or energetic states.
             </p>
           </div>
 
@@ -214,7 +214,7 @@ export const Home = () => {
           {MOOD_DEFINITIONS.map((m) => (
             <Link
               key={m.id}
-              to={`/moodsync?tab=feelings&mood=${m.id}`}
+              to={`/moodsync?mood=${m.id}`}
               className="p-3.5 rounded-2xl bg-slate-900/80 border border-vibely-border hover:border-purple-500/50 hover:bg-slate-800/80 transition-all group flex items-center gap-3 hover:scale-105 shadow-md"
             >
               <span className="text-2xl filter drop-shadow">{m.emoji}</span>
@@ -224,6 +224,49 @@ export const Home = () => {
                 </span>
                 <span className="text-[10px] text-slate-400">3 Intensities</span>
               </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Signature Moments & Daily Soundtracks Spotlight */}
+      <section className="relative overflow-hidden rounded-3xl p-6 md:p-8 border border-amber-500/30 bg-gradient-to-r from-amber-950/40 via-slate-900 to-indigo-950/70 shadow-2xl space-y-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-wider border border-amber-500/30">
+              <Sun className="w-3.5 h-3.5" />
+              <span>Daily Soundtracks & Moments</span>
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-black text-white">
+              Signature <span className="bg-gradient-to-r from-amber-400 via-rose-400 to-purple-400 bg-clip-text text-transparent">Moments</span>
+            </h2>
+            <p className="text-xs md:text-sm text-slate-300 max-w-xl">
+              Curated 7-track sound flows for morning motivation, college commute, coding sessions, evening walks & late-night thoughts. Plus an 8-track Daily Soundtrack refreshed at midnight!
+            </p>
+          </div>
+
+          <Link
+            to="/moments"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-400 hover:to-rose-400 text-white shadow-lg shadow-amber-500/20 transition-all hover:scale-105 shrink-0"
+          >
+            <span>Explore Moments & Daily</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        {/* 5 Moments Pills */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {MOMENT_DEFINITIONS.map((moment) => (
+            <Link
+              key={moment.id}
+              to={`/moments?moment=${moment.id}`}
+              className="p-3.5 rounded-2xl bg-slate-900/80 border border-vibely-border hover:border-amber-500/50 hover:bg-slate-800/80 transition-all group flex flex-col justify-between hover:scale-105 shadow-md"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-amber-400">{moment.title}</span>
+                <span className="text-[10px] text-slate-400 font-mono">7 Tracks</span>
+              </div>
+              <p className="text-[11px] text-slate-400 line-clamp-1">{moment.subtitle}</p>
             </Link>
           ))}
         </div>
