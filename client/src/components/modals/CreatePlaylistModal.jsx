@@ -123,7 +123,7 @@ export const CreatePlaylistModal = ({ isOpen, onClose, onCreated }) => {
                 type="url"
                 value={coverArt}
                 onChange={(e) => setCoverArt(e.target.value)}
-                placeholder="https://images.unsplash.com/..."
+                placeholder="https://... or leave blank for default"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-vibely-border text-white text-sm focus:outline-none focus:border-purple-500"
               />
               <Image className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />

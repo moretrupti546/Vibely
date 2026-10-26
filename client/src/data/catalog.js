@@ -8,7 +8,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-arijit-singh',
     name: 'Arijit Singh',
     bio: 'The undisputed king of modern Bollywood playback singing, soulful romance, and emotional acoustics.',
-    image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-arijit-singh.svg',
     verified: true,
     monthlyListeners: 39500000
   },
@@ -16,7 +16,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-shreya-ghoshal',
     name: 'Shreya Ghoshal',
     bio: "India's nightingale and multi-National Award-winning playback queen of timeless Bollywood romance and melody.",
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-shreya-ghoshal.svg',
     verified: true,
     monthlyListeners: 27800000
   },
@@ -24,7 +24,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-kk',
     name: 'KK (Krishnakumar Kunnath)',
     bio: 'The timeless golden voice of Bollywood rock ballads, college nostalgia, and passionate romantic anthems.',
-    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-kk.svg',
     verified: true,
     monthlyListeners: 19800000
   },
@@ -32,7 +32,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-atif-aslam',
     name: 'Atif Aslam',
     bio: 'Beloved vocal powerhouse revered across the subcontinent for breathtaking Sufi rock and timeless romantic serenades.',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-atif-aslam.svg',
     verified: true,
     monthlyListeners: 24500000
   },
@@ -40,7 +40,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-ar-rahman',
     name: 'A.R. Rahman',
     bio: 'The Mozart of Madras, two-time Academy Award winner, and legendary musical visionary behind iconic global and Indian masterpieces.',
-    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-ar-rahman.svg',
     verified: true,
     monthlyListeners: 41200000
   },
@@ -48,7 +48,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-pritam',
     name: 'Pritam',
     bio: "Bollywood's master composer behind iconic blockbusters, infectious melodies, and generation-defining soundtracks.",
-    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-pritam.svg',
     verified: true,
     monthlyListeners: 32100000
   },
@@ -56,7 +56,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-jubin-nautiyal',
     name: 'Jubin Nautiyal',
     bio: 'Chart-dominating romantic vocalist with a soothing timbre celebrated for record-breaking emotional anthems.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-jubin-nautiyal.svg',
     verified: true,
     monthlyListeners: 28900000
   },
@@ -64,7 +64,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-alka-yagnik',
     name: 'Alka Yagnik',
     bio: 'Iconic playback legend with decades of unforgettable duets, golden era Bollywood melodies, and 2-time National Film Award winner.',
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-alka-yagnik.svg',
     verified: true,
     monthlyListeners: 26400000
   },
@@ -72,7 +72,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-neha-kakkar',
     name: 'Neha Kakkar',
     bio: "India's party sensation and energetic pop queen delivering electrifying dance numbers and wedding anthems.",
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-neha-kakkar.svg',
     verified: true,
     monthlyListeners: 22400000
   },
@@ -80,7 +80,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-armaan-malik',
     name: 'Armaan Malik',
     bio: 'Versatile contemporary playback singer known for heartfelt romantic ballads and global multilingual hits.',
-    image: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-armaan-malik.svg',
     verified: true,
     monthlyListeners: 16800000
   },
@@ -88,7 +88,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-mohit-chauhan',
     name: 'Mohit Chauhan',
     bio: 'The soulful voice of wanderlust, poetic romance, and acoustic guitar ballads that capture the pure essence of music.',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-mohit-chauhan.svg',
     verified: true,
     monthlyListeners: 15400000
   },
@@ -96,7 +96,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-the-weeknd',
     name: 'The Weeknd',
     bio: 'Global superstar known for dark R&B, glittering retro 80s synthwave, and hypnotic stadium pop anthems.',
-    image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-the-weeknd.svg',
     verified: true,
     monthlyListeners: 108000000
   },
@@ -104,7 +104,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-dua-lipa',
     name: 'Dua Lipa',
     bio: 'Modern pop queen defining high-energy disco grooves, infectious dance hooks, and vibrant empowerment.',
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-dua-lipa.svg',
     verified: true,
     monthlyListeners: 78000000
   },
@@ -112,7 +112,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-karan-aujla',
     name: 'Karan Aujla',
     bio: 'Global Punjabi music phenomenon delivering infectious party beats, viral dance bangers, and witty lyricism.',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-karan-aujla.svg',
     verified: true,
     monthlyListeners: 19500000
   },
@@ -120,7 +120,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-neon-mirage',
     name: 'Neon Mirage',
     bio: 'Pioneering retro-futuristic synthwave and pulsating neon electronic soundscapes.',
-    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-neon-mirage.svg',
     verified: true,
     monthlyListeners: 842100
   },
@@ -128,7 +128,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-luna-eclipse',
     name: 'Luna Eclipse',
     bio: 'Warm dusty lo-fi piano loops, rainy beats, and late-night coffee shop frequencies.',
-    image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-luna-eclipse.svg',
     verified: true,
     monthlyListeners: 1250400
   },
@@ -136,7 +136,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-sonu-nigam',
     name: 'Sonu Nigam',
     bio: 'The golden master of Bollywood playback singing, revered for incredible vocal versatility, emotional depth, and timeless romantic melodies.',
-    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-sonu-nigam.svg',
     verified: true,
     monthlyListeners: 29400000
   },
@@ -144,7 +144,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-sunidhi-chauhan',
     name: 'Sunidhi Chauhan',
     bio: 'Dynamic vocal sensation and queen of energetic Bollywood dance tracks, soulful melodies, and electric live stage presence.',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-sunidhi-chauhan.svg',
     verified: true,
     monthlyListeners: 24100000
   },
@@ -152,7 +152,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-anuv-jain',
     name: 'Anuv Jain',
     bio: 'Acclaimed indie singer-songwriter crafting gentle baritone acoustic melodies, poetic storytelling, and nostalgic anthems.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-anuv-jain.svg',
     verified: true,
     monthlyListeners: 14200000
   },
@@ -160,7 +160,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-shankar-mahadevan',
     name: 'Shankar Mahadevan',
     bio: 'Four-time National Film Award winner, composer of Shankar-Ehsaan-Loy, and vocal virtuoso celebrating pure Indian classical fusion.',
-    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-shankar-mahadevan.svg',
     verified: true,
     monthlyListeners: 18700000
   },
@@ -168,7 +168,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-taylor-swift',
     name: 'Taylor Swift',
     bio: 'Global musical powerhouse defining eras of narrative country, dazzling synth-pop, and atmospheric indie folk.',
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-taylor-swift.svg',
     verified: true,
     monthlyListeners: 104000000
   },
@@ -176,7 +176,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-ed-sheeran',
     name: 'Ed Sheeran',
     bio: 'Grammy-winning British acoustic pop titan renowned for global stadium anthems and intimate acoustic ballads.',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-ed-sheeran.svg',
     verified: true,
     monthlyListeners: 82000000
   },
@@ -184,7 +184,7 @@ export const DEFAULT_ARTISTS = [
     id: 'artist-coldplay',
     name: 'Coldplay',
     bio: 'Legendary British rock band creating uplifting stadium anthems, celestial melodies, and kaleidoscopic world tours.',
-    image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/artists/artist-coldplay.svg',
     verified: true,
     monthlyListeners: 79000000
   }
@@ -196,7 +196,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Aashiqui 2 & Soul Ballads',
     releaseYear: 2024,
     genre: 'Bollywood',
-    coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-aashiqui-2.svg',
     artist: DEFAULT_ARTISTS[0]
   },
   {
@@ -204,7 +204,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Bollywood Blockbuster Hits',
     releaseYear: 2024,
     genre: 'Bollywood',
-    coverArt: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-brahmastra.svg',
     artist: DEFAULT_ARTISTS[5]
   },
   {
@@ -212,7 +212,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Suron Ki Raani (Queen of Melody)',
     releaseYear: 2024,
     genre: 'Bollywood',
-    coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-suron-ki-raani.svg',
     artist: DEFAULT_ARTISTS[1]
   },
   {
@@ -220,7 +220,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Bachna Ae Haseeno & 2000s Nostalgia',
     releaseYear: 2023,
     genre: 'Bollywood',
-    coverArt: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-bachna-ae-haseeno.svg',
     artist: DEFAULT_ARTISTS[2]
   },
   {
@@ -228,7 +228,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Ishq Sufiyana & Serenades',
     releaseYear: 2024,
     genre: 'Bollywood',
-    coverArt: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-ishq-sufiyana.svg',
     artist: DEFAULT_ARTISTS[3]
   },
   {
@@ -236,7 +236,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Rockstar & Timeless Sufi',
     releaseYear: 2024,
     genre: 'Sufi',
-    coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-rockstar-sufi.svg',
     artist: DEFAULT_ARTISTS[4]
   },
   {
@@ -244,7 +244,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Desi Dhol & Party Anthems',
     releaseYear: 2024,
     genre: 'Bollywood Dance',
-    coverArt: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-desi-dhol.svg',
     artist: DEFAULT_ARTISTS[8]
   },
   {
@@ -252,7 +252,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Main Rahoon Ya Na Rahoon EP',
     releaseYear: 2023,
     genre: 'Bollywood',
-    coverArt: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-main-rahoon.svg',
     artist: DEFAULT_ARTISTS[9]
   },
   {
@@ -260,7 +260,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Shershaah & Modern Romance',
     releaseYear: 2024,
     genre: 'Bollywood Romance',
-    coverArt: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-shershaah.svg',
     artist: DEFAULT_ARTISTS[6]
   },
   {
@@ -268,7 +268,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Tamasha & Soul Duets',
     releaseYear: 2024,
     genre: 'Bollywood',
-    coverArt: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-tamasha.svg',
     artist: DEFAULT_ARTISTS[7]
   },
   {
@@ -276,7 +276,7 @@ export const DEFAULT_ALBUMS = [
     title: 'War & High-Voltage Beats',
     releaseYear: 2024,
     genre: 'Bollywood Dance',
-    coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-war-grooves.svg',
     artist: DEFAULT_ARTISTS[0]
   },
   {
@@ -284,7 +284,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Yeh Jawaani Hai Deewani Vibes',
     releaseYear: 2024,
     genre: 'Bollywood Pop',
-    coverArt: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-yjhd-vibes.svg',
     artist: DEFAULT_ARTISTS[0]
   },
   {
@@ -292,7 +292,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Bad Newz & Desi Heat',
     releaseYear: 2024,
     genre: 'Punjabi Pop',
-    coverArt: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-bad-newz.svg',
     artist: DEFAULT_ARTISTS[13]
   },
   {
@@ -300,7 +300,7 @@ export const DEFAULT_ALBUMS = [
     title: 'After Hours & Neon Dreams',
     releaseYear: 2024,
     genre: 'Synthwave',
-    coverArt: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-after-hours.svg',
     artist: DEFAULT_ARTISTS[11]
   },
   {
@@ -308,7 +308,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Future Nostalgia & Disco Gold',
     releaseYear: 2024,
     genre: 'Pop Dance',
-    coverArt: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-future-nostalgia.svg',
     artist: DEFAULT_ARTISTS[12]
   },
   {
@@ -316,7 +316,7 @@ export const DEFAULT_ALBUMS = [
     title: 'Late Night Coffee & Lo-Fi Beats',
     releaseYear: 2024,
     genre: 'Lo-Fi',
-    coverArt: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-lofi-cafe.svg',
     artist: DEFAULT_ARTISTS[15]
   },
   {
@@ -385,7 +385,7 @@ export const DEFAULT_SONGS = [
     duration: 262,
     audioUrl: '/audio/tum-hi-ho.mp3',
     previewUrl: '/audio/tum-hi-ho.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/albums/album-sonu-kal-ho-naa-ho.svg',
     genre: 'Bollywood',
     plays: 5850000,
     artist: DEFAULT_ARTISTS[0],
@@ -397,7 +397,7 @@ export const DEFAULT_SONGS = [
     duration: 268,
     audioUrl: '/audio/kesariya.mp3',
     previewUrl: '/audio/kesariya.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-tum-hi-ho.svg',
     genre: 'Bollywood',
     plays: 6210000,
     artist: DEFAULT_ARTISTS[0],
@@ -409,7 +409,7 @@ export const DEFAULT_SONGS = [
     duration: 261,
     audioUrl: '/audio/apna-bana-le.mp3',
     previewUrl: '/audio/apna-bana-le.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-apna-bana-le.svg',
     genre: 'Bollywood Romance',
     plays: 7120000,
     artist: DEFAULT_ARTISTS[0],
@@ -421,7 +421,7 @@ export const DEFAULT_SONGS = [
     duration: 230,
     audioUrl: '/audio/raataan-lambiyan.mp3',
     previewUrl: '/audio/raataan-lambiyan.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-raataan-lambiyan.svg',
     genre: 'Bollywood Romance',
     plays: 8940000,
     artist: DEFAULT_ARTISTS[6],
@@ -433,7 +433,7 @@ export const DEFAULT_SONGS = [
     duration: 341,
     audioUrl: '/audio/agar-tum-saath-ho.mp3',
     previewUrl: '/audio/agar-tum-saath-ho.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-agar-tum-saath-ho.svg',
     genre: 'Bollywood',
     plays: 7650000,
     artist: DEFAULT_ARTISTS[7],
@@ -445,7 +445,7 @@ export const DEFAULT_SONGS = [
     duration: 289,
     audioUrl: '/audio/channa-mereya.mp3',
     previewUrl: '/audio/channa-mereya.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-channa-mereya.svg',
     genre: 'Bollywood',
     plays: 5320000,
     artist: DEFAULT_ARTISTS[0],
@@ -457,7 +457,7 @@ export const DEFAULT_SONGS = [
     duration: 260,
     audioUrl: '/audio/dil-diyan-gallan.mp3',
     previewUrl: '/audio/dil-diyan-gallan.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-dil-diyan-gallan.svg',
     genre: 'Bollywood',
     plays: 5920000,
     artist: DEFAULT_ARTISTS[3],
@@ -469,7 +469,7 @@ export const DEFAULT_SONGS = [
     duration: 335,
     audioUrl: '/audio/khuda-jaane.mp3',
     previewUrl: '/audio/khuda-jaane.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-khuda-jaane.svg',
     genre: 'Bollywood',
     plays: 5620000,
     artist: DEFAULT_ARTISTS[2],
@@ -481,7 +481,7 @@ export const DEFAULT_SONGS = [
     duration: 303,
     audioUrl: '/audio/zara-sa.mp3',
     previewUrl: '/audio/zara-sa.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-zara-sa.svg',
     genre: 'Bollywood',
     plays: 4980000,
     artist: DEFAULT_ARTISTS[2],
@@ -493,7 +493,7 @@ export const DEFAULT_SONGS = [
     duration: 272,
     audioUrl: '/audio/deewani-mastani.mp3',
     previewUrl: '/audio/deewani-mastani.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-deewani-mastani.svg',
     genre: 'Bollywood',
     plays: 5410000,
     artist: DEFAULT_ARTISTS[1],
@@ -505,7 +505,7 @@ export const DEFAULT_SONGS = [
     duration: 310,
     audioUrl: '/audio/yeh-aaina.mp3',
     previewUrl: '/audio/yeh-aaina.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-yeh-aaina.svg',
     genre: 'Bollywood',
     plays: 4740000,
     artist: DEFAULT_ARTISTS[1],
@@ -517,7 +517,7 @@ export const DEFAULT_SONGS = [
     duration: 288,
     audioUrl: '/audio/pee-loon.mp3',
     previewUrl: '/audio/pee-loon.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-pee-loon.svg',
     genre: 'Sufi',
     plays: 6340000,
     artist: DEFAULT_ARTISTS[10],
@@ -531,7 +531,7 @@ export const DEFAULT_SONGS = [
     duration: 302,
     audioUrl: '/audio/ghungroo.mp3',
     previewUrl: '/audio/ghungroo.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-ghungroo.svg',
     genre: 'Bollywood Dance',
     plays: 7890000,
     artist: DEFAULT_ARTISTS[0],
@@ -543,7 +543,7 @@ export const DEFAULT_SONGS = [
     duration: 206,
     audioUrl: '/audio/tauba-tauba.mp3',
     previewUrl: '/audio/tauba-tauba.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-tauba-tauba.svg',
     genre: 'Punjabi Pop',
     plays: 9420000,
     artist: DEFAULT_ARTISTS[13],
@@ -555,7 +555,7 @@ export const DEFAULT_SONGS = [
     duration: 369,
     audioUrl: '/audio/chaiyya-chaiyya.mp3',
     previewUrl: '/audio/chaiyya-chaiyya.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-chaiyya-chaiyya.svg',
     genre: 'Bollywood Dance',
     plays: 6820000,
     artist: DEFAULT_ARTISTS[4],
@@ -567,7 +567,7 @@ export const DEFAULT_SONGS = [
     duration: 232,
     audioUrl: '/audio/london-thumakda.mp3',
     previewUrl: '/audio/london-thumakda.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-london-thumakda.svg',
     genre: 'Bollywood Dance',
     plays: 5780000,
     artist: DEFAULT_ARTISTS[8],
@@ -581,7 +581,7 @@ export const DEFAULT_SONGS = [
     duration: 229,
     audioUrl: '/audio/ilahi.mp3',
     previewUrl: '/audio/ilahi.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-ilahi.svg',
     genre: 'Bollywood Pop',
     plays: 6540000,
     artist: DEFAULT_ARTISTS[0],
@@ -593,7 +593,7 @@ export const DEFAULT_SONGS = [
     duration: 340,
     audioUrl: '/audio/galliyan.mp3',
     previewUrl: '/audio/galliyan.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-galliyan.svg',
     genre: 'Bollywood',
     plays: 5120000,
     artist: DEFAULT_ARTISTS[2],
@@ -605,7 +605,7 @@ export const DEFAULT_SONGS = [
     duration: 309,
     audioUrl: '/audio/main-rahoon.mp3',
     previewUrl: '/audio/main-rahoon.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-main-rahoon.svg',
     genre: 'Bollywood',
     plays: 4820000,
     artist: DEFAULT_ARTISTS[9],
@@ -617,7 +617,7 @@ export const DEFAULT_SONGS = [
     duration: 473,
     audioUrl: '/audio/kun-faya-kun.mp3',
     previewUrl: '/audio/kun-faya-kun.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-kun-faya-kun.svg',
     genre: 'Sufi',
     plays: 6890000,
     artist: DEFAULT_ARTISTS[4],
@@ -631,7 +631,7 @@ export const DEFAULT_SONGS = [
     duration: 200,
     audioUrl: '/audio/blinding-lights.mp3',
     previewUrl: '/audio/blinding-lights.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-blinding-lights.svg',
     genre: 'Synthwave',
     plays: 14200000,
     artist: DEFAULT_ARTISTS[11],
@@ -643,7 +643,7 @@ export const DEFAULT_SONGS = [
     duration: 203,
     audioUrl: '/audio/levitating.mp3',
     previewUrl: '/audio/levitating.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-levitating.svg',
     genre: 'Pop Dance',
     plays: 12100000,
     artist: DEFAULT_ARTISTS[12],
@@ -655,7 +655,7 @@ export const DEFAULT_SONGS = [
     duration: 195,
     audioUrl: '/audio/midnight-rain.mp3',
     previewUrl: '/audio/midnight-rain.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-midnight-rain.svg',
     genre: 'Lo-Fi',
     plays: 3450000,
     artist: DEFAULT_ARTISTS[15],
@@ -667,7 +667,7 @@ export const DEFAULT_SONGS = [
     duration: 218,
     audioUrl: '/audio/cyber-city-drive.mp3',
     previewUrl: '/audio/cyber-city-drive.m4a',
-    coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
+    coverArt: '/assets/covers/song-cyber-city-drive.svg',
     genre: 'Synthwave',
     plays: 2890000,
     artist: DEFAULT_ARTISTS[14],

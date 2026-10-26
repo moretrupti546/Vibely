@@ -42,9 +42,12 @@ export const QueueDrawer = ({ isOpen, onClose }) => {
           </div>
           <div className="flex items-center gap-3">
             <img
-              src={currentSong.coverArt}
+              src={currentSong.coverArt || '/assets/covers/default-cover.svg'}
               alt={currentSong.title}
               className="w-12 h-12 rounded-lg object-cover shadow"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/covers/default-cover.svg';
+              }}
             />
             <div className="flex-1 min-w-0">
               <div className="font-semibold text-sm text-white truncate">{currentSong.title}</div>
@@ -78,9 +81,12 @@ export const QueueDrawer = ({ isOpen, onClose }) => {
                 className="group flex items-center gap-3 p-2 rounded-xl hover:bg-slate-800/50 transition-colors"
               >
                 <img
-                  src={song.coverArt}
+                  src={song.coverArt || '/assets/covers/default-cover.svg'}
                   alt={song.title}
                   className="w-10 h-10 rounded-lg object-cover shrink-0"
+                  onError={(e) => {
+                    e.currentTarget.src = '/assets/covers/default-cover.svg';
+                  }}
                 />
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-sm text-slate-200 truncate group-hover:text-white">

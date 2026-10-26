@@ -45,7 +45,7 @@ const MOODS = [
     gradient: 'from-pink-600/30 to-purple-600/30',
     border: 'border-pink-500/30',
     iconColor: 'text-pink-400',
-    cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'
+    cover: '/assets/playlists/bollywood-romance.svg'
   },
   {
     id: 'chill',
@@ -55,7 +55,7 @@ const MOODS = [
     gradient: 'from-cyan-600/30 to-blue-600/30',
     border: 'border-cyan-500/30',
     iconColor: 'text-cyan-400',
-    cover: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=80'
+    cover: '/assets/covers/song-midnight-rain.svg'
   },
   {
     id: 'sufi',
@@ -65,7 +65,7 @@ const MOODS = [
     gradient: 'from-amber-600/30 to-orange-600/30',
     border: 'border-amber-500/30',
     iconColor: 'text-amber-400',
-    cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80'
+    cover: '/assets/playlists/sufi-divinity.svg'
   },
   {
     id: 'party',
@@ -75,7 +75,7 @@ const MOODS = [
     gradient: 'from-yellow-500/30 to-red-600/30',
     border: 'border-yellow-500/30',
     iconColor: 'text-yellow-400',
-    cover: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80'
+    cover: '/assets/playlists/desi-party.svg'
   },
   {
     id: 'focus',
@@ -85,7 +85,7 @@ const MOODS = [
     gradient: 'from-emerald-600/30 to-teal-600/30',
     border: 'border-emerald-500/30',
     iconColor: 'text-emerald-400',
-    cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80'
+    cover: '/assets/covers/song-cyber-city-drive.svg'
   },
   {
     id: 'late-night',
@@ -95,7 +95,7 @@ const MOODS = [
     gradient: 'from-indigo-600/30 to-violet-600/30',
     border: 'border-indigo-500/30',
     iconColor: 'text-indigo-400',
-    cover: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=600&q=80'
+    cover: '/assets/playlists/synthwave-nights.svg'
   },
   {
     id: 'workout',
@@ -105,7 +105,7 @@ const MOODS = [
     gradient: 'from-rose-600/30 to-orange-600/30',
     border: 'border-rose-500/30',
     iconColor: 'text-rose-400',
-    cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80'
+    cover: '/assets/covers/song-ghungroo.svg'
   },
   {
     id: 'acoustic',
@@ -115,7 +115,7 @@ const MOODS = [
     gradient: 'from-purple-600/30 to-pink-600/30',
     border: 'border-purple-500/30',
     iconColor: 'text-purple-400',
-    cover: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=80'
+    cover: '/assets/covers/song-anuv-baarishein.svg'
   }
 ];
 
@@ -513,9 +513,10 @@ export const LandingPage = () => {
             >
               <div className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-md">
                 <img
-                  src={secondaryHeroSong?.coverArt || 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=300&q=80'}
+                  src={secondaryHeroSong?.coverArt || '/assets/covers/song-kesariya.svg'}
                   alt={secondaryHeroSong?.title || 'Trending Track'}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  onError={(e) => { e.currentTarget.src = '/assets/covers/song-kesariya.svg'; }}
                 />
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                   {isSecondaryPlaying ? (
@@ -582,9 +583,10 @@ export const LandingPage = () => {
             >
               <div className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-md">
                 <img
-                  src={tertiaryHeroSong?.coverArt || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=300&q=80'}
+                  src={tertiaryHeroSong?.coverArt || '/assets/covers/song-khuda-jaane.svg'}
                   alt={tertiaryHeroSong?.title || 'Khuda Jaane'}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  onError={(e) => { e.currentTarget.src = '/assets/covers/song-khuda-jaane.svg'; }}
                 />
                 <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
                   {isTertiaryPlaying ? (
@@ -631,9 +633,10 @@ export const LandingPage = () => {
                     title={isHeroPlaying ? 'Pause Tum Hi Ho' : 'Play Tum Hi Ho'}
                   >
                     <img
-                      src={heroSong?.coverArt || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80"}
+                      src={heroSong?.coverArt || '/assets/covers/song-tum-hi-ho.svg'}
                       alt={heroSong?.title || "Tum Hi Ho"}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => { e.currentTarget.src = '/assets/covers/song-tum-hi-ho.svg'; }}
                     />
                     <div className="absolute inset-0 bg-purple-900/30 flex items-center justify-center">
                       <Disc3 className={`w-7 h-7 text-white/90 ${isHeroPlaying ? 'animate-spin-slow' : ''}`} />

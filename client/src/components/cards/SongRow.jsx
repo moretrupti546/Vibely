@@ -71,7 +71,7 @@ export const SongRow = ({
           alt={song.title}
           className="w-10 h-10 rounded-lg object-cover shrink-0 select-none"
           onError={(e) => {
-            e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+            e.currentTarget.src = '/assets/covers/default-cover.svg';
           }}
         />
       )}

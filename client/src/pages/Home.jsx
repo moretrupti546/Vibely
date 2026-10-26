@@ -159,11 +159,14 @@ export const Home = () => {
             title={isHeroPlaying ? 'Pause' : 'Play'}
           >
             <img
-              src={heroSong.coverArt}
+              src={heroSong.coverArt || '/assets/covers/default-cover.svg'}
               alt={heroSong.title}
               className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ${
                 isHeroPlaying ? 'scale-105' : ''
               }`}
+              onError={(e) => {
+                e.currentTarget.src = '/assets/covers/default-cover.svg';
+              }}
             />
             {isHeroPlaying && (
               <div className="absolute inset-0 bg-purple-950/30 backdrop-blur-[1px] flex items-center justify-center">

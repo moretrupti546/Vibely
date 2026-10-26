@@ -85,7 +85,7 @@ export const SongDetails = () => {
             alt={song.title}
             className="w-full h-full object-cover select-none"
             onError={(e) => {
-              e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+              e.currentTarget.src = '/assets/covers/default-cover.svg';
             }}
           />
         </div>

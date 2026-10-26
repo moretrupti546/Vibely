@@ -65,11 +65,11 @@ export const BottomPlayer = () => {
         <div className="flex items-center gap-3.5 w-1/4 min-w-[160px] md:min-w-[220px]">
           <Link to={`/song/${currentSong.id}`} className="shrink-0 group relative overflow-hidden rounded-xl">
             <img
-              src={currentSong.coverArt || '/assets/playlists/default-playlist.svg'}
+              src={currentSong.coverArt || '/assets/covers/default-cover.svg'}
               alt={currentSong.title}
               className="w-12 h-12 md:w-14 md:h-14 object-cover shadow-md group-hover:scale-105 transition-transform select-none"
               onError={(e) => {
-                e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+                e.currentTarget.src = '/assets/covers/default-cover.svg';
               }}
             />
           </Link>

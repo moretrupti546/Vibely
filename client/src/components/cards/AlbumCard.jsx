@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { Disc3, Play } from 'lucide-react';
 
 export const AlbumCard = ({ album }) => {
-  const [imgSrc, setImgSrc] = useState(album.coverArt || '/assets/playlists/default-playlist.svg');
+  const [imgSrc, setImgSrc] = useState(album.coverArt || '/assets/albums/default-album.svg');
+
+  React.useEffect(() => {
+    setImgSrc(album.coverArt || '/assets/albums/default-album.svg');
+  }, [album.coverArt]);
 
   return (
     <Link
@@ -16,7 +20,7 @@ export const AlbumCard = ({ album }) => {
           alt={album.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 select-none"
           loading="lazy"
-          onError={() => setImgSrc('/assets/playlists/default-playlist.svg')}
+          onError={() => setImgSrc('/assets/albums/default-album.svg')}
         />
 
         <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 flex items-center justify-center">

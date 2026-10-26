@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Play, Pause, Heart } from 'lucide-react';
 import { usePlayer } from '../../context/PlayerContext';
 
 export const SongCard = ({ song, queueList = [] }) => {
   const { currentSong, isPlaying, playSong, togglePlay, isSongLiked, toggleLike } = usePlayer();
-  const [imgSrc, setImgSrc] = useState(song.coverArt || '/assets/playlists/default-playlist.svg');
+  const [imgSrc, setImgSrc] = useState(song.coverArt || '/assets/covers/default-cover.svg');
+
+  // Keep imgSrc updated if song changes
+  React.useEffect(() => {
+    setImgSrc(song.coverArt || '/assets/covers/default-cover.svg');
+  }, [song.coverArt]);
 
   const isCurrent = currentSong?.id === song.id;
   const isLiked = isSongLiked(song.id);
@@ -41,7 +46,7 @@ export const SongCard = ({ song, queueList = [] }) => {
           alt={song.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 select-none"
           loading="lazy"
-          onError={() => setImgSrc('/assets/playlists/default-playlist.svg')}
+          onError={() => setImgSrc('/assets/covers/default-cover.svg')}
         />
 
         {/* Hover & Keyboard Focus Overlay & Play button */}
