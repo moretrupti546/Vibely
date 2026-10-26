@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Compass, Library, User } from 'lucide-react';
+import { Home, Compass, Library, User, Sliders } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export const MobileNav = () => {
@@ -30,6 +30,18 @@ export const MobileNav = () => {
       >
         <Compass className="w-5 h-5" />
         <span>Explore</span>
+      </NavLink>
+
+      <NavLink
+        to="/moodsync"
+        className={({ isActive }) =>
+          `flex flex-col items-center gap-1 text-[11px] font-medium transition-colors ${
+            isActive ? 'text-pink-400' : 'text-slate-400 hover:text-white'
+          }`
+        }
+      >
+        <Sliders className="w-5 h-5" />
+        <span>MoodSync</span>
       </NavLink>
 
       <NavLink
