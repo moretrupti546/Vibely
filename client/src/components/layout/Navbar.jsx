@@ -113,6 +113,22 @@ export const Navbar = () => {
                     <Heart className="w-4 h-4 text-pink-400" />
                     <span>Liked Songs</span>
                   </Link>
+
+                  <button
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      openSubscriptionModal();
+                    }}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm text-amber-300 hover:text-amber-200 hover:bg-amber-500/10 transition-colors text-left"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Crown className={`w-4 h-4 ${isPro ? 'text-amber-400 fill-amber-400' : 'text-amber-400'}`} />
+                      <span>{isPro ? 'VIP Pro: Active' : 'Get VIP Pro'}</span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                      {isPro ? 'CANCEL / MANAGE' : 'UPGRADE'}
+                    </span>
+                  </button>
                 </div>
 
                 <div className="border-t border-vibely-border/60 pt-1">

@@ -23,6 +23,7 @@ export const Profile = () => {
   const [editBio, setEditBio] = useState('');
   const [editAvatar, setEditAvatar] = useState('');
   const [saving, setSaving] = useState(false);
+  const [confirmCancelOpen, setConfirmCancelOpen] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -214,15 +215,33 @@ export const Profile = () => {
 
           <div className="flex items-center gap-3 shrink-0">
             {isPro ? (
-              <button
-                onClick={() => {
-                  cancelSubscription();
-                  showToast('VIP Subscription deactivated for testing.', 'info');
-                }}
-                className="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-white border border-vibely-border transition-all"
-              >
-                Cancel VIP Plan
-              </button>
+              confirmCancelOpen ? (
+                <div className="flex items-center gap-2 bg-slate-900/90 border border-rose-500/40 p-2 rounded-2xl animate-in fade-in">
+                  <span className="text-xs text-rose-300 font-medium px-2">Cancel VIP?</span>
+                  <button
+                    onClick={() => {
+                      cancelSubscription();
+                      setConfirmCancelOpen(false);
+                    }}
+                    className="px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white transition-all shadow-md"
+                  >
+                    Yes, Cancel
+                  </button>
+                  <button
+                    onClick={() => setConfirmCancelOpen(false)}
+                    className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all"
+                  >
+                    Keep VIP
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setConfirmCancelOpen(true)}
+                  className="px-4 py-2.5 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-rose-300 hover:text-rose-200 border border-rose-500/30 hover:border-rose-500/50 transition-all flex items-center gap-2"
+                >
+                  <span>Cancel VIP Plan</span>
+                </button>
+              )
             ) : (
               <button
                 onClick={() => openSubscriptionModal()}

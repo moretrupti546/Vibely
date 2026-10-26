@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('vibely_user', JSON.stringify(updated));
       return updated;
     });
+    window.dispatchEvent(new Event('vibely_subscription_updated'));
     showToast('🌟 Welcome to Vibely VIP! Offline downloads unlocked.', 'success');
   };
 
@@ -42,7 +43,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('vibely_user', JSON.stringify(updated));
       return updated;
     });
-    showToast('VIP Subscription deactivated.', 'info');
+    window.dispatchEvent(new Event('vibely_subscription_updated'));
+    showToast('VIP Subscription cancelled. Reverted to Free plan.', 'info');
   };
 
   useEffect(() => {
