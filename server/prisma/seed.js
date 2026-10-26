@@ -546,53 +546,53 @@ async function main() {
   // 5. Curated Playlists
   const playlistsData = [
     {
-      title: 'Bollywood Romance: Dil Ki Baatein',
-      description: 'The definitive Hindi romantic collection featuring heartfelt vocals from Arijit Singh, Jubin Nautiyal, Atif Aslam, and Shreya Ghoshal.',
-      coverArt: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
-      userId: curatorUser.id,
-      tracks: [createdSongs[0].id, createdSongs[1].id, createdSongs[2].id, createdSongs[3].id, createdSongs[4].id, createdSongs[5].id, createdSongs[6].id]
-    },
-    {
-      title: 'Arijit Singh Soulful Anthems',
-      description: 'Acoustic mastery and heart-touching melodies by Bollywood legend Arijit Singh.',
-      coverArt: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=80',
-      userId: curatorUser.id,
-      tracks: [createdSongs[0].id, createdSongs[1].id, createdSongs[2].id, createdSongs[5].id, createdSongs[12].id, createdSongs[16].id]
-    },
-    {
-      title: 'Desi Party & Dhol Anthems',
-      description: 'High-voltage dance club anthems and energetic wedding hits featuring Tauba Tauba, Ghungroo, and Chaiyya Chaiyya.',
-      coverArt: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80',
-      userId: curatorUser.id,
-      tracks: [createdSongs[13].id, createdSongs[12].id, createdSongs[14].id, createdSongs[15].id, createdSongs[21].id]
-    },
-    {
-      title: 'Sufi & Soulful Divinity',
-      description: 'Spiritual transcendence and emotional depth with Kun Faya Kun, Pee Loon, and Dil Diyan Gallan.',
-      coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
-      userId: curatorUser.id,
-      tracks: [createdSongs[19].id, createdSongs[11].id, createdSongs[6].id, createdSongs[4].id]
-    },
-    {
-      title: 'Wanderlust: Highway & Road Trips',
-      description: 'Wind down the windows with Ilahi, Galliyan, and unforgettable college anthems.',
-      coverArt: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
-      userId: curatorUser.id,
-      tracks: [createdSongs[16].id, createdSongs[17].id, createdSongs[18].id, createdSongs[7].id]
+      title: "Trupti's Bollywood Gold",
+      description: "Trupti's personally curated mix of romantic, soul, and evergreen Bollywood hits.",
+      coverArt: '/assets/playlists/bollywood-gold.svg',
+      userId: demoUser.id,
+      tracks: [createdSongs[0].id, createdSongs[1].id, createdSongs[2].id, createdSongs[3].id, createdSongs[4].id, createdSongs[12].id, createdSongs[19].id]
     },
     {
       title: 'Late Night Synthwave & Neon Lights',
       description: 'Retro 80s synthesizers, driving basslines, and cyberpunk midnight vibes.',
-      coverArt: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=600&q=80',
+      coverArt: '/assets/playlists/synthwave-nights.svg',
       userId: curatorUser.id,
       tracks: [createdSongs[20].id, createdSongs[23].id, createdSongs[22].id]
     },
     {
-      title: "Trupti's Bollywood Gold",
-      description: "Trupti's personally curated mix of romantic, soul, and evergreen Bollywood hits.",
-      coverArt: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
-      userId: demoUser.id,
-      tracks: [createdSongs[0].id, createdSongs[1].id, createdSongs[2].id, createdSongs[3].id, createdSongs[4].id, createdSongs[12].id, createdSongs[19].id]
+      title: 'Wanderlust: Highway & Road Trips',
+      description: 'Wind down the windows with Ilahi, Galliyan, and unforgettable college anthems.',
+      coverArt: '/assets/playlists/wanderlust.svg',
+      userId: curatorUser.id,
+      tracks: [createdSongs[16].id, createdSongs[17].id, createdSongs[18].id, createdSongs[7].id]
+    },
+    {
+      title: 'Sufi & Soulful Divinity',
+      description: 'Spiritual transcendence and emotional depth with Kun Faya Kun, Pee Loon, and Dil Diyan Gallan.',
+      coverArt: '/assets/playlists/sufi-divinity.svg',
+      userId: curatorUser.id,
+      tracks: [createdSongs[19].id, createdSongs[11].id, createdSongs[6].id, createdSongs[4].id]
+    },
+    {
+      title: 'Desi Party & Dhol Anthems',
+      description: 'High-voltage dance club anthems and energetic wedding hits featuring Tauba Tauba, Ghungroo, and Chaiyya Chaiyya.',
+      coverArt: '/assets/playlists/desi-party.svg',
+      userId: curatorUser.id,
+      tracks: [createdSongs[13].id, createdSongs[12].id, createdSongs[14].id, createdSongs[15].id, createdSongs[21].id]
+    },
+    {
+      title: 'Arijit Singh Soulful Anthems',
+      description: 'Acoustic mastery and heart-touching melodies by Bollywood legend Arijit Singh.',
+      coverArt: '/assets/playlists/arijit-anthems.svg',
+      userId: curatorUser.id,
+      tracks: [createdSongs[0].id, createdSongs[1].id, createdSongs[2].id, createdSongs[5].id, createdSongs[12].id, createdSongs[16].id]
+    },
+    {
+      title: 'Bollywood Romance: Dil Ki Baatein',
+      description: 'The definitive Hindi romantic collection featuring heartfelt vocals from Arijit Singh, Jubin Nautiyal, Atif Aslam, and Shreya Ghoshal.',
+      coverArt: '/assets/playlists/bollywood-romance.svg',
+      userId: curatorUser.id,
+      tracks: [createdSongs[0].id, createdSongs[1].id, createdSongs[2].id, createdSongs[3].id, createdSongs[4].id, createdSongs[5].id, createdSongs[6].id]
     }
   ];
 

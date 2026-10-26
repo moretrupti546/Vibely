@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="partyBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#2e0219" />
+      <stop offset="50%" stopColor="#4a044e" />
+      <stop offset="100%" stopColor="#180210" />
+    </linearGradient>
+    <linearGradient id="partyFiesta" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stopColor="#f43f5e" />
+      <stop offset="50%" stopColor="#ec4899" />
+      <stop offset="100%" stopColor="#f97316" />
+    </linearGradient>
+    <linearGradient id="dholGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#fbbf24" />
+      <stop offset="100%" stopColor="#d97706" />
+    </linearGradient>
+    <filter id="partyGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="600" fill="url(#partyBg)" />
+
+  <!-- Neon Party Glow Lights -->
+  <circle cx="160" cy="180" r="140" fill="#f43f5e" opacity="0.35" filter="url(#partyGlow)" />
+  <circle cx="440" cy="220" r="140" fill="#f97316" opacity="0.3" filter="url(#partyGlow)" />
+  <circle cx="300" cy="380" r="160" fill="#a855f7" opacity="0.25" filter="url(#partyGlow)" />
+
+  <!-- Confetti / Beats in Air -->
+  <rect x="120" y="80" width="8" height="18" rx="2" fill="#f43f5e" transform="rotate(25 120 80)" opacity="0.8" />
+  <rect x="220" y="110" width="10" height="14" rx="2" fill="#fbbf24" transform="rotate(-35 220 110)" opacity="0.9" />
+  <rect x="420" y="70" width="12" height="16" rx="2" fill="#06b6d4" transform="rotate(40 420 70)" opacity="0.85" />
+  <rect x="480" y="140" width="8" height="20" rx="2" fill="#ec4899" transform="rotate(-20 480 140)" opacity="0.9" />
+  <circle cx="280" cy="90" r="5" fill="#f43f5e" />
+  <circle cx="360" cy="130" r="4" fill="#fbbf24" />
+  <circle cx="160" cy="160" r="6" fill="#a855f7" />
+
+  <!-- Desi Dhol Center Artwork -->
+  <g transform="translate(300, 270)">
+    <!-- Shockwaves radiating outward -->
+    <ellipse cx="0" cy="0" rx="190" ry="110" fill="none" stroke="#f43f5e" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="6 8" />
+    <ellipse cx="0" cy="0" rx="160" ry="90" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-opacity="0.4" />
+
+    <!-- Dhol Body (Barrel) -->
+    <path d="M -110,-55 C -60,-85 60,-85 110,-55 L 110,55 C 60,85 -60,85 -110,55 Z" fill="#581c87" stroke="url(#dholGrad)" stroke-width="4" filter="url(#partyGlow)" />
+    <!-- Dhol Skin Left -->
+    <ellipse cx="-110" cy="0" rx="22" ry="55" fill="#d97706" stroke="#fef08a" stroke-width="3" />
+    <ellipse cx="-110" cy="0" rx="14" ry="40" fill="#78350f" />
+    <!-- Dhol Skin Right -->
+    <ellipse cx="110" cy="0" rx="22" ry="55" fill="#d97706" stroke="#fef08a" stroke-width="3" />
+    <ellipse cx="110" cy="0" rx="14" ry="40" fill="#78350f" />
+
+    <!-- Dhol Straps / Rope Rhythms -->
+    <line x1="-110" y1="-55" x2="-20" y2="78" stroke="#fef08a" stroke-width="2.5" />
+    <line x1="-20" y1="78" x2="40" y2="-78" stroke="#fef08a" stroke-width="2.5" />
+    <line x1="40" y1="-78" x2="110" y2="55" stroke="#fef08a" stroke-width="2.5" />
+    <line x1="-110" y1="55" x2="-40" y2="-78" stroke="#fef08a" stroke-width="2" stroke-dasharray="4 4" />
+    <line x1="-40" y1="-78" x2="20" y2="78" stroke="#fef08a" stroke-width="2" stroke-dasharray="4 4" />
+    <line x1="20" y1="78" x2="110" y2="-55" stroke="#fef08a" stroke-width="2" stroke-dasharray="4 4" />
+
+    <!-- Crossed Dhol Sticks (Dagga & Tilli) -->
+    <line x1="-120" y1="-100" x2="120" y2="100" stroke="#fef08a" stroke-width="4" stroke-linecap="round" />
+    <circle cx="-120" cy="-100" r="10" fill="#f59e0b" />
+    <line x1="120" y1="-100" x2="-120" y2="100" stroke="#fef08a" stroke-width="4" stroke-linecap="round" />
+    <circle cx="120" cy="-100" r="10" fill="#f59e0b" />
+  </g>
+
+  <!-- Title Badge -->
+  <rect x="40" y="495" width="520" height="70" rx="20" fill="#200318" fill-opacity="0.9" stroke="url(#partyFiesta)" stroke-width="1.5" />
+  <text x="70" y="534" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="22" fill="#ffffff" letter-spacing="0.5">DESI PARTY &amp; DHOL ANTHEMS</text>
+  <text x="70" y="552" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="12" fill="#f43f5e" letter-spacing="1.5">HIGH-VOLTAGE DHOL • CLUB BANGERS</text>
+  <circle cx="510" cy="530" r="16" fill="url(#partyFiesta)" />
+  <polygon points="506,522 518,530 506,538" fill="#ffffff" />
+</svg>

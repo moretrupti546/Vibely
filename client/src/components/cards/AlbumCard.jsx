@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Disc3, Play } from 'lucide-react';
 
 export const AlbumCard = ({ album }) => {
+  const [imgSrc, setImgSrc] = useState(album.coverArt || '/assets/playlists/default-playlist.svg');
+
   return (
     <Link
       to={`/album/${album.id}`}
@@ -10,14 +12,15 @@ export const AlbumCard = ({ album }) => {
     >
       <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-3 bg-slate-900 shadow-md">
         <img
-          src={album.coverArt}
+          src={imgSrc}
           alt={album.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 select-none"
           loading="lazy"
+          onError={() => setImgSrc('/assets/playlists/default-playlist.svg')}
         />
 
         <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-500 text-white flex items-center justify-center shadow-xl shadow-purple-600/40 transform translate-y-2 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-300">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 via-pink-500 to-indigo-500 text-white flex items-center justify-center shadow-xl shadow-purple-600/40 transform translate-y-2 group-hover:translate-y-0 group-focus-within:translate-y-0 hover:scale-110 active:scale-95 transition-all duration-300">
             <Play className="w-5 h-5 fill-current ml-0.5" />
           </div>
         </div>

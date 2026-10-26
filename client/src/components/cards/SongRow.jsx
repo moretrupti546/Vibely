@@ -69,7 +69,10 @@ export const SongRow = ({
         <img
           src={song.coverArt}
           alt={song.title}
-          className="w-10 h-10 rounded-lg object-cover shrink-0"
+          className="w-10 h-10 rounded-lg object-cover shrink-0 select-none"
+          onError={(e) => {
+            e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+          }}
         />
       )}
 

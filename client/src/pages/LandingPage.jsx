@@ -453,7 +453,7 @@ export const LandingPage = () => {
             <h1 className="animate-fade-in-up stagger-2 font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
               Your Music. <br className="hidden sm:inline" />
               Your Mood. <br />
-              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-300 bg-clip-text text-transparent animate-gradient-text">
                 Your Vibely.
               </span>
             </h1>
@@ -824,7 +824,10 @@ export const LandingPage = () => {
                       <img
                         src={song.coverArt}
                         alt={song.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 select-none"
+                        onError={(e) => {
+                          e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+                        }}
                       />
                       <button
                         onClick={() => {
@@ -941,7 +944,10 @@ export const LandingPage = () => {
                   <img
                     src={art.image}
                     alt={art.name}
-                    className="w-20 h-20 mx-auto rounded-full object-cover shadow-lg group-hover:scale-105 transition-transform duration-300"
+                    className="w-20 h-20 mx-auto rounded-full object-cover shadow-lg group-hover:scale-105 transition-transform duration-300 select-none"
+                    onError={(e) => {
+                      e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+                    }}
                   />
                   <h4 className="font-semibold text-sm text-white mt-3 truncate group-hover:text-purple-300">
                     {art.name}

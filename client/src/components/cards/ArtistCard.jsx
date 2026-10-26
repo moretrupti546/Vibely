@@ -12,8 +12,11 @@ export const ArtistCard = ({ artist }) => {
         <img
           src={artist.image}
           alt={artist.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 select-none"
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+          }}
         />
       </div>
 

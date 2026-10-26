@@ -5,6 +5,7 @@ import { usePlayer } from '../../context/PlayerContext';
 
 export const SongCard = ({ song, queueList = [] }) => {
   const { currentSong, isPlaying, playSong, togglePlay, isSongLiked, toggleLike } = usePlayer();
+  const [imgSrc, setImgSrc] = useState(song.coverArt || '/assets/playlists/default-playlist.svg');
 
   const isCurrent = currentSong?.id === song.id;
   const isLiked = isSongLiked(song.id);
@@ -36,10 +37,11 @@ export const SongCard = ({ song, queueList = [] }) => {
       {/* Artwork with floating play button */}
       <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-3 bg-slate-900 shadow-md">
         <img
-          src={song.coverArt}
+          src={imgSrc}
           alt={song.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 select-none"
           loading="lazy"
+          onError={() => setImgSrc('/assets/playlists/default-playlist.svg')}
         />
 
         {/* Hover & Keyboard Focus Overlay & Play button */}

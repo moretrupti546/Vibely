@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sufiBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#1a0b2e" />
+      <stop offset="50%" stopColor="#2e1065" />
+      <stop offset="100%" stopColor="#090114" />
+    </linearGradient>
+    <linearGradient id="amberGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#fef08a" />
+      <stop offset="50%" stopColor="#f59e0b" />
+      <stop offset="100%" stopColor="#b45309" />
+    </linearGradient>
+    <filter id="mysticGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="22" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="600" fill="url(#sufiBg)" />
+
+  <!-- Ambient Spiritual Glows -->
+  <circle cx="300" cy="260" r="180" fill="#d97706" opacity="0.3" filter="url(#mysticGlow)" />
+  <circle cx="300" cy="260" r="110" fill="#a855f7" opacity="0.25" filter="url(#mysticGlow)" />
+
+  <!-- Sacred Geometry Mandala Pattern -->
+  <g transform="translate(300, 260)" stroke="url(#amberGold)" fill="none" opacity="0.85">
+    <!-- Outer Star Octagram -->
+    <polygon points="0,-180 45,-125 125,-125 125,-45 180,0 125,45 125,125 45,125 0,180 -45,125 -125,125 -125,45 -180,0 -125,-45 -125,-125 -45,-125" stroke-width="2" />
+    <polygon points="0,-180 45,-125 125,-125 125,-45 180,0 125,45 125,125 45,125 0,180 -45,125 -125,125 -125,45 -180,0 -125,-45 -125,-125 -45,-125" stroke-width="1" transform="rotate(22.5)" stroke-opacity="0.5" />
+    
+    <!-- Concentric Rings with Petals -->
+    <circle r="145" stroke-width="1.5" stroke-dasharray="4 6" />
+    <circle r="110" stroke-width="2" />
+    <circle r="85" stroke-width="1.5" stroke-opacity="0.6" />
+    
+    <!-- Inner 8-Petal Rosette -->
+    <g stroke-width="1.5">
+      <ellipse cx="0" cy="-45" rx="16" ry="40" />
+      <ellipse cx="0" cy="45" rx="16" ry="40" />
+      <ellipse cx="-45" cy="0" rx="40" ry="16" />
+      <ellipse cx="45" cy="0" rx="40" ry="16" />
+      <ellipse cx="-32" cy="-32" rx="40" ry="16" transform="rotate(-45 -32 -32)" />
+      <ellipse cx="32" cy="-32" rx="40" ry="16" transform="rotate(45 32 -32)" />
+      <ellipse cx="-32" cy="32" rx="40" ry="16" transform="rotate(45 -32 32)" />
+      <ellipse cx="32" cy="32" rx="40" ry="16" transform="rotate(-45 32 32)" />
+    </g>
+
+    <!-- Center Radiant Core -->
+    <circle r="28" fill="url(#amberGold)" opacity="0.9" filter="url(#mysticGlow)" />
+    <circle r="22" fill="#2e1065" />
+    <circle r="8" fill="#fef08a" />
+  </g>
+
+  <!-- Sufi Floating Sound Rays -->
+  <g transform="translate(300, 260)" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.3">
+    <line x1="0" y1="-210" x2="0" y2="-190" />
+    <line x1="148" y1="-148" x2="134" y2="-134" />
+    <line x1="210" y1="0" x2="190" y2="0" />
+    <line x1="148" y1="148" x2="134" y2="134" />
+    <line x1="0" y1="210" x2="0" y2="190" />
+    <line x1="-148" y1="148" x2="-134" y2="134" />
+    <line x1="-210" y1="0" x2="-190" y2="0" />
+    <line x1="-148" y1="-148" x2="-134" y2="-134" />
+  </g>
+
+  <!-- Title Badge -->
+  <rect x="40" y="495" width="520" height="70" rx="20" fill="#1e0b36" fill-opacity="0.9" stroke="url(#amberGold)" stroke-width="1.5" />
+  <text x="70" y="534" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="22" fill="#ffffff" letter-spacing="0.5">SUFI &amp; SOULFUL DIVINITY</text>
+  <text x="70" y="552" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="12" fill="#f59e0b" letter-spacing="1.5">SPIRITUAL TRANSCENDENCE • PURE SERENITY</text>
+  <circle cx="510" cy="530" r="16" fill="url(#amberGold)" />
+  <polygon points="506,522 518,530 506,538" fill="#1e0b36" />
+</svg>

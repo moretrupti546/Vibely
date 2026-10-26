@@ -80,7 +80,14 @@ export const SongDetails = () => {
       {/* Main Track Header */}
       <section className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8 p-6 md:p-8 rounded-3xl bg-vibely-surface border border-vibely-border">
         <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-2xl shrink-0 bg-slate-900 border border-white/10">
-          <img src={song.coverArt} alt={song.title} className="w-full h-full object-cover" />
+          <img
+            src={song.coverArt || '/assets/playlists/default-playlist.svg'}
+            alt={song.title}
+            className="w-full h-full object-cover select-none"
+            onError={(e) => {
+              e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+            }}
+          />
         </div>
 
         <div className="flex-1 space-y-3 text-center md:text-left">

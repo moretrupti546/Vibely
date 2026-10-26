@@ -389,21 +389,58 @@ input[type="range"] {
   left: 0;
 }
 
-/* --- 8. Smooth transitions & graceful fallbacks --- */
-.reveal-hidden {
-  opacity: 1; /* Fallback baseline */
+/* --- 8. Animated Heading Gradient & Shimmer Effects --- */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-@supports (opacity: 0) {
-  .reveal-hidden {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+.animate-gradient-text {
+  background-size: 200% auto;
+  animation: gradientShift 6s ease-in-out infinite;
+}
+
+@keyframes shimmerPulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.995);
   }
-  .reveal-visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
+  50% {
+    opacity: 0.9;
+    transform: scale(1);
   }
 }
+
+.animate-shimmer {
+  animation: shimmerPulse 2s ease-in-out infinite;
+}
+
+/* --- 9. Accessibility: Respect prefers-reduced-motion appropriately --- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-hidden,
+  .stagger-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .animate-float-slow,
+  .animate-float-slow-delayed,
+  .animate-float-reverse,
+  .animate-float-gentle,
+  .animate-float-drift,
+  .animate-spin-slow,
+  .animate-wave-drift,
+  .animate-gradient-text {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 

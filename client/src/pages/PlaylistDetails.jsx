@@ -154,9 +154,12 @@ export const PlaylistDetails = () => {
       <section className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8 p-6 md:p-8 rounded-3xl bg-vibely-surface border border-vibely-border">
         <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-2xl shrink-0 bg-slate-900 border border-white/10">
           <img
-            src={playlist.coverArt || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80'}
+            src={playlist.coverArt || '/assets/playlists/default-playlist.svg'}
             alt={playlist.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover select-none"
+            onError={(e) => {
+              e.currentTarget.src = '/assets/playlists/default-playlist.svg';
+            }}
           />
         </div>
 

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#1e112a" />
+      <stop offset="50%" stopColor="#2d124d" />
+      <stop offset="100%" stopColor="#0f0717" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#fde047" />
+      <stop offset="50%" stopColor="#eab308" />
+      <stop offset="100%" stopColor="#ca8a04" />
+    </linearGradient>
+    <linearGradient id="neonPink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#ec4899" />
+      <stop offset="100%" stopColor="#8b5cf6" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <radialGradient id="discShine" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stopColor="#ffffff" stopOpacity="0.25" />
+      <stop offset="60%" stopColor="#ffffff" stopOpacity="0.03" />
+      <stop offset="100%" stopColor="#000000" stopOpacity="0.7" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="600" fill="url(#bgGrad)" />
+
+  <!-- Ambient Glow Spheres -->
+  <circle cx="180" cy="180" r="160" fill="#a855f7" opacity="0.35" filter="url(#glow)" />
+  <circle cx="440" cy="420" r="150" fill="#eab308" opacity="0.25" filter="url(#glow)" />
+
+  <!-- Subtle Concentric Sound Rings -->
+  <circle cx="300" cy="270" r="230" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-opacity="0.15" stroke-dasharray="6 8" />
+  <circle cx="300" cy="270" r="190" fill="none" stroke="#eab308" stroke-width="1.5" stroke-opacity="0.2" />
+  <circle cx="300" cy="270" r="150" fill="none" stroke="#ec4899" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="4 6" />
+
+  <!-- Gold Vinyl Disc -->
+  <g transform="translate(300, 270)">
+    <!-- Vinyl Outer Ring -->
+    <circle r="125" fill="#120c1f" stroke="url(#goldGrad)" stroke-width="5" filter="url(#glow)" />
+    <!-- Grooves -->
+    <circle r="110" fill="none" stroke="#ca8a04" stroke-width="1" stroke-opacity="0.4" />
+    <circle r="95" fill="none" stroke="#ca8a04" stroke-width="1" stroke-opacity="0.35" />
+    <circle r="80" fill="none" stroke="#ca8a04" stroke-width="1" stroke-opacity="0.3" />
+    <circle r="65" fill="none" stroke="#ca8a04" stroke-width="1" stroke-opacity="0.4" />
+    <!-- Center Label -->
+    <circle r="46" fill="url(#goldGrad)" />
+    <circle r="46" fill="url(#discShine)" />
+    <circle r="14" fill="#180e29" stroke="#fde047" stroke-width="2" />
+    <!-- Star sparkle in center -->
+    <path d="M0 -30 L4 -8 L26 -8 L8 6 L14 26 L0 14 L-14 26 L-8 6 L-26 -8 L-4 -8 Z" fill="#ffffff" opacity="0.8" />
+  </g>
+
+  <!-- Equalizer soundbars at bottom of visual -->
+  <g transform="translate(150, 420)">
+    <rect x="0" y="20" width="8" height="40" rx="4" fill="url(#goldGrad)" />
+    <rect x="18" y="5" width="8" height="55" rx="4" fill="url(#goldGrad)" />
+    <rect x="36" y="28" width="8" height="32" rx="4" fill="url(#neonPink)" />
+    <rect x="54" y="0" width="8" height="60" rx="4" fill="url(#goldGrad)" />
+    <rect x="72" y="15" width="8" height="45" rx="4" fill="url(#goldGrad)" />
+    <rect x="90" y="30" width="8" height="30" rx="4" fill="url(#neonPink)" />
+    <rect x="108" y="8" width="8" height="52" rx="4" fill="url(#goldGrad)" />
+    <rect x="126" y="2" width="8" height="58" rx="4" fill="url(#goldGrad)" />
+    <rect x="144" y="24" width="8" height="36" rx="4" fill="url(#neonPink)" />
+    <rect x="162" y="12" width="8" height="48" rx="4" fill="url(#goldGrad)" />
+    <rect x="180" y="32" width="8" height="28" rx="4" fill="url(#goldGrad)" />
+    <rect x="198" y="4" width="8" height="56" rx="4" fill="url(#goldGrad)" />
+    <rect x="216" y="18" width="8" height="42" rx="4" fill="url(#neonPink)" />
+    <rect x="234" y="26" width="8" height="34" rx="4" fill="url(#goldGrad)" />
+    <rect x="252" y="10" width="8" height="50" rx="4" fill="url(#goldGrad)" />
+    <rect x="270" y="35" width="8" height="25" rx="4" fill="url(#neonPink)" />
+    <rect x="288" y="20" width="8" height="40" rx="4" fill="url(#goldGrad)" />
+  </g>
+
+  <!-- Title Badge -->
+  <rect x="40" y="495" width="520" height="70" rx="20" fill="#181028" fill-opacity="0.85" stroke="url(#goldGrad)" stroke-width="1.5" />
+  <text x="70" y="534" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="22" fill="#ffffff" letter-spacing="0.5">TRUPTI'S BOLLYWOOD GOLD</text>
+  <text x="70" y="552" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="12" fill="#eab308" letter-spacing="1.5">TIMELESS MASTERPIECES • VIBELY EXCLUSIVE</text>
+  <circle cx="510" cy="530" r="16" fill="url(#goldGrad)" />
+  <polygon points="506,522 518,530 506,538" fill="#180e29" />
+</svg>
